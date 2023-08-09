@@ -1,8 +1,4 @@
-# https://pypi.org/project/paho-mqtt/
-
-import paho.mqtt.client as client
-
-from paho import mqtt
+import paho.mqtt.client as mqtt
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -27,4 +23,3 @@ client.connect("mqtt.eclipseprojects.io", 1883, 60)
 # Other loop*() functions are available that give a threaded interface and a
 # manual interface.
 client.loop_forever()
-
