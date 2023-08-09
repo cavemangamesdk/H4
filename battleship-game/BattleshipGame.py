@@ -11,5 +11,6 @@ class Player(Enum):
     UNDEFINED = 0
     PLAYER1 = 1
     PLAYER2 = 2
+    KI = 3
 
 
