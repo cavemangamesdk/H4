@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Battleship_API.Controllers
+namespace Battleship.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

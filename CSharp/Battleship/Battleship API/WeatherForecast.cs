@@ -1,4 +1,4 @@
-namespace Battleship_API
+namespace Battleship.API
 {
     public class WeatherForecast
     {
