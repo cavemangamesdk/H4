@@ -5,13 +5,13 @@ sense = SenseHat()
 
 sense.clear(0, 0, 0)
 
-pixels = [[x]*3 for x in range(64)]
+pixels = [[x]*3 for x in range(48, 48+64)]
 gamma = [x for x in range(32)]
 
 print(pixels)
 print(gamma)
 
-# sense.gamma = gamma
+sense.gamma = gamma
 
 sense.set_pixel = pixels
 

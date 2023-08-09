@@ -2,7 +2,7 @@ import time
 from sense_hat import SenseHat
 
 sense = SenseHat()
-sense.clear(255, 127, 0)
+sense.clear(0, 48, 48)
 
 print(sense.gamma)
 time.sleep(2)
