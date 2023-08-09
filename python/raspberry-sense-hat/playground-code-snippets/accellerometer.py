@@ -8,8 +8,8 @@ while True:
 	y = acceleration['y']
 	z = acceleration['z']
 
-	x=round(x, 0)
-	y=round(y, 0)
-	z=round(z, 0)
+	x=round(x, 2)
+	y=round(y, 2)
+	z=round(z, 2)
 
 	print("x={0}, y={1}, z={2}".format(x, y, z))
