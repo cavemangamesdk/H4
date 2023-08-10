@@ -45,7 +45,7 @@ client.on_message = on_message
 client.on_publish = on_publish
 
 # subscribe to all topics of encyclopedia by using the wildcard "#"
-client.subscribe("encyclopedia/#", qos=1)
+client.subscribe("encyclopedia/#", qos=1) 
 
 # Sense Hat env data
 sense = SenseHat()
