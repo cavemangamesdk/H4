@@ -16,13 +16,13 @@ class DeviceAccelerometerData:
     y_raw: float
     z_raw: float
 
-def getData(senseHat: SenseHat, uuid: uuid.UUID):
+def getData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
         
     accel = senseHat.get_accelerometer()
     accelRaw = senseHat.get_accelerometer_raw()
 
     data = DeviceAccelerometerData(
-        sessionId = str(uuid),
+        sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         roll = accel['roll'],
         pitch = accel['pitch'],

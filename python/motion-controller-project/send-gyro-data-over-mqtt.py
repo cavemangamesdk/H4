@@ -56,6 +56,8 @@ sense.set_imu_config(True, True, True)  # Enable all sensors
 
 uuidDevice = uuid.uuid4()
 
+dateTime = datetime
+
 while True:
 
     # Get sensor data
@@ -65,7 +67,7 @@ while True:
 
     # Create DeviceEnvironmentData object
     #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-    data = gyroData.getData(sense, uuidDevice)
+    data = gyroData.getData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)

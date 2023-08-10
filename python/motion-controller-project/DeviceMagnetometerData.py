@@ -8,13 +8,13 @@ class DeviceMagnetometerData:
     sessionId: uuid
     timeStamp: datetime
     # from get_compass()
-    direction: float
+    north: float
     # from get_compass_raw()
     x_raw: float
     y_raw: float
     z_raw: float
 
-def getData(senseHat: SenseHat, uuid: uuid.UUID):
+def getData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
         
     compass = senseHat.get_compass()
     compassRaw = senseHat.get_compass_raw()
@@ -22,7 +22,7 @@ def getData(senseHat: SenseHat, uuid: uuid.UUID):
     data = DeviceMagnetometerData(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
-        direction = compass,
+        north = compass,
         x_raw = compassRaw['x'],
         y_raw = compassRaw['y'],
         z_raw = compassRaw['z']

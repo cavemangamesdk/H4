@@ -56,6 +56,8 @@ sense.set_imu_config(True, True, True)  # Enable all sensors
 
 uuidDevice = uuid.uuid4()
 
+dateTime = datetime
+
 while True:
 
     # Get sensor data
@@ -67,7 +69,7 @@ while True:
     #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
     # data = envData.DeviceEnvironmentData(str(uuidDevice), str(datetime.datetime.now()), temperature, humidity, pressure)
 
-    data = envData.getData(sense, uuidDevice)
+    data = envData.getData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)

@@ -16,7 +16,7 @@ class DeviceOrientationData:
     pitch_rad: float
     yaw_rad: float
 
-def getData(senseHat: SenseHat, uuid: uuid.UUID):
+def getData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
         
     orientation = senseHat.get_orientation_degrees()
     orientationRad = senseHat.get_orientation_radians()

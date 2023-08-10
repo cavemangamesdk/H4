@@ -16,7 +16,7 @@ class DeviceGyroscopeData:
     y_raw: float
     z_raw: float
 
-def getData(senseHat: SenseHat, uuid: uuid.UUID):
+def getData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
     
     gyro = senseHat.get_gyroscope()
     gyroRaw = senseHat.get_gyroscope_raw()
