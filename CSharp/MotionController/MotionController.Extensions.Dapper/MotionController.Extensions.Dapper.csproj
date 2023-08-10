@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.143" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MotionController.Extensions.ComponentModel.Annotations\MotionController.Extensions.ComponentModel.Annotations.csproj" />
+  </ItemGroup>
+
 </Project>
