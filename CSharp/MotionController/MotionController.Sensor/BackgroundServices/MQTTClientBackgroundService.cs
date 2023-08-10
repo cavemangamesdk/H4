@@ -81,7 +81,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
                     .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
                     .Build();
 
-                var response = await MqttClient.ConnectAsync(options);
+                var response = await MqttClient.ConnectAsync(options, cancellationToken);
                 if (!response.ResultCode.Equals(MqttClientConnectResultCode.Success))
                 {
                     throw new SystemException();
