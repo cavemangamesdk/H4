@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MotionController\MotionController.csproj" />
+    <ProjectReference Include="..\MotionController\MotionController.Sensor.csproj" />
   </ItemGroup>
 
 </Project>
