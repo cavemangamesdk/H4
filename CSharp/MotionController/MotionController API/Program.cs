@@ -23,3 +23,30 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+class Device
+{
+    public int Id { get; set; }
+    public Guid SessionId { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+class DeviceOritentation
+{
+    public int Id { get; set; }
+    public Guid DeviceSessionId { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+class DeviceEnvironment
+{
+    public int Id { get; set; }
+    public Guid DeviceSessionId { get; set; }
+    public float Temp { get; set; }
+    public float Humidity { get; set; }
+    public float Pressure { get; set; }
+    public DateTime Timestamp { get; set; }
+}

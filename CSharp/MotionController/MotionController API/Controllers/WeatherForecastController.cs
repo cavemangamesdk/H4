@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using MotionController.API;
 
-namespace MotionController_API.Controllers
+namespace MotionController.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
