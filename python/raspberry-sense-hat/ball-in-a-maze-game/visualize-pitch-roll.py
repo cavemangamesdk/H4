@@ -15,7 +15,8 @@ while True:
     pitch_color = abs(int(pitch / (3.14 / 2) * 255))
     roll_color = abs(int(roll / (3.14 / 2) * 255))
 
-    sense.set_pixel(0, 0, (pitch_color, 0, roll_color))
+    sense.set_pixel(0, 0, (pitch_color, 0, 0))
+    sense.set_pixel(7, 7, (0, 0, roll_color))
 
     time.sleep(0.2)
     
