@@ -49,7 +49,6 @@ client.subscribe("encyclopedia/#", qos=1)
 # Sense Hat env data
 sense = SenseHat()
 
-
 while True:
 
     # Get sensor data
