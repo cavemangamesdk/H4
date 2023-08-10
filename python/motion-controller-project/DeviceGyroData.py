@@ -22,7 +22,7 @@ def getData(senseHat: SenseHat, uuid: uuid.UUID):
     gyroRaw = senseHat.get_gyroscope_raw()
 
     data = DeviceGyroData(
-        sessionId = str(uuid.uuid4()),
+        sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         roll = gyro['roll'],
         pitch = gyro['pitch'],

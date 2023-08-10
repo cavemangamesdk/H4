@@ -74,7 +74,7 @@ while True:
 
     # Send over MQTT
     client.loop_start()
-    client.publish("encyclopedia/environment", payload=dataJson, qos=1)
+    client.publish(topic="encyclopedia/environment", payload=dataJson, qos=2)
     client.loop_stop()
      
     time.sleep(1)
