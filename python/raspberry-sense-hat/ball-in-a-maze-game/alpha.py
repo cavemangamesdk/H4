@@ -2,8 +2,15 @@ from sense_hat import SenseHat
 
 sense = SenseHat()
 
-r = (255,0,0)
-b = (0,0,0)
+sense.low_light = True
+
+r = (128, 0, 0)
+b = (0, 0, 0)
+w = (255, 255, 255)
+
+# marble
+x = 1
+y = 1
 
 maze = [[r,r,r,r,r,r,r,r],
         [r,b,b,b,b,b,b,r],
@@ -15,3 +22,5 @@ maze = [[r,r,r,r,r,r,r,r],
         [r,r,r,r,r,r,r,r]]
 
 sense.set_pixels(sum(maze,[]))
+
+sense.set_pixel(x, y, w)
