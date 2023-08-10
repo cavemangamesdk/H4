@@ -1,5 +1,3 @@
-# Device data base class
-
 from dataclasses import dataclass
 import datetime
 import uuid
