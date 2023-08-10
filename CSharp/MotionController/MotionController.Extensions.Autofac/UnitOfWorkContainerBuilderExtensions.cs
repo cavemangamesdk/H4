@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Autofac.Core;
 using System.Data;
-using VictorKrogh.Data;
+using MotionController.Data;
 
 namespace VictorKrogh.Extensions.Autofac;
 

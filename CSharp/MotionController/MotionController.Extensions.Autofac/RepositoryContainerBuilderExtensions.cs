@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using System.Reflection;
-using VictorKrogh.Data.Providers;
-using VictorKrogh.Data.Repositories;
+using MotionController.Data.Providers;
+using MotionController.Data.Repositories;
 
 namespace VictorKrogh.Extensions.Autofac;
 
