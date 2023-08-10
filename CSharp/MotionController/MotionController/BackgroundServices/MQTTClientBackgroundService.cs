@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MotionController.Extensions.Hosting;
+using MotionController.Services;
 using MQTTnet;
 using MQTTnet.Client;
 using Newtonsoft.Json;
@@ -12,8 +13,21 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 {
 }
 
-class DeviceEnv
+class Device : ISessionIdentifier
 {
+    public Guid SessionId { get; set; }
+}
+
+public interface ISessionIdentifier
+{
+    Guid SessionId { get; set; }
+}
+
+class DeviceEnv : ISessionIdentifier
+{
+    [JsonProperty("sessionId")]
+    public Guid SessionId { get; set; }
+
     [JsonProperty("temperature")]
     public float Temperature { get; set; }
 
@@ -31,10 +45,13 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 {
     private readonly ConcurrentDictionary<string, Type> s_Map = new();
 
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IDeviceSessionService deviceService)
         : base(logger)
     {
+        DeviceSessionService = deviceService;
     }
+
+    private IDeviceSessionService DeviceSessionService { get; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
@@ -75,18 +92,29 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         }
     }
 
-    private Task OnApplicationMessageReceivedFuncAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+    private async Task OnApplicationMessageReceivedFuncAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
         if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
         {
-            Console.WriteLine($"Unsupported model type for given topic {eventArgs.ApplicationMessage.Topic}");
-            return Task.CompletedTask;
+            Logger.LogError($"Unsupported model type for given topic {eventArgs.ApplicationMessage.Topic}");
+            return;
         }
 
-        var model = JsonConvert.DeserializeObject(utf8Message, modelType);
+        var model = (ISessionIdentifier?)JsonConvert.DeserializeObject(utf8Message, modelType);
+        if (model == default)
+        {
+            return;
+        }
 
-        return Task.CompletedTask;
+        var deviceSession = await DeviceSessionService.GetOrAddDeviceSessionAsync(model.SessionId);
+        if(deviceSession == default)
+        {
+            Logger.LogError("Bullshit");
+            throw new Exception("Bullshit");
+        }
+
+        Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId}");
     }
 }
