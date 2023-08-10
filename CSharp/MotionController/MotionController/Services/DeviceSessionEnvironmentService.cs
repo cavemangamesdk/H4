@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
+using MotionController.Db.Data.Models;
 using MotionController.Db.Data.Repositories;
 
 namespace MotionController.Services;
 
 public interface IDeviceSessionEnvironmentService : IService
 {
+    Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionEnvironment deviceSessionEnvironment);
 }
 
 internal class DeviceSessionEnvironmentService : ServiceBase<DeviceSessionEnvironmentService>, IDeviceSessionEnvironmentService
@@ -16,4 +18,9 @@ internal class DeviceSessionEnvironmentService : ServiceBase<DeviceSessionEnviro
     }
 
     private IDeviceSessionEnvironmentRepository DeviceSessionEnvironmentRepository { get; }
+
+    public async Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionEnvironment deviceSessionEnvironment)
+    {
+        return await DeviceSessionEnvironmentRepository.AddAsync(deviceSessionEnvironment);
+    }
 }

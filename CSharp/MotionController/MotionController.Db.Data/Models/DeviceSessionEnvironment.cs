@@ -16,7 +16,7 @@ public class DeviceSessionEnvironment : DatabaseModel
     [Column("SessionId")]
     public Guid SessionId { get; set; }
 
-    [Column("TemparatureCelsius")]
+    [Column("TemperatureCelsius")]
     public float TemperatureCelsius { get; set; }
 
     [Column("HumidityPercentage")]

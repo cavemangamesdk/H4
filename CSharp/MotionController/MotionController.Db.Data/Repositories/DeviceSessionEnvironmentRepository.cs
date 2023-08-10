@@ -15,4 +15,12 @@ internal class DeviceSessionEnvironmentRepository : DbRepositoryBase<DeviceSessi
         : base(provider)
     {
     }
+
+    public override Task<bool> AddAsync(DeviceSessionEnvironment model)
+    {
+        model.Created = DateTime.Now;
+        model.Modified = DateTime.Now;
+
+        return base.AddAsync(model);
+    }
 }
