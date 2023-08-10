@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Shared", "MotionController.Shared\MotionController.Shared.csproj", "{FBB69310-B61B-49EA-B3A3-46C367AD11B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Db.Data", "MotionController.Db.Data\MotionController.Db.Data.csproj", "{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Dapper", "MotionController.Extensions.Dapper\MotionController.Extensions.Dapper.csproj", "{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.ComponentModel.Annotations", "MotionController.Extensions.ComponentModel.Annotations\MotionController.Extensions.ComponentModel.Annotations.csproj", "{1627305F-651B-457C-BA75-43B677A50AD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +45,18 @@ Global
 		{FBB69310-B61B-49EA-B3A3-46C367AD11B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBB69310-B61B-49EA-B3A3-46C367AD11B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBB69310-B61B-49EA-B3A3-46C367AD11B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1627305F-651B-457C-BA75-43B677A50AD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1627305F-651B-457C-BA75-43B677A50AD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1627305F-651B-457C-BA75-43B677A50AD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1627305F-651B-457C-BA75-43B677A50AD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
