@@ -1,4 +1,4 @@
-namespace Battleship.API
+namespace MotionController_API
 {
     public class WeatherForecast
     {

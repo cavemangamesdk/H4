@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Battleship.API.Controllers
+namespace MotionController_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
