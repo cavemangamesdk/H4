@@ -1,4 +1,4 @@
-namespace MotionController_API
+namespace MotionController.API
 {
     public class WeatherForecast
     {

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController API", "MotionController API\MotionController API.csproj", "{E826AF10-C371-4E6D-918E-1F76FBC636A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController API", "MotionController API\MotionController API.csproj", "{E826AF10-C371-4E6D-918E-1F76FBC636A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Hosting", "MotionController.Extensions.Hosting\MotionController.Extensions.Hosting.csproj", "{AD84E59D-F930-4BE8-A137-A7EA2057673D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController", "MotionController\MotionController.csproj", "{871D9A3F-FAA6-4560-8539-C5826D19F5DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Autofac", "MotionController.Extensions.Autofac\MotionController.Extensions.Autofac.csproj", "{3548E603-5D4F-4CEC-89EB-F1981BE33F92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{E826AF10-C371-4E6D-918E-1F76FBC636A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E826AF10-C371-4E6D-918E-1F76FBC636A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E826AF10-C371-4E6D-918E-1F76FBC636A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
