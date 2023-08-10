@@ -8,8 +8,22 @@ class Led:
         self.b = b
 
 class LedMatrix:
-    def __init___(self, width, height):
-        self.leds = [[0 for i in range(width)] for j in range(height)]
+    def __init___(self):
+        self.leds = [[0 for i in range(8)] for j in range(8)]
+    
+    def set_pixel(self, x, y, r, g, b):
+        self.leds[x][y] = Led(r, g, b)
+    
+    def get_pixel(self, x, y):
+        return self.leds[x][y]
+    
+    def clear(self, r, g, b):
+        for i in range(8):
+            for j in range(8):
+                self.set_pixel(i, j, r, g, b)
+    
+    
+    
 
 class Joystick:
     pass
