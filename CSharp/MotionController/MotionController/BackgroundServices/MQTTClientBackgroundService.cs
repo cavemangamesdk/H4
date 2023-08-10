@@ -58,16 +58,24 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
-        s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnv));
-
-        var client = await CreateAndConnectMQTTClientAsync();
-
-        client.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
-
-        await client.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce, CancellationToken.None);
-
-        while (cancellationToken.IsCancellationRequested)
+        try
         {
+            s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnv));
+
+            var client = await CreateAndConnectMQTTClientAsync();
+
+            client.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
+
+            await client.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+
+            while (cancellationToken.IsCancellationRequested)
+            {
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, ex.Message);
+            throw;
         }
     }
 
@@ -137,7 +145,22 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             throw new Exception("Bullshit");
         }
 
-        Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId}");
+        if (model is DeviceEnv deviceEnviroment)
+        {
+            Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId} (${deviceEnviroment.Timestamp})");
+
+            var deviceSessionEnvironmentService = scope.ServiceProvider.GetRequiredService<IDeviceSessionEnvironmentService>();
+
+            var dbDeviceSessionEnvironment = new Db.Data.Models.DeviceSessionEnvironment
+            {
+                SessionId = deviceSession.SessionId,
+                TemperatureCelsius = deviceEnviroment.Temperature,
+                HumidityPercentage = deviceEnviroment.Humidity,
+                PressureMillibars = deviceEnviroment.Pressure,
+                Timestamp = deviceEnviroment.Timestamp
+            };
+            await deviceSessionEnvironmentService.AddDeviceSessionEnvironmentAsync(dbDeviceSessionEnvironment);
+        }
 
         unitOfWork.Complete();
     }
