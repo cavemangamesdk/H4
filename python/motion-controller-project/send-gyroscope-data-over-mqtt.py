@@ -7,7 +7,7 @@ import uuid
 import paho.mqtt.client as paho
 from paho import mqtt
 
-import DeviceGyroscopeData as gyroData
+import GetData as getData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -61,7 +61,7 @@ dateTime = datetime
 while True:
 
     # Get sensor data
-    data = gyroData.getData(sense, uuidDevice, dateTime)
+    data = getData.getGyroscopeData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)

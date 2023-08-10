@@ -45,7 +45,7 @@ client.on_message = on_message
 client.on_publish = on_publish
 
 # subscribe to all topics of encyclopedia by using the wildcard "#"
-client.subscribe("encyclopedia/#", qos=1)
+client.subscribe("encyclopedia/#", qos=1) 
 
 # Sense Hat env data
 sense = SenseHat()
@@ -61,14 +61,19 @@ dateTime = datetime
 while True:
 
     # Get sensor data
-    data = getData.getMagnetometerData(sense, uuidDevice, dateTime)
-
-    # Convert to JSON
-    dataJson = json.dumps(data.__dict__)
+    accelerationData = getData.getAccelerometerData(sense, uuidDevice, dateTime)
+    environmentData = getData.getEnvironmentData(sense, uuidDevice, dateTime)
+    gyroscopeData = getData.getGyroscopeData(sense, uuidDevice, dateTime)
+    magnetometerData = getData.getMagnetometerData(sense, uuidDevice, dateTime)
+    orientationData = getData.getOrientationData(sense, uuidDevice, dateTime)
 
     # Send over MQTT
     client.loop_start()
-    client.publish("encyclopedia/magnetometer", payload=dataJson, qos=2)
+    client.publish(topic="encyclopedia/acceleration", payload=json.dumps(accelerationData.__dict__), qos=2)
+    client.publish(topic="encyclopedia/environment", payload=json.dumps(environmentData.__dict__), qos=2)
+    client.publish(topic="encyclopedia/gyroscope", payload=json.dumps(gyroscopeData.__dict__), qos=2)
+    client.publish(topic="encyclopedia/magnetometer", payload=json.dumps(magnetometerData.__dict__), qos=2)
+    client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
     client.loop_stop()
      
     time.sleep(1)
