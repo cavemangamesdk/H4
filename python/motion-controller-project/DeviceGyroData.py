@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 import datetime
+import uuid
 
 @dataclass
 class DeviceGyroData:
+    sessionId: uuid
     timeStamp: datetime
     # from get_gyroscope()
     roll: float

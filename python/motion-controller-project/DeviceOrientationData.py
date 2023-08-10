@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 import datetime
+import uuid
 
 @dataclass
 class DeviceOrientationData:
+    sessionId: uuid
     timeStamp: datetime
     # from gett_orientation_degrees()
     roll_deg: float

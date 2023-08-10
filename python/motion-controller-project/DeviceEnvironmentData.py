@@ -4,7 +4,7 @@ import uuid
 
 @dataclass
 class DeviceEnvironmentData:
-    deviceId: uuid
+    sessionId: uuid
     timeStamp: datetime
     temperature: float
     humidity: float
