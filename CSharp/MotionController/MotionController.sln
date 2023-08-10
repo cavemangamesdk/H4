@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController API", "Mot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Hosting", "MotionController.Extensions.Hosting\MotionController.Extensions.Hosting.csproj", "{AD84E59D-F930-4BE8-A137-A7EA2057673D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController", "MotionController\MotionController.csproj", "{871D9A3F-FAA6-4560-8539-C5826D19F5DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Autofac", "MotionController.Extensions.Autofac\MotionController.Extensions.Autofac.csproj", "{3548E603-5D4F-4CEC-89EB-F1981BE33F92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD84E59D-F930-4BE8-A137-A7EA2057673D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871D9A3F-FAA6-4560-8539-C5826D19F5DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
