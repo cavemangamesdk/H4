@@ -3,14 +3,14 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceGyroData:
+class DeviceAccellerometerData:
     sessionId: uuid
     timeStamp: datetime
-    # from get_gyroscope()
+    # from get_accelerometer()
     roll: float
     pitch: float
     yaw: float
-    # from get_gyroscope_raw()
+    # from get_accelerometer_raw()
     x: float
     y: float
     z: float
