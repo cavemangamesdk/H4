@@ -79,7 +79,11 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
-        var modelType = s_Map[eventArgs.ApplicationMessage.Topic];
+        if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
+        {
+            Console.WriteLine($"Unsupported model type for given topic {eventArgs.ApplicationMessage.Topic}");
+            return Task.CompletedTask;
+        }
 
         var model = JsonConvert.DeserializeObject(utf8Message, modelType);
 
