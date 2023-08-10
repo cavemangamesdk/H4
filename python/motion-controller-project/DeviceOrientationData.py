@@ -1,12 +1,8 @@
-from sense_hat import SenseHat
 from dataclasses import dataclass
-import datetime
-import uuid
+from DeviceData import DeviceData
 
 @dataclass
-class DeviceOrientationData:
-    sessionId: uuid
-    timeStamp: datetime
+class DeviceOrientationData(DeviceData):
     # from gett_orientation_degrees()
     roll_deg: float
     pitch_deg: float
@@ -15,21 +11,3 @@ class DeviceOrientationData:
     roll_rad: float
     pitch_rad: float
     yaw_rad: float
-
-def getData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
-        
-    orientation = senseHat.get_orientation_degrees()
-    orientationRad = senseHat.get_orientation_radians()
-
-    data = DeviceOrientationData(
-        sessionId = str(uuid),
-        timeStamp = str(datetime.datetime.now()),
-        roll_deg = orientation['roll'],
-        pitch_deg = orientation['pitch'],
-        yaw_deg = orientation['yaw'],
-        roll_rad = orientationRad['roll'],
-        pitch_rad = orientationRad['pitch'],
-        yaw_rad = orientationRad['yaw']
-    )
-
-    return data
