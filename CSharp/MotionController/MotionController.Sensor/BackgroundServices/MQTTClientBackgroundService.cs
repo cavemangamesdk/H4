@@ -52,9 +52,11 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         : base(logger)
     {
         ServiceProvider = serviceProvider;
+        MqttClient = CreateAndConnectMQTTClientAsync();
     }
 
     private IServiceProvider ServiceProvider { get; }
+    private IMqttClient MqttClient { get; set; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
@@ -62,15 +64,47 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         {
             s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnv));
 
-            var client = await CreateAndConnectMQTTClientAsync();
+            if (!MqttClient.IsConnected)
+            {
+                MqttClientOptionsBuilderTlsParameters tlsOptions = new()
+                {
+                    SslProtocol = System.Security.Authentication.SslProtocols.Tls12,
+                    UseTls = true,
+                    AllowUntrustedCertificates = true
+                };
 
-            client.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
+                var options = new MqttClientOptionsBuilder()
+                    .WithTcpServer("3c6ea0ec32f6404db6fd0439b0d000ce.s2.eu.hivemq.cloud", 8883)
+                    .WithCredentials("mvp2023", "wzq6h2hm%WLaMh$KYXj5")
+                    .WithClientId(Guid.NewGuid().ToString())
+                    .WithTls(tlsOptions)
+                    .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
+                    .Build();
 
-            await client.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+                var response = await MqttClient.ConnectAsync(options, cancellationToken);
+                if (!response.ResultCode.Equals(MqttClientConnectResultCode.Success))
+                {
+                    throw new SystemException();
+                }
+
+                MqttClient.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
+
+                await MqttClient.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+            }
 
             while (cancellationToken.IsCancellationRequested)
             {
             }
+
+            //var disconnectOptions = new MqttClientDisconnectOptions
+            //{
+            //    Reason = MqttClientDisconnectOptionsReason.NormalDisconnection,
+            //    ReasonString = "Disconnect"
+            //};
+
+            //await MqttClient.DisconnectAsync(disconnectOptions);
+
+            //MqttClient?.Dispose();
         }
         catch (Exception ex)
         {
@@ -79,32 +113,11 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         }
     }
 
-    private static async Task<IMqttClient> CreateAndConnectMQTTClientAsync()
+    private static IMqttClient CreateAndConnectMQTTClientAsync()
     {
         var factory = new MqttFactory();
 
         var client = factory.CreateMqttClient();
-
-        MqttClientOptionsBuilderTlsParameters tlsOptions = new()
-        {
-            SslProtocol = System.Security.Authentication.SslProtocols.Tls12,
-            UseTls = true,
-            AllowUntrustedCertificates = true
-        };
-
-        var options = new MqttClientOptionsBuilder()
-            .WithTcpServer("3c6ea0ec32f6404db6fd0439b0d000ce.s2.eu.hivemq.cloud", 8883)
-            .WithCredentials("mvp2023", "wzq6h2hm%WLaMh$KYXj5")
-            .WithClientId(Guid.NewGuid().ToString())
-            .WithTls(tlsOptions)
-            .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
-            .Build();
-
-        var response = await client.ConnectAsync(options);
-        if (!response.ResultCode.Equals(MqttClientConnectResultCode.Success))
-        {
-            throw new SystemException();
-        }
 
         return client;
     }
@@ -112,6 +125,8 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     private async Task OnApplicationMessageReceivedFuncAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
+
+        Logger.LogInformation(utf8Message);
 
         if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
         {

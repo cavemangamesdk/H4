@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController API", "MotionController API\MotionController API.csproj", "{E826AF10-C371-4E6D-918E-1F76FBC636A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController Sensor API", "MotionController Sensor API\MotionController Sensor API.csproj", "{E826AF10-C371-4E6D-918E-1F76FBC636A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Hosting", "MotionController.Extensions.Hosting\MotionController.Extensions.Hosting.csproj", "{AD84E59D-F930-4BE8-A137-A7EA2057673D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Extensions.Hosting", "MotionController.Extensions.Hosting\MotionController.Extensions.Hosting.csproj", "{AD84E59D-F930-4BE8-A137-A7EA2057673D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController", "MotionController\MotionController.csproj", "{871D9A3F-FAA6-4560-8539-C5826D19F5DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor", "MotionController.Sensor\MotionController.Sensor.csproj", "{871D9A3F-FAA6-4560-8539-C5826D19F5DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Autofac", "MotionController.Extensions.Autofac\MotionController.Extensions.Autofac.csproj", "{3548E603-5D4F-4CEC-89EB-F1981BE33F92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Extensions.Autofac", "MotionController.Extensions.Autofac\MotionController.Extensions.Autofac.csproj", "{3548E603-5D4F-4CEC-89EB-F1981BE33F92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Shared", "MotionController.Shared\MotionController.Shared.csproj", "{FBB69310-B61B-49EA-B3A3-46C367AD11B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Shared", "MotionController.Shared\MotionController.Shared.csproj", "{FBB69310-B61B-49EA-B3A3-46C367AD11B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Db.Data", "MotionController.Db.Data\MotionController.Db.Data.csproj", "{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Db.Data", "MotionController.Sensor.Db.Data\MotionController.Sensor.Db.Data.csproj", "{2DF9E0CE-B71F-4A65-9757-2B10D06FC8F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.Dapper", "MotionController.Extensions.Dapper\MotionController.Extensions.Dapper.csproj", "{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Extensions.Dapper", "MotionController.Extensions.Dapper\MotionController.Extensions.Dapper.csproj", "{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.ComponentModel.Annotations", "MotionController.Extensions.ComponentModel.Annotations\MotionController.Extensions.ComponentModel.Annotations.csproj", "{1627305F-651B-457C-BA75-43B677A50AD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Extensions.ComponentModel.Annotations", "MotionController.Extensions.ComponentModel.Annotations\MotionController.Extensions.ComponentModel.Annotations.csproj", "{1627305F-651B-457C-BA75-43B677A50AD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
