@@ -7,7 +7,7 @@ import uuid
 import paho.mqtt.client as paho
 from paho import mqtt
 
-import DeviceEnvironmentData as envData
+import DeviceGyroscopeData as gyroData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -45,7 +45,7 @@ client.on_message = on_message
 client.on_publish = on_publish
 
 # subscribe to all topics of encyclopedia by using the wildcard "#"
-client.subscribe("encyclopedia/#", qos=1) 
+client.subscribe("encyclopedia/#", qos=1)
 
 # Sense Hat env data
 sense = SenseHat()
@@ -67,16 +67,14 @@ while True:
 
     # Create DeviceEnvironmentData object
     #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-    # data = envData.DeviceEnvironmentData(str(uuidDevice), str(datetime.datetime.now()), temperature, humidity, pressure)
-
-    data = envData.getData(sense, uuidDevice, dateTime)
+    data = gyroData.getData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)
 
     # Send over MQTT
     client.loop_start()
-    client.publish("encyclopedia/environment", payload=dataJson, qos=2)
+    client.publish("encyclopedia/gyro", payload=dataJson, qos=2)
     client.loop_stop()
      
     time.sleep(1)

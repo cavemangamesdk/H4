@@ -7,7 +7,7 @@ import uuid
 import paho.mqtt.client as paho
 from paho import mqtt
 
-import DeviceGyroscopeData as gyroData
+import DeviceAccelerometerData as accData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -67,14 +67,14 @@ while True:
 
     # Create DeviceEnvironmentData object
     #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-    data = gyroData.getData(sense, uuidDevice, dateTime)
+    data = accData.getData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)
 
     # Send over MQTT
     client.loop_start()
-    client.publish("encyclopedia/gyro", payload=dataJson, qos=1)
+    client.publish("encyclopedia/acceleration", payload=dataJson, qos=2)
     client.loop_stop()
      
     time.sleep(1)
