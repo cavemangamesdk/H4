@@ -95,6 +95,16 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             while (cancellationToken.IsCancellationRequested)
             {
             }
+
+            //var disconnectOptions = new MqttClientDisconnectOptions
+            //{
+            //    Reason = MqttClientDisconnectOptionsReason.NormalDisconnection,
+            //    ReasonString = "Disconnect"
+            //};
+
+            //await MqttClient.DisconnectAsync(disconnectOptions);
+
+            //MqttClient?.Dispose();
         }
         catch (Exception ex)
         {
