@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from DeviceData import DeviceData
+from DataClass.DeviceData import DeviceData
 
 @dataclass
 class DeviceGyroscopeData(DeviceData):
