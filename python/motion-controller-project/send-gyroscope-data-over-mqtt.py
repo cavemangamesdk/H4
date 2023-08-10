@@ -61,12 +61,6 @@ dateTime = datetime
 while True:
 
     # Get sensor data
-    temperature = sense.get_temperature()
-    humidity = sense.get_humidity()
-    pressure = sense.get_pressure()
-
-    # Create DeviceEnvironmentData object
-    #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
     data = gyroData.getData(sense, uuidDevice, dateTime)
 
     # Convert to JSON
