@@ -50,6 +50,10 @@ client.subscribe("encyclopedia/#", qos=1)
 # Sense Hat env data
 sense = SenseHat()
 
+# Disable and re-enable all IMU sensors in order to reset them
+sense.set_imu_config(False, False, False)  # Disable all sensors
+sense.set_imu_config(True, True, True)  # Enable all sensors
+
 uuidDevice = uuid.uuid4()
 
 while True:
