@@ -4,7 +4,7 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceGyroData:
+class DeviceGyroscopeData:
     sessionId: uuid
     timeStamp: datetime
     # from get_gyroscope()
@@ -12,24 +12,24 @@ class DeviceGyroData:
     pitch: float
     yaw: float
     # from get_gyroscope_raw()
-    x: float
-    y: float
-    z: float
+    x_raw: float
+    y_raw: float
+    z_raw: float
 
-def getData(senseHat: SenseHat, uuid: uuid.UUID):
+def getData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
     
     gyro = senseHat.get_gyroscope()
     gyroRaw = senseHat.get_gyroscope_raw()
 
-    data = DeviceGyroData(
+    data = DeviceGyroscopeData(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         roll = gyro['roll'],
         pitch = gyro['pitch'],
         yaw = gyro['yaw'],
-        x = gyroRaw['x'],
-        y = gyroRaw['y'],
-        z = gyroRaw['z']
+        x_raw = gyroRaw['x'],
+        y_raw = gyroRaw['y'],
+        z_raw = gyroRaw['z']
     )
 
     return data
