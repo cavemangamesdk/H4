@@ -1,18 +1,12 @@
+#from sense_hat import SenseHat
 import time
-import paho.mqtt.client as paho
-from paho import mqtt
-from dataclasses import dataclass
 import datetime
 import json
-import base64
 
-@dataclass
-class DeviceEnvironmentData:
-    #timeStamp: datetime
-    timeStamp: str
-    temperature: float
-    humidity: float
-    pressure: float
+import paho.mqtt.client as paho
+from paho import mqtt
+
+import DeviceEnvironmentData as envData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -33,9 +27,6 @@ def on_message(client, userdata, msg):
 def on_subscribe_callback(self):
     print(self)
 
-# using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
-# userdata is user defined data of any type, updated by user_data_set()
-# client_id is the given name of the client
 client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
 client.on_connect = on_connect
 client.subscribe_callback = on_subscribe_callback
@@ -55,26 +46,19 @@ client.on_publish = on_publish
 # subscribe to all topics of encyclopedia by using the wildcard "#"
 client.subscribe("encyclopedia/#", qos=1)
 
-#test = DeviceEnvironmentData(datetime.datetime.now(), 42.0, 42.0, 42.0)
-test = DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-
-testBase64 = test.__dict__
-
-testJson = json.dumps(testBase64)
-
-
-testDict = {"timestamp":str(datetime.datetime.now()), "temperature":42.0, "humidity":1337.0, "pressure":5318008.0}
-testDictJson = json.dumps(testDict)
-                            
-# a single publish, this can also be done in loops, etc.
 while True:
+
+    # Get sensor data
+
+    # Create DeviceEnvironmentData object
+    data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
+
+    # Convert to JSON
+    dataJson = json.dumps(data.__dict__)
+
+    # Send over MQTT
     client.loop_start()
-    client.publish("encyclopedia/temperature", payload=testJson, qos=1)
+    client.publish("encyclopedia/temperature", payload=dataJson, qos=1)
     client.loop_stop()
      
     time.sleep(1)
-
-# loop_forever for simplicity, here you need to stop the loop manually
-# you can also use loop_start and loop_stop
-
-# client.loop_forever()
