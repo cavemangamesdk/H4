@@ -1,13 +1,5 @@
-from sense_hat import SenseHat
-import time
-import datetime
-import json
-import uuid
-
 import paho.mqtt.client as paho
 from paho import mqtt
-
-import DeviceEnvironmentData as envData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -43,32 +35,3 @@ client.connect("3c6ea0ec32f6404db6fd0439b0d000ce.s2.eu.hivemq.cloud", 8883)
 client.on_subscribe = on_subscribe
 client.on_message = on_message
 client.on_publish = on_publish
-
-# subscribe to all topics of encyclopedia by using the wildcard "#"
-client.subscribe("encyclopedia/#", qos=1)
-
-# Sense Hat env data
-sense = SenseHat()
-
-uuidDevice = uuid.uuid4()
-
-while True:
-
-    # Get sensor data
-    temperature = sense.get_temperature()
-    humidity = sense.get_humidity()
-    pressure = sense.get_pressure()
-
-    # Create DeviceEnvironmentData object
-    #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-    data = envData.DeviceEnvironmentData(uuidDevice, str(datetime.datetime.now()), temperature, humidity, pressure)
-
-    # Convert to JSON
-    dataJson = json.dumps(data.__dict__)
-
-    # Send over MQTT
-    client.loop_start()
-    client.publish("encyclopedia/environment", payload=dataJson, qos=1)
-    client.loop_stop()
-     
-    time.sleep(1)
