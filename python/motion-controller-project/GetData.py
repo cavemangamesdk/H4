@@ -2,11 +2,11 @@ from sense_hat import SenseHat
 import datetime
 import uuid
 
-from DeviceAccelerometerData import DeviceAccelerometerData
-from DeviceEnvironmentData import DeviceEnvironmentData
-from DeviceGyroscopeData import DeviceGyroscopeData
-from DeviceMagnetometerData import DeviceMagnetometerData
-from DeviceOrientationData import DeviceOrientationData
+from DataClass.DeviceAccelerometerData import DeviceAccelerometerData
+from DataClass.DeviceEnvironmentData import DeviceEnvironmentData
+from DataClass.DeviceGyroscopeData import DeviceGyroscopeData
+from DataClass.DeviceMagnetometerData import DeviceMagnetometerData
+from DataClass.DeviceOrientationData import DeviceOrientationData
 
 #
 def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
