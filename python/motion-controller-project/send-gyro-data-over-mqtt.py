@@ -65,7 +65,7 @@ while True:
 
     # Create DeviceEnvironmentData object
     #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
-    data = gyroData.getData()
+    data = gyroData.getData(sense, uuidDevice)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)

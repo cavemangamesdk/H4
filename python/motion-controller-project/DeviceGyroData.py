@@ -16,11 +16,10 @@ class DeviceGyroData:
     y: float
     z: float
 
-def getData():
+def getData(senseHat: SenseHat, uuid: uuid.UUID):
     
-    sense = SenseHat()
-    gyro = sense.get_gyroscope()
-    gyroRaw = sense.get_gyroscope_raw()
+    gyro = senseHat.get_gyroscope()
+    gyroRaw = senseHat.get_gyroscope_raw()
 
     data = DeviceGyroData(
         sessionId = str(uuid.uuid4()),
