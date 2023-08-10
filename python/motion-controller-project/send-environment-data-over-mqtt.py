@@ -1,4 +1,4 @@
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 import time
 import datetime
 import json
@@ -46,12 +46,20 @@ client.on_publish = on_publish
 # subscribe to all topics of encyclopedia by using the wildcard "#"
 client.subscribe("encyclopedia/#", qos=1)
 
+# Sense Hat env data
+sense = SenseHat()
+
+
 while True:
 
     # Get sensor data
+    temperature = sense.get_temperature()
+    humidity = sense.get_humidity()
+    pressure = sense.get_pressure()
 
     # Create DeviceEnvironmentData object
-    data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
+    #data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), 42.0, 42.0, 42.0)
+    data = envData.DeviceEnvironmentData(str(datetime.datetime.now()), temperature, humidity, pressure)
 
     # Convert to JSON
     dataJson = json.dumps(data.__dict__)
