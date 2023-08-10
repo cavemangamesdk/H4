@@ -23,8 +23,8 @@ def getData():
     gyroRaw = sense.get_gyroscope_raw()
 
     data = DeviceGyroData(
-        sessionId = uuid.uuid4(),
-        timeStamp = datetime.datetime.now(),
+        sessionId = str(uuid.uuid4()),
+        timeStamp = str(datetime.datetime.now()),
         roll = gyro['roll'],
         pitch = gyro['pitch'],
         yaw = gyro['yaw'],
