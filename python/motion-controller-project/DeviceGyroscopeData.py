@@ -4,7 +4,7 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceGyroData:
+class DeviceGyroscopeData:
     sessionId: uuid
     timeStamp: datetime
     # from get_gyroscope()
@@ -21,7 +21,7 @@ def getData(senseHat: SenseHat, uuid: uuid.UUID):
     gyro = senseHat.get_gyroscope()
     gyroRaw = senseHat.get_gyroscope_raw()
 
-    data = DeviceGyroData(
+    data = DeviceGyroscopeData(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         roll = gyro['roll'],
