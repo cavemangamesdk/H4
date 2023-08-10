@@ -45,3 +45,5 @@ while True:
     unit_vector = normalize_vector(direction_vector)
 
     print("Unit Vector:", unit_vector)
+
+    time.sleep(1)
