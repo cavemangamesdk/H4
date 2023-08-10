@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("MotionController")]
+[assembly: InternalsVisibleTo("MotionController.Sensor")]
