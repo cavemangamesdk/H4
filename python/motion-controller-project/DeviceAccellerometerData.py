@@ -3,12 +3,14 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceCompassData:
+class DeviceAccellerometerData:
     sessionId: uuid
     timeStamp: datetime
-    # from get_compass()
-    direction: float
-    # from get_compass_raw()
+    # from get_accelerometer()
+    roll: float
+    pitch: float
+    yaw: float
+    # from get_accelerometer_raw()
     x: float
     y: float
     z: float
