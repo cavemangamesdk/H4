@@ -4,6 +4,10 @@ import math
 
 sense = SenseHat()
 
+# Disable and re-enable all IMU sensors in order to reset them
+sense.set_imu_config(False, False, False)  # Disable all sensors
+sense.set_imu_config(True, True, True)  # Enable all sensors
+
 while True:
     orientation = sense.get_orientation()
     orientation_degrees = sense.get_orientation_degrees()
