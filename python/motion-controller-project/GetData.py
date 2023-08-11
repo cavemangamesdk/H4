@@ -25,11 +25,11 @@ def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
     data = DeviceAllData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        accelerometer = getAccelerometerDataBase(senseHat, sessionId, datetime).__dict__,
-        environment = getEnvironmentDataBase(senseHat, sessionId, datetime).__dict__,
-        gyroscope = getGyroscopeDataBase(senseHat, sessionId, datetime).__dict__,
-        magnetometer = getMagnetometerDataBase(senseHat, sessionId, datetime).__dict__,
-        orientation = getOrientationDataBase(senseHat, sessionId, datetime).__dict__
+        accelerometer = getAccelerometerDataBase(senseHat).__dict__,
+        environment = getEnvironmentDataBase(senseHat).__dict__,
+        gyroscope = getGyroscopeDataBase(senseHat).__dict__,
+        magnetometer = getMagnetometerDataBase(senseHat).__dict__,
+        orientation = getOrientationDataBase(senseHat).__dict__
     )
 
     return data
