@@ -195,6 +195,8 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         {
             SessionId = deviceSession.SessionId,
             TemperatureCelsius = deviceEnviroment.Temperature,
+            TemperatureFromHumidityCelsius = deviceEnviroment.TemperatureFromHumidity,
+            TemperatureFromPressureCelsius = deviceEnviroment.TemperatureFromPressure,
             HumidityPercentage = deviceEnviroment.Humidity,
             PressureMillibars = deviceEnviroment.Pressure,
             Timestamp = deviceEnviroment.Timestamp
