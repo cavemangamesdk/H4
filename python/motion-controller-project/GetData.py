@@ -20,7 +20,7 @@ from DataClass.DeviceOrientationData import DeviceOrientationData
 
 
 #
-def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
+def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAllData:
 
     data = DeviceAllData(
         sessionId = str(sessionId),
@@ -36,7 +36,7 @@ def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
 
 
 #
-def getAccelerometerDataBase(senseHat: SenseHat):
+def getAccelerometerDataBase(senseHat: SenseHat) -> DeviceAccelerometerDataBase:
         
     accel = senseHat.get_accelerometer()
     accelRaw = senseHat.get_accelerometer_raw()
@@ -52,7 +52,7 @@ def getAccelerometerDataBase(senseHat: SenseHat):
 
     return data
 
-def getEnvironmentDataBase(senseHat: SenseHat):
+def getEnvironmentDataBase(senseHat: SenseHat) -> DeviceEnvironmentDataBase:
     
     data = DeviceEnvironmentDataBase(
         temperature = senseHat.get_temperature(),
@@ -64,7 +64,7 @@ def getEnvironmentDataBase(senseHat: SenseHat):
 
     return data
 
-def getGyroscopeDataBase(senseHat: SenseHat):
+def getGyroscopeDataBase(senseHat: SenseHat) -> DeviceGyroscopeDataBase:
     
     gyro = senseHat.get_gyroscope()
     gyroRaw = senseHat.get_gyroscope_raw()
@@ -80,7 +80,7 @@ def getGyroscopeDataBase(senseHat: SenseHat):
 
     return data
 
-def getMagnetometerDataBase(senseHat: SenseHat):
+def getMagnetometerDataBase(senseHat: SenseHat) -> DeviceMagnetometerDataBase:
         
     compass = senseHat.get_compass()
     compassRaw = senseHat.get_compass_raw()
@@ -94,7 +94,7 @@ def getMagnetometerDataBase(senseHat: SenseHat):
 
     return data
 
-def getOrientationDataBase(senseHat: SenseHat):
+def getOrientationDataBase(senseHat: SenseHat) -> DeviceOrientationDataBase:
         
     orientation = senseHat.get_orientation_degrees()
     orientationRad = senseHat.get_orientation_radians()
@@ -112,7 +112,7 @@ def getOrientationDataBase(senseHat: SenseHat):
 
 
 #
-def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
+def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAccelerometerData:
         
     accel = senseHat.get_accelerometer()
     accelRaw = senseHat.get_accelerometer_raw()
@@ -130,7 +130,7 @@ def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: dat
 
     return data
 
-def getEnvironmentData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
+def getEnvironmentData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceEnvironmentData:
     
     data = DeviceEnvironmentData(
         sessionId = str(uuid),
@@ -144,7 +144,7 @@ def getEnvironmentData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
 
     return data
 
-def getGyroscopeData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
+def getGyroscopeData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceGyroscopeData:
     
     gyro = senseHat.get_gyroscope()
     gyroRaw = senseHat.get_gyroscope_raw()
@@ -162,7 +162,7 @@ def getGyroscopeData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
 
     return data
 
-def getMagnetometerData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
+def getMagnetometerData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceMagnetometerData:
         
     compass = senseHat.get_compass()
     compassRaw = senseHat.get_compass_raw()
@@ -178,7 +178,7 @@ def getMagnetometerData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime)
 
     return data
 
-def getOrientationData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime):
+def getOrientationData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceOrientationData:
         
     orientation = senseHat.get_orientation_degrees()
     orientationRad = senseHat.get_orientation_radians()
