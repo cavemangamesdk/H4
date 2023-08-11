@@ -169,13 +169,13 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 
         if (model is DeviceEnvironment deviceEnviroment)
         {
-            await HandleDeviceEnvAsync(deviceSession, deviceEnviroment);
+            await HandleDeviceEnvironmentAsync(deviceSession, deviceEnviroment);
         }
 
         unitOfWork.Complete();
     }
 
-    private async Task HandleDeviceEnvAsync(DeviceSession? deviceSession, DeviceEnvironment deviceEnviroment)
+    private async Task HandleDeviceEnvironmentAsync(DeviceSession? deviceSession, DeviceEnvironment deviceEnviroment)
     {
         // TODO: Add Throw.IfNull();
         if(deviceSession?.Equals(default) ?? true)
