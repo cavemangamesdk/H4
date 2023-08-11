@@ -23,8 +23,8 @@ def set_pixel_frac(x, y, r, g, b):
     for (dx, dy), color in zip([(0, 0), (1, 0), (0, 1), (1, 1)], colors):
         sense.set_pixel(x1 + dx, y1 + dy, color)
 
-x = 0
-y = 0
+x = 1
+y = 1
 
 while True:
 
