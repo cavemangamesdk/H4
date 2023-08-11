@@ -1,8 +1,11 @@
 from sense_hat import SenseHat
 import numpy as np
+import time
 
 # Initialize the Sense Hat
 sense = SenseHat()
+
+sense.clear(0, 0, 255)
 
 def set_pixel_frac(x, y, r, g, b):
     """Set a pixel with fractional position (x, y) to the color (r, g, b)."""
@@ -20,5 +23,15 @@ def set_pixel_frac(x, y, r, g, b):
     for (dx, dy), color in zip([(0, 0), (1, 0), (0, 1), (1, 1)], colors):
         sense.set_pixel(x1 + dx, y1 + dy, color)
 
-# Test the function
-set_pixel_frac(4.8, 4.8, 255, 0, 0)
+x = 0
+y = 0
+
+while True:
+
+    x += 0.15
+    y += 0.1
+
+    # Test the function
+    set_pixel_frac(x, y, 255, 0, 0)
+
+    time.sleep(0.5)
