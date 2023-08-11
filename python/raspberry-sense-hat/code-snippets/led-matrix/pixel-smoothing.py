@@ -1,24 +1,29 @@
 from sense_hat import SenseHat
 import numpy as np
+import time
 
 # Initialize the Sense Hat
 sense = SenseHat()
 
-X = [255, 0, 0]  # Red
-O = [8, 16, 24]  # White
+R = [255, 0, 0]  # Red
+G = [0, 255, 0]
+B = [0, 0, 255]
+W = [255, 255, 255]  # White
 
 question_mark = [
-O, O, O, X, X, O, O, O,
-O, O, X, O, O, X, O, O,
-O, O, O, O, O, X, O, O,
-O, O, O, O, X, O, O, O,
-O, O, O, X, O, O, O, O,
-O, O, O, X, O, O, O, O,
-O, O, O, O, O, O, O, O,
-O, O, O, X, O, O, O, O
+R, R, R, R, R, B, B, B,
+R, R, R, R, B, R, B, B,
+R, R, R, R, B, R, B, B,
+R, R, R, R, R, B, B, B,
+B, B, B, R, B, B, B, B,
+B, B, B, R, B, B, B, B,
+B, B, B, B, B, B, B, B,
+B, B, B, R, B, B, B, B
 ]
 
 sense.set_pixels(question_mark)
+
+time.sleep(3)
 
 # Get the current image (8x8 pixels)
 image = np.array(sense.get_pixels())
