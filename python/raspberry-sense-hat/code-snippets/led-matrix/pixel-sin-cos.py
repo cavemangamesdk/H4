@@ -1,8 +1,8 @@
-from sense_hat import SenseHat
+#from sense_hat import SenseHat
 import math
 import time
 
-sense = SenseHat()
+#sense = SenseHat()
 
 x = 1
 y = 1
@@ -10,14 +10,16 @@ y = 1
 while True:
 
     x += 0.11
-    y += 0.07
+    y += 0.11
 
-    x_screen = int(1 + math.sin(x) * 6)
-    y_screen = int(1 + math.cos(y) * 6)
+    x_screen = int(4.5 + math.sin(x) * 4)
+    y_screen = int(4.5 + math.cos(y) * 4)
 
-    sense.clear(0, 0, 0)
+    print(x_screen, y_screen)
 
-    sense.set_pixel(int(x_screen), int(y_screen), 255, 0, 0)
+    #sense.clear(0, 0, 0)
+
+    #sense.set_pixel(int(x_screen), int(y_screen), 255, 0, 0)
 
     time.sleep(0.1)
 
