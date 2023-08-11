@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from DataClass.DeviceData import DeviceData
+from DataClass.DeviceDataBase import DeviceDataBase
 
 @dataclass
-class DeviceAccelerometerData(DeviceData):
+class DeviceAccelerometerDataBase():
     # from get_accelerometer()
     roll: float
     pitch: float
@@ -11,3 +11,7 @@ class DeviceAccelerometerData(DeviceData):
     x_raw: float
     y_raw: float
     z_raw: float
+
+@dataclass
+class DeviceAccelerometerData(DeviceDataBase, DeviceAccelerometerDataBase):
+    pass

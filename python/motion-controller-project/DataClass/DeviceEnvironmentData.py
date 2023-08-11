@@ -1,14 +1,19 @@
 from dataclasses import dataclass
-from DataClass.DeviceData import DeviceData
+from DataClass.DeviceDataBase import DeviceDataBase
 
 @dataclass
 class DeviceEnvironmentDataBase():
+    # from get_temperature()
     temperature: float
+    # from get_temperature_from_humidity()
     temperatureFromHumidity: float
+    # from get_temperature_from_pressure()
     temperatureFromPressure: float
+    # from get_humidity()
     humidity: float
+    # from get_pressure()
     pressure: float
 
 @dataclass
-class DeviceEnvironmentData(DeviceData, DeviceEnvironmentDataBase):
+class DeviceEnvironmentData(DeviceDataBase, DeviceEnvironmentDataBase):
     pass
