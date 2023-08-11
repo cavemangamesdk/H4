@@ -78,4 +78,4 @@ while True:
     # client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
     client.loop_stop()
      
-    time.sleep(1)
+    time.sleep(5)
