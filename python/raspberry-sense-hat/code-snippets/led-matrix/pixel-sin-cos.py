@@ -4,8 +4,8 @@ import time
 
 #sense = SenseHat()
 
-x = 0
-y = 0
+x = 1
+y = 1
 
 # variable holding the 8x8 led matrix screen
 screen = [[48, 48, 48] for x in range(64)]
