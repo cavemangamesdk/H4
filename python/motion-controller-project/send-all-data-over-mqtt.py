@@ -79,3 +79,6 @@ while True:
     client.loop_stop()
      
     time.sleep(1)
+
+# client.unsubscribe("encyclopedia/#")
+# client.disconnect()
