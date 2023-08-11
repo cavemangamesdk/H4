@@ -27,13 +27,19 @@ class Device : ISessionIdentifier
     public Guid SessionId { get; set; }
 }
 
-class DeviceEnv : ISessionIdentifier
+class DeviceEnvironment : ISessionIdentifier
 {
     [JsonProperty("sessionId")]
     public Guid SessionId { get; set; }
 
     [JsonProperty("temperature")]
     public float Temperature { get; set; }
+
+    [JsonProperty("temperatureFromHumidity")]
+    public float TemperatureFromHumidity { get; set; }
+
+    [JsonProperty("temperatureFromPressure")]
+    public float TemperatureFromPressure { get; set; }
 
     [JsonProperty("humidity")]
     public float Humidity { get; set; }
@@ -63,7 +69,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         try
         {
-            s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnv));
+            s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnvironment));
 
             if (!MqttClient.IsConnected)
             {
@@ -161,7 +167,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             throw new Exception("Bullshit");
         }
 
-        if (model is DeviceEnv deviceEnviroment)
+        if (model is DeviceEnvironment deviceEnviroment)
         {
             await HandleDeviceEnvAsync(deviceSession, deviceEnviroment);
         }
@@ -169,7 +175,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         unitOfWork.Complete();
     }
 
-    private async Task HandleDeviceEnvAsync(DeviceSession? deviceSession, DeviceEnv deviceEnviroment)
+    private async Task HandleDeviceEnvAsync(DeviceSession? deviceSession, DeviceEnvironment deviceEnviroment)
     {
         // TODO: Add Throw.IfNull();
         if(deviceSession?.Equals(default) ?? true)
