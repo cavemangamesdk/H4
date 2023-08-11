@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MotionController.Extensions.Autofac\MotionController.Extensions.Autofac.csproj" />
     <ProjectReference Include="..\MotionController.Extensions.Hosting\MotionController.Extensions.Hosting.csproj" />
+    <ProjectReference Include="..\MotionController.MQTT\MotionController.MQTT.csproj" />
     <ProjectReference Include="..\MotionController.Sensor.Db.Data\MotionController.Sensor.Db.Data.csproj" />
     <ProjectReference Include="..\MotionController.Shared\MotionController.Shared.csproj" />
   </ItemGroup>

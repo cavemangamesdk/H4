@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MotionController.Data;
 using MotionController.Db.Data.Models;
 using MotionController.Extensions.Hosting;
+using MotionController.MQTT.Messages;
+using MotionController.Sensor.Messaging.MessageHandlers;
 using MotionController.Services;
 using MQTTnet;
 using MQTTnet.Client;
@@ -27,30 +31,6 @@ class Device : ISessionIdentifier
     public Guid SessionId { get; set; }
 }
 
-class DeviceEnvironment : ISessionIdentifier
-{
-    [JsonProperty("sessionId")]
-    public Guid SessionId { get; set; }
-
-    [JsonProperty("temperature")]
-    public float Temperature { get; set; }
-
-    [JsonProperty("temperatureFromHumidity")]
-    public float TemperatureFromHumidity { get; set; }
-
-    [JsonProperty("temperatureFromPressure")]
-    public float TemperatureFromPressure { get; set; }
-
-    [JsonProperty("humidity")]
-    public float Humidity { get; set; }
-
-    [JsonProperty("pressure")]
-    public float Pressure { get; set; }
-
-    [JsonProperty("timestamp")]
-    public DateTime Timestamp { get; set; }
-}
-
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
     private readonly ConcurrentDictionary<string, Type> s_Map = new();
@@ -70,6 +50,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         try
         {
             s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnvironment));
+            s_Map.TryAdd("encyclopedia/magnetometer", typeof(DeviceMagnetometer));
 
             if (!MqttClient.IsConnected)
             {
@@ -133,7 +114,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
-        Logger.LogInformation(utf8Message);
+        //Logger.LogInformation(utf8Message);
 
         if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
         {
@@ -147,62 +128,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             return;
         }
 
-        await HandleModelAsync(model);
-    }
-
-    private async Task HandleModelAsync(ISessionIdentifier? model)
-    {
-        // TODO: Add Throw.IfNull();
-
-        using var scope = ServiceProvider.CreateScope();
-
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
-        var deviceSessionService = scope.ServiceProvider.GetRequiredService<IDeviceSessionService>();
-
-        var deviceSession = await deviceSessionService.GetOrAddDeviceSessionAsync(model!.SessionId);
-        if (deviceSession?.Equals(default) ?? true)
-        {
-            Logger.LogError("Bullshit");
-            throw new Exception("Bullshit");
-        }
-
-        if (model is DeviceEnvironment deviceEnviroment)
-        {
-            await HandleDeviceEnvironmentAsync(deviceSession, deviceEnviroment);
-        }
-
-        unitOfWork.Complete();
-    }
-
-    private async Task HandleDeviceEnvironmentAsync(DeviceSession? deviceSession, DeviceEnvironment deviceEnviroment)
-    {
-        // TODO: Add Throw.IfNull();
-        if(deviceSession?.Equals(default) ?? true)
-        {
-            return;
-        }
-
-        using var scope = ServiceProvider.CreateScope();
-
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
-        Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId} (${deviceEnviroment.Timestamp})");
-
-        var deviceSessionEnvironmentService = scope.ServiceProvider.GetRequiredService<IDeviceSessionEnvironmentService>();
-
-        var dbDeviceSessionEnvironment = new Db.Data.Models.DeviceSessionEnvironment
-        {
-            SessionId = deviceSession.SessionId,
-            TemperatureCelsius = deviceEnviroment.Temperature,
-            TemperatureFromHumidityCelsius = deviceEnviroment.TemperatureFromHumidity,
-            TemperatureFromPressureCelsius = deviceEnviroment.TemperatureFromPressure,
-            HumidityPercentage = deviceEnviroment.Humidity,
-            PressureMillibars = deviceEnviroment.Pressure,
-            Timestamp = deviceEnviroment.Timestamp
-        };
-        await deviceSessionEnvironmentService.AddDeviceSessionEnvironmentAsync(dbDeviceSessionEnvironment);
-
-        unitOfWork.Complete();
+        var messageHandler = ServiceProvider.GetAutofacRoot().ResolveKeyed<IMessageHandler>(eventArgs.ApplicationMessage.Topic);
+        await messageHandler.HandleAsync(model);
     }
 }
