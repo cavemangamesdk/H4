@@ -9,6 +9,63 @@ from DataClass.DeviceMagnetometerData import DeviceMagnetometerData
 from DataClass.DeviceOrientationData import DeviceOrientationData
 
 #
+def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
+        
+        accel = senseHat.get_accelerometer()
+        accelRaw = senseHat.get_accelerometer_raw()
+        gyro = senseHat.get_gyroscope()
+        gyroRaw = senseHat.get_gyroscope_raw()
+        compass = senseHat.get_compass()
+        compassRaw = senseHat.get_compass_raw()
+        orientation = senseHat.get_orientation_degrees()
+        orientationRad = senseHat.get_orientation_radians()
+    
+        data = {
+            'sessionId': str(sessionId),
+            'timeStamp': str(datetime.datetime.now()),
+            'accel': {
+                'roll': accel['roll'],
+                'pitch': accel['pitch'],
+                'yaw': accel['yaw'],
+                'x_raw': accelRaw['x'],
+                'y_raw': accelRaw['y'],
+                'z_raw': accelRaw['z']
+            },
+            'gyro': {
+                'roll': gyro['roll'],
+                'pitch': gyro['pitch'],
+                'yaw': gyro['yaw'],
+                'x_raw': gyroRaw['x'],
+                'y_raw': gyroRaw['y'],
+                'z_raw': gyroRaw['z']
+            },
+            'compass': {
+                'north': compass,
+                'x_raw': compassRaw['x'],
+                'y_raw': compassRaw['y'],
+                'z_raw': compassRaw['z']
+            },
+            'orientation': {
+                'roll_deg': orientation['roll'],
+                'pitch_deg': orientation['pitch'],
+                'yaw_deg': orientation['yaw'],
+                'roll_rad': orientationRad['roll'],
+                'pitch_rad': orientationRad['pitch'],
+                'yaw_rad': orientationRad['yaw']
+            },
+            'environment': {
+                'temperature': senseHat.get_temperature(),
+                'temperatureFromHumidity': senseHat.get_temperature_from_humidity(),
+                'temperatureFromPressure': senseHat.get_temperature_from_pressure(),
+                'humidity': senseHat.get_humidity(),
+                'pressure': senseHat.get_pressure()
+            }
+        }
+    
+        return data
+
+
+#
 def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
         
     accel = senseHat.get_accelerometer()

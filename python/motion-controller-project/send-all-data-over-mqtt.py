@@ -61,19 +61,21 @@ dateTime = datetime
 while True:
 
     # Get sensor data
-    accelerationData = getData.getAccelerometerData(sense, uuidDevice, dateTime)
-    environmentData = getData.getEnvironmentData(sense, uuidDevice, dateTime)
-    gyroscopeData = getData.getGyroscopeData(sense, uuidDevice, dateTime)
-    magnetometerData = getData.getMagnetometerData(sense, uuidDevice, dateTime)
-    orientationData = getData.getOrientationData(sense, uuidDevice, dateTime)
+    allData = getData.getAllData(sense, uuidDevice, dateTime)
+    # accelerationData = getData.getAccelerometerData(sense, uuidDevice, dateTime)
+    # environmentData = getData.getEnvironmentData(sense, uuidDevice, dateTime)
+    # gyroscopeData = getData.getGyroscopeData(sense, uuidDevice, dateTime)
+    # magnetometerData = getData.getMagnetometerData(sense, uuidDevice, dateTime)
+    # orientationData = getData.getOrientationData(sense, uuidDevice, dateTime)
 
     # Send over MQTT
     client.loop_start()
-    client.publish(topic="encyclopedia/acceleration", payload=json.dumps(accelerationData.__dict__), qos=2)
-    client.publish(topic="encyclopedia/environment", payload=json.dumps(environmentData.__dict__), qos=2)
-    client.publish(topic="encyclopedia/gyroscope", payload=json.dumps(gyroscopeData.__dict__), qos=2)
-    client.publish(topic="encyclopedia/magnetometer", payload=json.dumps(magnetometerData.__dict__), qos=2)
-    client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
+    client.publish(topic="encyclopedia/all", payload=json.dumps(allData.__dict__), qos=2)
+    # client.publish(topic="encyclopedia/acceleration", payload=json.dumps(accelerationData.__dict__), qos=2)
+    # client.publish(topic="encyclopedia/environment", payload=json.dumps(environmentData.__dict__), qos=2)
+    # client.publish(topic="encyclopedia/gyroscope", payload=json.dumps(gyroscopeData.__dict__), qos=2)
+    # client.publish(topic="encyclopedia/magnetometer", payload=json.dumps(magnetometerData.__dict__), qos=2)
+    # client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
     client.loop_stop()
      
     time.sleep(1)
