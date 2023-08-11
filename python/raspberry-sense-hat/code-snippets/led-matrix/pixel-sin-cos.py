@@ -32,11 +32,11 @@ while True:
     # Reset the screen
     screen = [[48, 48, 48] for x in range(64)]
 
-    setPixel(screen, x, y, 0, 0, 255)
+    setPixel(screen, x_screen, y_screen, 0, 0, 255)
 
-    print(screen)
+    #print(screen)
 
     sense.set_pixels(screen)
 
-    time.sleep(1)
-    #time.sleep(60/1000)
+    #time.sleep(1)
+    time.sleep(60/1000)
