@@ -12,8 +12,8 @@ while True:
     x += 0.11
     y += 0.07
 
-    x_screen = 1 + math.sin(x) * 6
-    y_screen = 1 + math.cos(y) * 6
+    x_screen = int(1 + math.sin(x) * 6)
+    y_screen = int(1 + math.cos(y) * 6)
 
     sense.clear(0, 0, 0)
 
