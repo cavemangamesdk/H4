@@ -11,19 +11,18 @@ from DataClass.DeviceOrientationData import DeviceOrientationData
 
 #
 def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
-        
-    allData = DeviceAllData(
+
+    data = DeviceAllData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        accelerometerData = getAccelerometerData(senseHat, sessionId, datetime),
-        environmentData = getEnvironmentData(senseHat, sessionId, datetime),
-        gyroscopeData = getGyroscopeData(senseHat, sessionId, datetime),
-        magnetometerData = getMagnetometerData(senseHat, sessionId, datetime),
-        orientationData = getOrientationData(senseHat, sessionId, datetime)
+        accelerometer = getAccelerometerData(senseHat, sessionId, datetime),
+        environment = getEnvironmentData(senseHat, sessionId, datetime),
+        gyroscope = getGyroscopeData(senseHat, sessionId, datetime),
+        magnetometer = getMagnetometerData(senseHat, sessionId, datetime),
+        orientation = getOrientationData(senseHat, sessionId, datetime)
     )
 
-    return allData
-
+    return data
 
 #
 def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
