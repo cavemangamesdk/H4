@@ -39,10 +39,14 @@ def setPixelSmooth(screen, x, y, r, g, b):
     x_frac, x_int = math.modf(x)
     y_frac, y_int = math.modf(y)
 
+    # calculate neighboring pixel from fractional part
+    x_neighbor = x_int + 1 if x_frac >= 0.5 else x_int - 1
+    y_neighbor = y_int + 1 if y_frac >= 0.5 else y_int - 1
+
     addPixel(screen, x_int, y_int, r * (1 - x_frac) * (1 - y_frac), g * (1 - x_frac) * (1 - y_frac), b * (1 - x_frac) * (1 - y_frac))
-    addPixel(screen, x_int + 1, y_int, r * x_frac * (1 - y_frac), g * x_frac * (1 - y_frac), b * x_frac * (1 - y_frac))
-    addPixel(screen, x_int, y_int + 1, r * (1 - x_frac) * y_frac, g * (1 - x_frac) * y_frac, b * (1 - x_frac) * y_frac)
-    addPixel(screen, x_int + 1, y_int + 1, r * x_frac * y_frac, g * x_frac * y_frac, b * x_frac * y_frac)
+    addPixel(screen, x_neighbor, y_int, r * x_frac * (1 - y_frac), g * x_frac * (1 - y_frac), b * x_frac * (1 - y_frac))
+    addPixel(screen, x_int, y_neighbor, r * (1 - x_frac) * y_frac, g * (1 - x_frac) * y_frac, b * (1 - x_frac) * y_frac)
+    addPixel(screen, x_neighbor, y_neighbor, r * x_frac * y_frac, g * x_frac * y_frac, b * x_frac * y_frac)
 
 
 while True:
