@@ -12,8 +12,8 @@ while True:
     x += 0.11
     y += 0.11
 
-    x_screen = int(4.5 + math.sin(x) * 4)
-    y_screen = int(4.5 + math.cos(y) * 4)
+    x_screen = int(3.5 + math.sin(x) * 4)
+    y_screen = int(3.5 + math.cos(y) * 4)
 
     print(x_screen, y_screen)
 
