@@ -16,14 +16,14 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 {
 }
 
-class Device : ISessionIdentifier
-{
-    public Guid SessionId { get; set; }
-}
-
 public interface ISessionIdentifier
 {
     Guid SessionId { get; set; }
+}
+
+class Device : ISessionIdentifier
+{
+    public Guid SessionId { get; set; }
 }
 
 class DeviceEnv : ISessionIdentifier
