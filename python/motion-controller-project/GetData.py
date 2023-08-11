@@ -2,11 +2,27 @@ from sense_hat import SenseHat
 import datetime
 import uuid
 
+from DataClass.DeviceAllData import DeviceAllData
 from DataClass.DeviceAccelerometerData import DeviceAccelerometerData
 from DataClass.DeviceEnvironmentData import DeviceEnvironmentData
 from DataClass.DeviceGyroscopeData import DeviceGyroscopeData
 from DataClass.DeviceMagnetometerData import DeviceMagnetometerData
 from DataClass.DeviceOrientationData import DeviceOrientationData
+
+#
+def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
+
+    data = DeviceAllData(
+        sessionId = str(sessionId),
+        timeStamp = str(datetime.datetime.now()),
+        accelerometer = getAccelerometerData(senseHat, sessionId, datetime).__dict__,
+        environment = getEnvironmentData(senseHat, sessionId, datetime).__dict__,
+        gyroscope = getGyroscopeData(senseHat, sessionId, datetime).__dict__,
+        magnetometer = getMagnetometerData(senseHat, sessionId, datetime).__dict__,
+        orientation = getOrientationData(senseHat, sessionId, datetime).__dict__
+    )
+
+    return data
 
 #
 def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime):
