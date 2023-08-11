@@ -19,6 +19,12 @@ public class DeviceSessionEnvironment : DatabaseModel
     [Column("TemperatureCelsius")]
     public float TemperatureCelsius { get; set; }
 
+    [Column("TemperatureFromHumidityCelsius")]
+    public float TemperatureFromHumidityCelsius { get; set; }
+
+    [Column("TemperatureFromPressureCelsius")]
+    public float TemperatureFromPressureCelsius { get; set; }
+
     [Column("HumidityPercentage")]
     public float HumidityPercentage { get; set; }
 
