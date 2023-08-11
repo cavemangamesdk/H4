@@ -3,6 +3,6 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceData:
+class DeviceDataBase:
     sessionId: uuid
     timeStamp: datetime

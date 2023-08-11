@@ -1,19 +1,24 @@
 from dataclasses import dataclass
-from DataClass.DeviceData import DeviceData
-from DataClass.DeviceAccelerometerData import DeviceAccelerometerData
-from DataClass.DeviceEnvironmentData import DeviceEnvironmentData
-from DataClass.DeviceGyroscopeData import DeviceGyroscopeData
-from DataClass.DeviceMagnetometerData import DeviceMagnetometerData
-from DataClass.DeviceOrientationData import DeviceOrientationData
+
+from DataClass.DeviceDataBase import DeviceDataBase
+from DataClass.DeviceAccelerometerData import DeviceAccelerometerDataBase
+from DataClass.DeviceEnvironmentData import DeviceEnvironmentDataBase
+from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase
+from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase
+from DataClass.DeviceOrientationData import DeviceOrientationDataBase
 
 # dataclass for all the data from the SenseHat
 @dataclass
-class DeviceAllData(DeviceData):
-    accelerometer: DeviceAccelerometerData.__dict__
-    environment: DeviceEnvironmentData.__dict__
-    gyroscope: DeviceGyroscopeData.__dict__
-    magnetometer: DeviceMagnetometerData.__dict__
-    orientation: DeviceOrientationData.__dict__
+class DeviceAllDataBase():
+    accelerometer: DeviceAccelerometerDataBase.__dict__
+    environment: DeviceEnvironmentDataBase.__dict__
+    gyroscope: DeviceGyroscopeDataBase.__dict__
+    magnetometer: DeviceMagnetometerDataBase.__dict__
+    orientation: DeviceOrientationDataBase.__dict__
+
+@dataclass
+class DeviceAllData(DeviceDataBase, DeviceAllDataBase):
+    pass
 
 # @dataclass
 # class DeviceAllData(DeviceData):

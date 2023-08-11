@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from DataClass.DeviceData import DeviceData
+from DataClass.DeviceDataBase import DeviceDataBase
 
 @dataclass
 class DeviceEnvironmentDataBase():
@@ -10,5 +10,5 @@ class DeviceEnvironmentDataBase():
     pressure: float
 
 @dataclass
-class DeviceEnvironmentData(DeviceData, DeviceEnvironmentDataBase):
+class DeviceEnvironmentData(DeviceDataBase, DeviceEnvironmentDataBase):
     pass
