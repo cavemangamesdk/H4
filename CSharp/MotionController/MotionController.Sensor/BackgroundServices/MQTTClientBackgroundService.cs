@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MotionController.Data;
+using MotionController.Db.Data.Models;
 using MotionController.Extensions.Hosting;
 using MotionController.Services;
 using MQTTnet;
@@ -162,20 +163,37 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 
         if (model is DeviceEnv deviceEnviroment)
         {
-            Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId} (${deviceEnviroment.Timestamp})");
-
-            var deviceSessionEnvironmentService = scope.ServiceProvider.GetRequiredService<IDeviceSessionEnvironmentService>();
-
-            var dbDeviceSessionEnvironment = new Db.Data.Models.DeviceSessionEnvironment
-            {
-                SessionId = deviceSession.SessionId,
-                TemperatureCelsius = deviceEnviroment.Temperature,
-                HumidityPercentage = deviceEnviroment.Humidity,
-                PressureMillibars = deviceEnviroment.Pressure,
-                Timestamp = deviceEnviroment.Timestamp
-            };
-            await deviceSessionEnvironmentService.AddDeviceSessionEnvironmentAsync(dbDeviceSessionEnvironment);
+            await HandleDeviceEnvAsync(deviceSession, deviceEnviroment);
         }
+
+        unitOfWork.Complete();
+    }
+
+    private async Task HandleDeviceEnvAsync(DeviceSession? deviceSession, DeviceEnv deviceEnviroment)
+    {
+        // TODO: Add Throw.IfNull();
+        if(deviceSession?.Equals(default) ?? true)
+        {
+            return;
+        }
+
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        Logger.LogInformation($"Received payload from Session Id {deviceSession.SessionId} (${deviceEnviroment.Timestamp})");
+
+        var deviceSessionEnvironmentService = scope.ServiceProvider.GetRequiredService<IDeviceSessionEnvironmentService>();
+
+        var dbDeviceSessionEnvironment = new Db.Data.Models.DeviceSessionEnvironment
+        {
+            SessionId = deviceSession.SessionId,
+            TemperatureCelsius = deviceEnviroment.Temperature,
+            HumidityPercentage = deviceEnviroment.Humidity,
+            PressureMillibars = deviceEnviroment.Pressure,
+            Timestamp = deviceEnviroment.Timestamp
+        };
+        await deviceSessionEnvironmentService.AddDeviceSessionEnvironmentAsync(dbDeviceSessionEnvironment);
 
         unitOfWork.Complete();
     }
