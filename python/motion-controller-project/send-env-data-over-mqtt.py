@@ -7,7 +7,7 @@ import uuid
 import paho.mqtt.client as paho
 from paho import mqtt
 
-import GetData as getData
+import get_data as getData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
