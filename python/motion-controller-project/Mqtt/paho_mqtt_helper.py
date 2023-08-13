@@ -7,13 +7,13 @@ from dataclasses import dataclass
 # ENUMS
 
 # MQTT protocol version
-class MqttProtocol(enum.Enum):
+class Protocol(enum.Enum):
     MQTTv31 = "MQTTv31"
     MQTTv311 = "MQTTv311"
     MQTTv5 = "MQTTv5"
 
 # mqtt transport type
-class MqttTransport(enum.Enum):
+class Transport(enum.Enum):
     TCP = "tcp"
     WEB_SOCKETS = "websockets"
 
@@ -37,7 +37,7 @@ class InitArgs:
     username: str
     password: str
     clientid: str
-    protocol: MqttProtocol
+    protocol: Protocol
 
 # DICTS
 
@@ -48,7 +48,7 @@ initArgs = dict(
     username = "mvp2023",
     password = "wzq6h2hm%WLaMh$KYXj5",
     clientid = "",
-    protocol = MqttProtocol.MQTTv5
+    protocol = Protocol.MQTTv5
 )
 
 #
@@ -56,8 +56,8 @@ clientArgs = dict(
     client_id     = "", 
     clean_session = True, 
     userdata      = None, 
-    protocol      = MqttProtocol.MQTTv5, 
-    transport     = MqttTransport.TCP,
+    protocol      = Protocol.MQTTv5, 
+    transport     = Transport.TCP,
     reconnect_on_failure = True
 )
 
