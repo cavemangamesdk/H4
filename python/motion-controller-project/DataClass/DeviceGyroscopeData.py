@@ -14,4 +14,4 @@ class DeviceGyroscopeDataBase():
 
 @dataclass
 class DeviceGyroscopeData(DeviceDataBase):
-    data: DeviceGyroscopeDataBase
+    data: DeviceGyroscopeDataBase.__dict__

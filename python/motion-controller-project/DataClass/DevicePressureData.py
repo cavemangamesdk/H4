@@ -10,4 +10,4 @@ class DevicePressureDataBase():
 
 @dataclass
 class DevicePressureData(DeviceDataBase):
-    data: DevicePressureDataBase
+    data: DevicePressureDataBase.__dict__

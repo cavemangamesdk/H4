@@ -12,4 +12,4 @@ class DeviceMagnetometerDataBase():
 
 @dataclass
 class DeviceMagnetometerData(DeviceDataBase):
-    data: DeviceMagnetometerDataBase
+    data: DeviceMagnetometerDataBase.__dict__

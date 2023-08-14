@@ -14,4 +14,4 @@ class DeviceAccelerometerDataBase():
 
 @dataclass
 class DeviceAccelerometerData(DeviceDataBase):
-    data: DeviceAccelerometerDataBase
+    data: DeviceAccelerometerDataBase.__dict__

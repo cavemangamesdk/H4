@@ -10,4 +10,4 @@ class DeviceHumidityDataBase():
 
 @dataclass
 class DeviceHumidityData(DeviceDataBase):
-    data: DeviceHumidityDataBase
+    data: DeviceHumidityDataBase.__dict__

@@ -14,4 +14,4 @@ class DeviceOrientationDataBase():
 
 @dataclass
 class DeviceOrientationData(DeviceDataBase):
-    data: DeviceOrientationDataBase
+    data: DeviceOrientationDataBase.__dict__
