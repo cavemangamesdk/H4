@@ -4,6 +4,6 @@ import uuid
 
 @dataclass
 class DeviceDataBase:
-    sessionId: uuid
-    timeStamp: datetime
+    session_id: uuid
+    timestamp: datetime
     data: dict
