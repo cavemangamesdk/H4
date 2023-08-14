@@ -32,21 +32,35 @@ from DataClass.DeviceImuData import DeviceImuData
 from DataClass.DeviceEnvData import DeviceEnvData
 
 # All data class (with SessionId and TimeStamp)
+from DataClass.DeviceAllData import Data
+from DataClass.DeviceAllData import DeviceAllDataBase
 from DataClass.DeviceAllData import DeviceAllData
 
 #
 # All data
 #
 
-
+def getAllDataBase(senseHat: SenseHat) -> DeviceAllDataBase:
+        
+        data = DeviceAllDataBase(
+            data = Data(
+                getEnvDataBase(senseHat).__dict__,
+                getImuDataBase(senseHat).__dict__ ).__dict__
+            # env = getEnvDataBase(senseHat).__dict__,
+            # imu = getImuDataBase(senseHat).__dict__
+    
+        )
+    
+        return data
 
 def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAllData:
         
     data = DeviceAllData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        data = { "env" : getEnvDataBase(senseHat).__dict__,
-                 "imu" : getImuDataBase(senseHat).__dict__ }
+        data = Data(
+            getEnvDataBase(senseHat).__dict__,
+            getImuDataBase(senseHat).__dict__ ).__dict__
         # env = getEnvDataBase(senseHat).__dict__,
         # imu = getImuDataBase(senseHat).__dict__
 
