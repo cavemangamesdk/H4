@@ -10,42 +10,18 @@ using Newtonsoft.Json;
 
 namespace MotionController.Sensor.Messaging.MessageHandlers
 {
-    class DeviceEnvironment : ISessionIdentifier
-    {
-        [JsonProperty("sessionId")]
-        public Guid SessionId { get; set; }
-
-        [JsonProperty("temperature")]
-        public float Temperature { get; set; }
-
-        [JsonProperty("temperatureFromHumidity")]
-        public float TemperatureFromHumidity { get; set; }
-
-        [JsonProperty("temperatureFromPressure")]
-        public float TemperatureFromPressure { get; set; }
-
-        [JsonProperty("humidity")]
-        public float Humidity { get; set; }
-
-        [JsonProperty("pressure")]
-        public float Pressure { get; set; }
-
-        [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; set; }
-    }
-
     [MQTTTopic("encyclopedia/environment")]
-    internal class DeviceEnvironmentMessageHandler : MessageHandlerBase<DeviceEnvironment>
+    internal class DeviceEnvironmentDataMessageHandler : MessageHandlerBase<DeviceEnvironmentData>
     {
-        public DeviceEnvironmentMessageHandler(ILogger<DeviceEnvironmentMessageHandler> logger, IServiceProvider serviceProvider)
+        public DeviceEnvironmentDataMessageHandler(ILogger<DeviceEnvironmentDataMessageHandler> logger, IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
             Logger = logger;
         }
 
-        private ILogger<DeviceEnvironmentMessageHandler> Logger { get; }
+        private ILogger<DeviceEnvironmentDataMessageHandler> Logger { get; }
 
-        protected override async Task HandleModelAsync(DeviceEnvironment model)
+        protected override async Task HandleModelAsync(DeviceEnvironmentData model)
         {
             using var scope = ServiceProvider.CreateScope();
 
@@ -65,12 +41,12 @@ namespace MotionController.Sensor.Messaging.MessageHandlers
             var dbDeviceSessionEnvironment = new Db.Data.Models.DeviceSessionEnvironment
             {
                 SessionId = deviceSession.SessionId,
-                TemperatureCelsius = model.Temperature,
-                TemperatureFromHumidityCelsius = model.TemperatureFromHumidity,
-                TemperatureFromPressureCelsius = model.TemperatureFromPressure,
-                HumidityPercentage = model.Humidity,
-                PressureMillibars = model.Pressure,
-                Timestamp = model.Timestamp
+                TemperatureCelsius = model?.Data?.HumiditySensor?.Temperature ?? default,
+                TemperatureFromHumidityCelsius = model?.Data?.HumiditySensor?.Temperature ?? default,
+                HumidityPercentage = model?.Data?.HumiditySensor?.Humidity ?? default,
+                TemperatureFromPressureCelsius = model?.Data?.PressureSensor?.Temperature ?? default,
+                PressureMillibars = model?.Data?.PressureSensor?.Pressure ?? default,
+                Timestamp = model?.Timestamp ?? default
             };
             await deviceSessionEnvironmentService.AddDeviceSessionEnvironmentAsync(dbDeviceSessionEnvironment);
 
