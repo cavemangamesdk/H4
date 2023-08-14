@@ -111,7 +111,7 @@ def getImuData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> 
         accelerometer = getAccelerometerDataBase(senseHat).__dict__,
         gyroscope = getGyroscopeDataBase(senseHat).__dict__,
         magnetometer = getMagnetometerDataBase(senseHat).__dict__,
-        orientation = getOrientationDataBase(senseHat.__dict__)
+        orientation = getOrientationDataBase(senseHat).__dict__
     )
 
     return data
