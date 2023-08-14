@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 
 from DataClass.DeviceDataBase import DeviceDataBase
-from DataClass.DeviceEnvironmentData import DeviceEnvironmentDataBase
+from DataClass.DeviceEnvData import DeviceEnvDataBase
 from DataClass.DeviceImuData import DeviceImuDataBase
 
 # dataclass for all the data from the SenseHat
 @dataclass
 class DeviceAllDataBase():
-    env: DeviceEnvironmentDataBase.__dict__
+    env: DeviceEnvDataBase.__dict__
     imu: DeviceImuDataBase.__dict__
 
 @dataclass

@@ -3,13 +3,14 @@ from DataClass.DeviceDataBase import DeviceDataBase
 from DataClass.DeviceHumidityData import DeviceHumidityDataBase
 from DataClass.DevicePressureData import DevicePressureDataBase
 
+# Dataclass for all Sense Hat environment sensors
 @dataclass
-class DeviceEnvironmentDataBase():
+class DeviceEnvDataBase():
     humidity: DeviceHumidityDataBase.__dict__
     pressure: DevicePressureDataBase.__dict__
 
 @dataclass
-class DeviceEnvironmentData(DeviceDataBase, DeviceEnvironmentDataBase):
+class DeviceEnvData(DeviceDataBase, DeviceEnvDataBase):
     pass
     
 
