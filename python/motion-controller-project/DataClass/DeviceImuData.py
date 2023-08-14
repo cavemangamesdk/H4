@@ -9,10 +9,10 @@ from DataClass.DeviceOrientationData import DeviceOrientationDataBase
 # dataclass for all SenseHat IMU data 
 @dataclass
 class DeviceImuDataBase():
-    accelerometer: DeviceAccelerometerDataBase.__dict__
-    gyroscope: DeviceGyroscopeDataBase.__dict__
-    magnetometer: DeviceMagnetometerDataBase.__dict__
-    orientation: DeviceOrientationDataBase.__dict__
+    accelerometer_sensor: DeviceAccelerometerDataBase.__dict__
+    gyroscope_sensor: DeviceGyroscopeDataBase.__dict__
+    magnetometer_sensor: DeviceMagnetometerDataBase.__dict__
+    orientation_sensor: DeviceOrientationDataBase.__dict__
 
 @dataclass
 class DeviceImuData(DeviceDataBase):

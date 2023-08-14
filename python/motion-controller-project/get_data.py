@@ -3,24 +3,25 @@ from sense_hat import SenseHat
 import datetime
 import uuid
 
-from DataClass.DeviceData import DeviceData
+# Base data class
+from DataClass.DeviceDataBase import DeviceDataBase
 
 # Env sensors
-from DataClass.DeviceHumidityData import DeviceHumidityDataBase, DeviceHumidityData
-from DataClass.DevicePressureData import DevicePressureDataBase, DevicePressureData
+from DataClass.DeviceHumidityData import DeviceHumidityDataBase
+from DataClass.DevicePressureData import DevicePressureDataBase
 
 # IMU sensors
-from DataClass.DeviceAccelerometerData import DeviceAccelerometerDataBase, DeviceAccelerometerData
-from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase, DeviceGyroscopeData
-from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase, DeviceMagnetometerData
-from DataClass.DeviceOrientationData import DeviceOrientationDataBase, DeviceOrientationData
+from DataClass.DeviceAccelerometerData import DeviceAccelerometerDataBase
+from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase
+from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase
+from DataClass.DeviceOrientationData import DeviceOrientationDataBase
 
 # Aggregate data classes
-from DataClass.DeviceImuData import DeviceImuDataBase, DeviceImuData
-from DataClass.DeviceEnvData import DeviceEnvDataBase, DeviceEnvData
+from DataClass.DeviceImuData import DeviceImuDataBase
+from DataClass.DeviceEnvData import DeviceEnvDataBase
 
 # All data classes
-from DataClass.DeviceAllData import DeviceAllDataBase, DeviceAllData
+from DataClass.DeviceAllData import DeviceAllDataBase
 
 #
 # All data
@@ -33,9 +34,9 @@ def getAllDataBase(senseHat: SenseHat) -> DeviceAllDataBase:
         imu = getImuDataBase(senseHat).__dict__
     )
 
-def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAllData:
+def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
         
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getAllDataBase(senseHat).__dict__
@@ -52,9 +53,9 @@ def getEnvDataBase(senseHat: SenseHat) -> DeviceEnvDataBase:
         pressure = getPressureDataBase(senseHat).__dict__
     )
 
-def getEnvData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceEnvData:
+def getEnvData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
         
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getEnvDataBase(senseHat).__dict__
@@ -69,9 +70,9 @@ def getImuDataBase(senseHat: SenseHat) -> DeviceImuDataBase:
         orientation = getOrientationDataBase(senseHat).__dict__
     )
 
-def getImuData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceImuData:
+def getImuData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
             
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getImuDataBase(senseHat).__dict__
@@ -89,9 +90,9 @@ def getHumidityDataBase(senseHat: SenseHat) -> DeviceHumidityDataBase:
         temperature = senseHat.get_temperature_from_humidity()
     )
 
-def getHumidityData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceHumidityData:
+def getHumidityData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
     
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getHumidityDataBase(senseHat).__dict__
@@ -105,9 +106,9 @@ def getPressureDataBase(senseHat: SenseHat) -> DevicePressureDataBase:
         temperature = senseHat.get_temperature_from_pressure() 
     )
 
-def getPressureData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DevicePressureData:
+def getPressureData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
 
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getPressureDataBase(senseHat).__dict__
@@ -132,9 +133,9 @@ def getAccelerometerDataBase(senseHat: SenseHat) -> DeviceAccelerometerDataBase:
         z_raw = accelRaw['z']
     )
 
-def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAccelerometerData:
+def getAccelerometerData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceDataBase:
     
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
         data = getAccelerometerDataBase(senseHat).__dict__
@@ -155,9 +156,9 @@ def getGyroscopeDataBase(senseHat: SenseHat) -> DeviceGyroscopeDataBase:
         z_raw = gyroRaw['z']
     )
 
-def getGyroscopeData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceGyroscopeData:
+def getGyroscopeData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceDataBase:
         
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         data = getGyroscopeDataBase(senseHat).__dict__
@@ -176,9 +177,9 @@ def getMagnetometerDataBase(senseHat: SenseHat) -> DeviceMagnetometerDataBase:
         z_raw = compassRaw['z']
     )
 
-def getMagnetometerData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceMagnetometerData:
+def getMagnetometerData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceDataBase:
         
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         data = getMagnetometerDataBase(senseHat).__dict__
@@ -199,9 +200,9 @@ def getOrientationDataBase(senseHat: SenseHat) -> DeviceOrientationDataBase:
         yaw_rad = orientation_rad['yaw']
     )
 
-def getOrientationData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceOrientationData:
+def getOrientationData(senseHat: SenseHat, uuid: uuid.UUID, datetime: datetime) -> DeviceDataBase:
             
-    return DeviceData(
+    return DeviceDataBase(
         sessionId = str(uuid),
         timeStamp = str(datetime.datetime.now()),
         data = getOrientationDataBase(senseHat).__dict__
