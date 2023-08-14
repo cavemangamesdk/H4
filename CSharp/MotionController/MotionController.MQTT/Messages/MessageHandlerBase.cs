@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace MotionController.MQTT.Messages
 {
     public interface IMessageHandler
     {
+        Task HandleAsync(string jsonMessage);
         Task HandleAsync(object model);
     }
 
@@ -34,6 +36,18 @@ namespace MotionController.MQTT.Messages
             }
 
             throw new InvalidCastException("Model is invald!");
+        }
+
+        public Task HandleAsync(string jsonMessage)
+        {
+            var model = JsonConvert.DeserializeObject<TModel>(jsonMessage);
+            if(model?.Equals(default) ?? true)
+            {
+                Logger.LogError($"Failed to deserialize JSON string:\n{jsonMessage}");
+                return Task.CompletedTask;
+            }
+
+            return HandleAsync(model);
         }
 
         protected abstract Task HandleModelAsync(TModel model);
