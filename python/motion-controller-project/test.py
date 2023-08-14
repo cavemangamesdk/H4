@@ -26,6 +26,4 @@ data = get_data.getEnvDataBase(sense)
 #data = get_data.getMagnetometerDataBase(sense)
 #data = get_data.getMagnetometerData(sense, uuidDevice, dateTime)
 #data = get_data.getOrientationDataBase(sense)
-#data = get_data.getOrientationData(sense, uuidDevice, dateTime)#
-
-print(data)
+#data = get_data.getOrientationData(sense, uuidDevice, dateTime)

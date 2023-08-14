@@ -7,17 +7,15 @@ import uuid
 from DataClass.DeviceHumidityData import DeviceHumidityDataBase, DeviceHumidityData
 from DataClass.DevicePressureData import DevicePressureDataBase, DevicePressureData
 
-# IMU sensors
-from DataClass.DeviceAccelerometerData import DeviceAccelerometerDataBase, DeviceAccelerometerData
-from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase, DeviceGyroscopeData
-from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase, DeviceMagnetometerData
-from DataClass.DeviceOrientationData import DeviceOrientationDataBase, DeviceOrientationData
+# Env sensor classes (with SessionId and TimeStamp)
+from DataClass.DeviceHumidityData import DeviceHumidityData
+from DataClass.DevicePressureData import DevicePressureData
 
 # Aggregate data classes
 from DataClass.DeviceImuData import DeviceImuDataBase, DeviceImuData
 from DataClass.DeviceEnvData import DeviceEnvDataBase, DeviceEnvData
 
-# All data class
+# All data classes
 from DataClass.DeviceAllData import DeviceAllDataBase, DeviceAllData
 
 #
