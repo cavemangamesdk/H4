@@ -17,6 +17,7 @@ public class DeviceSessionEnvironment : DatabaseModel
     public Guid SessionId { get; set; }
 
     [Column("TemperatureCelsius")]
+    [Obsolete("Use TemperatureFromHumidityCelsius instead.")]
     public float TemperatureCelsius { get; set; }
 
     [Column("TemperatureFromHumidityCelsius")]
