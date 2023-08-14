@@ -86,8 +86,8 @@ def getEnvData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> 
     data = DeviceEnvData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        humidity = getHumidityData(senseHat, sessionId, datetime).__dict__,
-        pressure = getPressureData(senseHat, sessionId, datetime).__dict__
+        humidity = getHumidityDataBase(senseHat).__dict__,
+        pressure = getPressureDataBase(senseHat).__dict__
     )
 
     return data
@@ -108,10 +108,10 @@ def getImuData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> 
     data = DeviceImuData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        accelerometer = getAccelerometerData(senseHat, sessionId, datetime).__dict__,
-        gyroscope = getGyroscopeData(senseHat, sessionId, datetime).__dict__,
-        magnetometer = getMagnetometerData(senseHat, sessionId, datetime).__dict__,
-        orientation = getOrientationData(senseHat, sessionId, datetime).__dict__
+        accelerometer = getAccelerometerDataBase(senseHat).__dict__,
+        gyroscope = getGyroscopeDataBase(senseHat).__dict__,
+        magnetometer = getMagnetometerDataBase(senseHat).__dict__,
+        orientation = getOrientationDataBase(senseHat.__dict__)
     )
 
     return data

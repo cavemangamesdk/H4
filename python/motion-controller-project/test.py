@@ -10,8 +10,8 @@ dateTime = datetime
 
 # Test all get data functions
 #data = get_data.getAllDataBase(sense)
-#data = get_data.getAllData(sense, uuidDevice, dateTime)
-data = get_data.getEnvDataBase(sense)
+data = get_data.getAllData(sense, uuidDevice, dateTime)
+#data = get_data.getEnvDataBase(sense)
 #data = get_data.getEnvData(sense, uuidDevice, dateTime)
 #data = get_data.getHumidityDataBase(sense)
 #data = get_data.getHumidityData(sense, uuidDevice, dateTime)
