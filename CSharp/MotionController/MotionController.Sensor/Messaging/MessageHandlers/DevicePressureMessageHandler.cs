@@ -41,7 +41,7 @@ internal sealed class DevicePressureMessageHandler : MessageHandlerBase<DevicePr
             Timestamp = model?.Timestamp ?? default
         };
 
-        await deviceSessionPressureService.AddDeviceSessionEnvironmentAsync(deviceSessionPressure);
+        await deviceSessionPressureService.AddDeviceSessionPressureAsync(deviceSessionPressure);
 
         unitOfWork.Complete();
     }

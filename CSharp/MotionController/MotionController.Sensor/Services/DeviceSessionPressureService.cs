@@ -6,7 +6,7 @@ namespace MotionController.Services;
 
 public interface IDeviceSessionPressureService : IService
 {
-    Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionPressure deviceSessionPressure);
+    Task<bool> AddDeviceSessionPressureAsync(DeviceSessionPressure deviceSessionPressure);
 }
 
 internal class DeviceSessionPressureService : ServiceBase<DeviceSessionPressureService>, IDeviceSessionPressureService
@@ -19,7 +19,7 @@ internal class DeviceSessionPressureService : ServiceBase<DeviceSessionPressureS
 
     public IDeviceSessionPressureRepository DeviceSessionPressureRepository { get; }
 
-    public async Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionPressure deviceSessionPressure)
+    public async Task<bool> AddDeviceSessionPressureAsync(DeviceSessionPressure deviceSessionPressure)
     {
         return await DeviceSessionPressureRepository.AddAsync(deviceSessionPressure);
     }
