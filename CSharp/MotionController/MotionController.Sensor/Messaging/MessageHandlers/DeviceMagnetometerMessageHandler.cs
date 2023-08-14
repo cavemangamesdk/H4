@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using MotionController.BackgroundServices;
 using MotionController.MQTT;
 using MotionController.MQTT.Messages;
+using MotionController.Sensor.Models;
 using Newtonsoft.Json;
 
 namespace MotionController.Sensor.Messaging.MessageHandlers
