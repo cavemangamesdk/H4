@@ -71,7 +71,7 @@ client1.connect_async(host=host, port=port)
 client1.loop_start()
 
 # Create threads
-temperature_thread = create_thread(target=publish_data, args=(client1, topics["env"], data.getEnvironmentData(), 5.0))
+temperature_thread = create_thread(target=publish_data, args=(client1, topics["env"], data.getAllData(), 5.0))
 
 temperature_thread.start()
 
