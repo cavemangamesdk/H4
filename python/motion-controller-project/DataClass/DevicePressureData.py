@@ -9,5 +9,5 @@ class DevicePressureDataBase():
     temperature: float
 
 @dataclass
-class DevicePressureData(DeviceDataBase, DevicePressureDataBase):
-    pass
+class DevicePressureData(DeviceDataBase):
+    data: DevicePressureDataBase

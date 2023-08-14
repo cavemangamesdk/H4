@@ -9,5 +9,5 @@ class DeviceHumidityDataBase():
     temperature: float
 
 @dataclass
-class DeviceHumidityData(DeviceDataBase, DeviceHumidityDataBase):
-    pass
+class DeviceHumidityData(DeviceDataBase):
+    data: DeviceHumidityDataBase

@@ -11,5 +11,5 @@ class DeviceMagnetometerDataBase():
     z_raw: float
 
 @dataclass
-class DeviceMagnetometerData(DeviceDataBase, DeviceMagnetometerDataBase):
-    pass
+class DeviceMagnetometerData(DeviceDataBase):
+    data: DeviceMagnetometerDataBase

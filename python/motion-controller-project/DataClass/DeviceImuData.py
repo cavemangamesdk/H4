@@ -15,5 +15,5 @@ class DeviceImuDataBase():
     orientation: DeviceOrientationDataBase.__dict__
 
 @dataclass
-class DeviceImuData(DeviceDataBase, DeviceImuDataBase):
-    pass
+class DeviceImuData(DeviceDataBase):
+    data: DeviceImuDataBase.__dict__

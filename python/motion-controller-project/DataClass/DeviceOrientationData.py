@@ -13,5 +13,5 @@ class DeviceOrientationDataBase():
     yaw_rad: float
 
 @dataclass
-class DeviceOrientationData(DeviceDataBase, DeviceOrientationDataBase):
-    pass
+class DeviceOrientationData(DeviceDataBase):
+    data: DeviceOrientationDataBase

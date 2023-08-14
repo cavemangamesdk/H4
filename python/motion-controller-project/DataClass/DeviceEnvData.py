@@ -10,8 +10,8 @@ class DeviceEnvDataBase():
     pressure: DevicePressureDataBase.__dict__
 
 @dataclass
-class DeviceEnvData(DeviceDataBase, DeviceEnvDataBase):
-    pass
+class DeviceEnvData(DeviceDataBase):
+    data: DeviceEnvDataBase.__dict__
     
 
 # from dataclasses import dataclass
