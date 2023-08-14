@@ -7,9 +7,11 @@ import uuid
 from DataClass.DeviceHumidityData import DeviceHumidityDataBase, DeviceHumidityData
 from DataClass.DevicePressureData import DevicePressureDataBase, DevicePressureData
 
-# Env sensor classes (with SessionId and TimeStamp)
-from DataClass.DeviceHumidityData import DeviceHumidityData
-from DataClass.DevicePressureData import DevicePressureData
+# IMU sensors
+from DataClass.DeviceAccelerometerData import DeviceAccelerometerDataBase, DeviceAccelerometerData
+from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase, DeviceGyroscopeData
+from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase, DeviceMagnetometerData
+from DataClass.DeviceOrientationData import DeviceOrientationDataBase, DeviceOrientationData
 
 # Aggregate data classes
 from DataClass.DeviceImuData import DeviceImuDataBase, DeviceImuData
@@ -25,7 +27,8 @@ from DataClass.DeviceAllData import DeviceAllDataBase, DeviceAllData
 def getAllDataBase(senseHat: SenseHat) -> DeviceAllDataBase:
     
     return DeviceAllDataBase(
-        data = getAllDataBase(senseHat).__dict__
+        env = getEnvDataBase(senseHat).__dict__,
+        imu = getImuDataBase(senseHat).__dict__
     )
 
 def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAllData:
