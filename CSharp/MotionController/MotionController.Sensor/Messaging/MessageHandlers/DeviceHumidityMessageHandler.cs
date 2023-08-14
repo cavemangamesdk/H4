@@ -41,7 +41,7 @@ internal sealed class DeviceHumidityMessageHandler : MessageHandlerBase<DeviceHu
             Timestamp = model?.Timestamp ?? default
         };
 
-        await deviceSessionHumidityService.AddDeviceSessionEnvironmentAsync(deviceSessionHumidity);
+        await deviceSessionHumidityService.AddDeviceSessionHumidityAsync(deviceSessionHumidity);
 
         unitOfWork.Complete();
     }
