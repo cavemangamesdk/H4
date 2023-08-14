@@ -1,8 +1,8 @@
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 import math
 import time
 
-#sense = SenseHat()
+sense = SenseHat()
 
 x = 1
 y = 1
@@ -45,30 +45,30 @@ def setPixelSmooth(screen, x, y, r, g, b):
 
     print(x_int, y_int, x_neighbor, y_neighbor)
 
-    # addPixel(screen, x_int, y_int, r * (1 - x_frac) * (1 - y_frac), g * (1 - x_frac) * (1 - y_frac), b * (1 - x_frac) * (1 - y_frac))
-    # addPixel(screen, x_neighbor, y_int, r * x_frac * (1 - y_frac), g * x_frac * (1 - y_frac), b * x_frac * (1 - y_frac))
-    # addPixel(screen, x_int, y_neighbor, r * (1 - x_frac) * y_frac, g * (1 - x_frac) * y_frac, b * (1 - x_frac) * y_frac)
-    # addPixel(screen, x_neighbor, y_neighbor, r * x_frac * y_frac, g * x_frac * y_frac, b * x_frac * y_frac)
+    addPixel(screen, x_int, y_int, r * (1 - x_frac) * (1 - y_frac), g * (1 - x_frac) * (1 - y_frac), b * (1 - x_frac) * (1 - y_frac))
+    addPixel(screen, x_neighbor, y_int, r * x_frac * (1 - y_frac), g * x_frac * (1 - y_frac), b * x_frac * (1 - y_frac))
+    addPixel(screen, x_int, y_neighbor, r * (1 - x_frac) * y_frac, g * (1 - x_frac) * y_frac, b * (1 - x_frac) * y_frac)
+    addPixel(screen, x_neighbor, y_neighbor, r * x_frac * y_frac, g * x_frac * y_frac, b * x_frac * y_frac)
 
 
 setPixelSmooth(screen, 0.0, 0.0, 0, 0, 255)
 
-# while True:
+while True:
 
-#     x += 0.07
-#     y += 0.07
+    x += 0.07
+    y += 0.07
 
-#     x_screen = 3.5 + math.sin(x) * 4
-#     y_screen = 3.5 + math.cos(y) * 4
+    x_screen = 3.5 + math.sin(x) * 3
+    y_screen = 3.5 + math.cos(y) * 3
 
-#     # Reset the screen
-#     screen = [[48, 48, 48] for x in range(64)]
+    # Reset the screen
+    screen = [[48, 48, 48] for x in range(64)]
 
-#     setPixelSmooth(screen, x_screen, y_screen, 0, 0, 255)
+    setPixelSmooth(screen, x_screen, y_screen, 0, 0, 255)
 
-#     print(screen)
+    print(screen)
 
-#     #sense.set_pixels(screen)
+    sense.set_pixels(screen)
 
-#     time.sleep(1)
-#     #time.sleep(60/1000)
+    #time.sleep(1)
+    time.sleep(60/1000)
