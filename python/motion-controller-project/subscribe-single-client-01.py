@@ -16,14 +16,15 @@ tls = mqtt.ssl.PROTOCOL_TLS
 
 # 
 topics = {
+    "all":           "sensehat/#",
     "env":           "sensehat/env/#",
     "imu":           "sensehat/imu/#",
+    "humidity":      "sensehat/env/humidity",
+    "pressure":      "sensehat/env/pressure",
     "accelerometer": "sensehat/imu/accelerometer",
     "gyroscope":     "sensehat/imu/gyroscope",
     "magnetometer":  "sensehat/imu/magnetometer",
-    "orientation":   "sensehat/imu/orientation",
-    "humidity":      "sensehat/env/humidity",
-    "pressure":      "sensehat/env/pressure"
+    "orientation":   "sensehat/imu/orientation"
 }
 
 # 
