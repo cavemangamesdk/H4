@@ -1,4 +1,4 @@
-from sense_hat import SenseHat
+#from sense_hat import SenseHat
 import time
 import datetime
 import json
@@ -7,7 +7,7 @@ import uuid
 import paho.mqtt.client as paho
 from paho import mqtt
 
-import get_data as getData
+#import get_data as getData
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -47,35 +47,37 @@ client.on_publish = on_publish
 # subscribe to all topics of encyclopedia by using the wildcard "#"
 client.subscribe("encyclopedia/#", qos=1) 
 
-# Sense Hat env data
-sense = SenseHat()
+client.loop_forever()
 
-# Disable and re-enable all IMU sensors in order to reset them
-sense.set_imu_config(False, False, False)  # Disable all sensors
-sense.set_imu_config(True, True, True)  # Enable all sensors
+# # Sense Hat env data
+# sense = SenseHat()
 
-uuidDevice = uuid.uuid4()
+# # Disable and re-enable all IMU sensors in order to reset them
+# sense.set_imu_config(False, False, False)  # Disable all sensors
+# sense.set_imu_config(True, True, True)  # Enable all sensors
 
-dateTime = datetime
+# uuidDevice = uuid.uuid4()
 
-while True:
+# dateTime = datetime
 
-    # Get sensor data
-    # allData = getData.getAllData(sense, uuidDevice, dateTime)
-    # accelerationData = getData.getAccelerometerData(sense, uuidDevice, dateTime)
-    environmentData = getData.getEnvironmentData(sense, uuidDevice, dateTime)
-    # gyroscopeData = getData.getGyroscopeData(sense, uuidDevice, dateTime)
-    # magnetometerData = getData.getMagnetometerData(sense, uuidDevice, dateTime)
-    # orientationData = getData.getOrientationData(sense, uuidDevice, dateTime)
+# while True:
 
-    # Send over MQTT
-    client.loop_start()
-    # client.publish(topic="encyclopedia/all", payload=json.dumps(allData.__dict__), qos=2)
-    # client.publish(topic="encyclopedia/acceleration", payload=json.dumps(accelerationData.__dict__), qos=2)
-    client.publish(topic="encyclopedia/environment", payload=json.dumps(environmentData.__dict__), qos=2)
-    # client.publish(topic="encyclopedia/gyroscope", payload=json.dumps(gyroscopeData.__dict__), qos=2)
-    # client.publish(topic="encyclopedia/magnetometer", payload=json.dumps(magnetometerData.__dict__), qos=2)
-    # client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
-    client.loop_stop()
+#     # Get sensor data
+#     # allData = getData.getAllData(sense, uuidDevice, dateTime)
+#     # accelerationData = getData.getAccelerometerData(sense, uuidDevice, dateTime)
+#     environmentData = getData.getEnvironmentData(sense, uuidDevice, dateTime)
+#     # gyroscopeData = getData.getGyroscopeData(sense, uuidDevice, dateTime)
+#     # magnetometerData = getData.getMagnetometerData(sense, uuidDevice, dateTime)
+#     # orientationData = getData.getOrientationData(sense, uuidDevice, dateTime)
+
+#     # Send over MQTT
+#     client.loop_start()
+#     # client.publish(topic="encyclopedia/all", payload=json.dumps(allData.__dict__), qos=2)
+#     # client.publish(topic="encyclopedia/acceleration", payload=json.dumps(accelerationData.__dict__), qos=2)
+#     client.publish(topic="encyclopedia/environment", payload=json.dumps(environmentData.__dict__), qos=2)
+#     # client.publish(topic="encyclopedia/gyroscope", payload=json.dumps(gyroscopeData.__dict__), qos=2)
+#     # client.publish(topic="encyclopedia/magnetometer", payload=json.dumps(magnetometerData.__dict__), qos=2)
+#     # client.publish(topic="encyclopedia/orientation", payload=json.dumps(orientationData.__dict__), qos=2)
+#     client.loop_stop()
      
-    time.sleep(5)
+#     time.sleep(5)
