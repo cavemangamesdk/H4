@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace MotionController.MQTT.Messages
 {
@@ -11,13 +12,16 @@ namespace MotionController.MQTT.Messages
     {
     }
 
-    public abstract class MessageHandlerBase<TModel> : IMessageHandler<TModel>
+    public abstract class MessageHandlerBase<TMessageHandler, TModel> : IMessageHandler<TModel>
+        where TMessageHandler : IMessageHandler
     {
-        public MessageHandlerBase(IServiceProvider serviceProvider)
+        public MessageHandlerBase(ILogger<TMessageHandler> logger, IServiceProvider serviceProvider)
         {
+            Logger = logger;
             ServiceProvider = serviceProvider;
         }
 
+        protected ILogger<TMessageHandler> Logger { get; }
         protected IServiceProvider ServiceProvider { get; }
 
         public Task HandleAsync(object model)

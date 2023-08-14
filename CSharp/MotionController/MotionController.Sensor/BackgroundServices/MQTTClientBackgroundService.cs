@@ -1,14 +1,10 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MotionController.Extensions.Hosting;
-using MotionController.MQTT.Messages;
-using MotionController.Sensor.Messaging.MessageHandlers;
+using MotionController.Sensor.Messaging;
 using MotionController.Sensor.Models;
 using MQTTnet;
 using MQTTnet.Client;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 using System.Text;
 
 namespace MotionController.BackgroundServices;
@@ -19,25 +15,20 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
-    private readonly ConcurrentDictionary<string, Type> s_Map = new();
-
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IServiceProvider serviceProvider)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver)
         : base(logger)
     {
-        ServiceProvider = serviceProvider;
+        MessageHandlerResolver = messageHandlerResolver;
         MqttClient = CreateAndConnectMQTTClientAsync();
     }
 
-    private IServiceProvider ServiceProvider { get; }
+    private IMessageHandlerResolver MessageHandlerResolver { get; }
     private IMqttClient MqttClient { get; set; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
         try
         {
-            s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnvironment));
-            s_Map.TryAdd("encyclopedia/magnetometer", typeof(DeviceMagnetometer));
-
             if (!MqttClient.IsConnected)
             {
                 MqttClientOptionsBuilderTlsParameters tlsOptions = new()
@@ -100,21 +91,20 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
-        //Logger.LogInformation(utf8Message);
-
-        if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
+        var messageHandler = MessageHandlerResolver.Resolve(eventArgs.ApplicationMessage.Topic);
+        if (messageHandler == default)
         {
-            Logger.LogError($"Unsupported model type for given topic {eventArgs.ApplicationMessage.Topic}");
+            Logger.LogWarning($"No message handler for the given topic {eventArgs.ApplicationMessage.Topic}");
             return;
         }
 
-        var model = (ISessionIdentifier?)JsonConvert.DeserializeObject(utf8Message, modelType);
+        var model = (ISessionIdentifier?)JsonConvert.DeserializeObject(utf8Message);
         if (model == default)
         {
+            Logger.LogError($"Failed to deserialize JSON string:\n{utf8Message}");
             return;
         }
 
-        var messageHandler = ServiceProvider.GetAutofacRoot().ResolveKeyed<IMessageHandler>(eventArgs.ApplicationMessage.Topic);
         await messageHandler.HandleAsync(model);
     }
 }

@@ -1,36 +1,26 @@
 ﻿using MotionController.Data.Models;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace MotionController.Db.Data.Models;
+namespace MotionController.Sensor.Db.Data.Models;
 
 [Schema("H4")]
-[Table("DeviceSessionEnvironment")]
-public class DeviceSessionEnvironment : DatabaseModel
+[Table("DeviceSessionHumidity")]
+public sealed class DeviceSessionHumidity : DatabaseModel
 {
     [Key]
     [Column("Id")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    [Column("SessionId")]
-    public Guid SessionId { get; set; }
+    [Column("DeviceSession_Id")]
+    public int DeviceSessionId { get; set; }
 
     [Column("TemperatureCelsius")]
-    [Obsolete("Use TemperatureFromHumidityCelsius instead.")]
     public float TemperatureCelsius { get; set; }
-
-    [Column("TemperatureFromHumidityCelsius")]
-    public float TemperatureFromHumidityCelsius { get; set; }
-
-    [Column("TemperatureFromPressureCelsius")]
-    public float TemperatureFromPressureCelsius { get; set; }
 
     [Column("HumidityPercentage")]
     public float HumidityPercentage { get; set; }
-
-    [Column("PressureMillibars")]
-    public float PressureMillibars { get; set; }
 
     [Column("Timestamp")]
     public DateTime Timestamp { get; set; }
