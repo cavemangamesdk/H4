@@ -1,17 +1,13 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MotionController.Data;
-using MotionController.Db.Data.Models;
 using MotionController.Extensions.Hosting;
 using MotionController.MQTT.Messages;
 using MotionController.Sensor.Messaging.MessageHandlers;
-using MotionController.Services;
+using MotionController.Sensor.Models;
 using MQTTnet;
 using MQTTnet.Client;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 using System.Text;
 
@@ -19,16 +15,6 @@ namespace MotionController.BackgroundServices;
 
 public interface IMQTTClientBackgroundService : IBackgroundService
 {
-}
-
-public interface ISessionIdentifier
-{
-    Guid SessionId { get; set; }
-}
-
-class Device : ISessionIdentifier
-{
-    public Guid SessionId { get; set; }
 }
 
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
