@@ -38,13 +38,18 @@ from DataClass.DeviceAllData import DeviceAllData
 # All data
 #
 
+
+
 def getAllData(senseHat: SenseHat, sessionId: uuid.UUID, datetime: datetime) -> DeviceAllData:
         
     data = DeviceAllData(
         sessionId = str(sessionId),
         timeStamp = str(datetime.datetime.now()),
-        env = getEnvDataBase(senseHat).__dict__,
-        imu = getImuDataBase(senseHat).__dict__
+        data = { "env" : getEnvDataBase(senseHat).__dict__,
+                 "imu" : getImuDataBase(senseHat).__dict__ }
+        # env = getEnvDataBase(senseHat).__dict__,
+        # imu = getImuDataBase(senseHat).__dict__
+
     )
 
     return data
