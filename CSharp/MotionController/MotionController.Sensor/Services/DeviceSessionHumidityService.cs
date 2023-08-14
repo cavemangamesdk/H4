@@ -6,7 +6,7 @@ namespace MotionController.Services;
 
 public interface IDeviceSessionHumidityService : IService
 {
-    Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionHumidity deviceSessionHumidity);
+    Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionHumidity deviceSessionHumidity);
 }
 
 internal class DeviceSessionHumidityService : ServiceBase<DeviceSessionHumidityService>, IDeviceSessionHumidityService
@@ -19,7 +19,7 @@ internal class DeviceSessionHumidityService : ServiceBase<DeviceSessionHumidityS
 
     private IDeviceSessionHumidityRepository DeviceSessionHumidityRepository { get; }
 
-    public async Task<bool> AddDeviceSessionEnvironmentAsync(DeviceSessionHumidity deviceSessionHumidity)
+    public async Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionHumidity deviceSessionHumidity)
     {
         return await DeviceSessionHumidityRepository.AddAsync(deviceSessionHumidity);
     }
