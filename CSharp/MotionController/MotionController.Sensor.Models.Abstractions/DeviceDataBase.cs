@@ -4,7 +4,7 @@ namespace MotionController.Sensor.Models;
 
 public class DeviceDataBase : ISessionIdentifier
 {
-    [JsonProperty("sessionId")]
+    [JsonProperty("session_id")]
     public Guid SessionId { get; set; }
 
     [JsonProperty("timestamp")]

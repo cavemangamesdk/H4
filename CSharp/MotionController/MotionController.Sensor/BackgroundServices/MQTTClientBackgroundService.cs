@@ -54,7 +54,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 
                 MqttClient.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
 
-                await MqttClient.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+                await MqttClient.SubscribeAsync("sensehat/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
             }
 
             while (cancellationToken.IsCancellationRequested)
@@ -98,13 +98,6 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             return;
         }
 
-        var model = (ISessionIdentifier?)JsonConvert.DeserializeObject(utf8Message);
-        if (model == default)
-        {
-            Logger.LogError($"Failed to deserialize JSON string:\n{utf8Message}");
-            return;
-        }
-
-        await messageHandler.HandleAsync(model);
+        await messageHandler.HandleAsync(utf8Message);
     }
 }
