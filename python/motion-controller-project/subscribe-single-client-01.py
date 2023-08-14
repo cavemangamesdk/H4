@@ -22,7 +22,6 @@ topics = {
     "gyroscope":     "sensehat/imu/gyroscope",
     "magnetometer":  "sensehat/imu/magnetometer",
     "orientation":   "sensehat/imu/orientation",
-    "temperature":   "sensehat/env/temperature",
     "humidity":      "sensehat/env/humidity",
     "pressure":      "sensehat/env/pressure"
 }
