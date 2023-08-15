@@ -46,7 +46,7 @@ internal sealed class DeviceGyroscopeMessageHandler : MessageHandlerBase<DeviceG
             Timestamp = model?.Timestamp ?? default
         };
 
-        await deviceSessionGyroscopeService.AddDeviceSessionHumidityAsync(deviceSessionGyroscope);
+        await deviceSessionGyroscopeService.AddDeviceSessionGyroscopeAsync(deviceSessionGyroscope);
 
         unitOfWork.Complete();
     }

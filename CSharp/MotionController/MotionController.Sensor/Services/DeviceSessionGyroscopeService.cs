@@ -6,7 +6,7 @@ namespace MotionController.Services;
 
 public interface IDeviceSessionGyroscopeService : IService
 {
-    Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionGyroscope deviceSessionGyroscope);
+    Task<bool> AddDeviceSessionGyroscopeAsync(DeviceSessionGyroscope deviceSessionGyroscope);
 }
 
 internal class DeviceSessionGyroscopeService : ServiceBase<DeviceSessionGyroscopeService>, IDeviceSessionGyroscopeService
@@ -19,7 +19,7 @@ internal class DeviceSessionGyroscopeService : ServiceBase<DeviceSessionGyroscop
 
     private IDeviceSessionGyroscopeRepository DeviceSessionGyroscopeRepository { get; }
 
-    public async Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionGyroscope deviceSessionGyroscope)
+    public async Task<bool> AddDeviceSessionGyroscopeAsync(DeviceSessionGyroscope deviceSessionGyroscope)
     {
         return await DeviceSessionGyroscopeRepository.AddAsync(deviceSessionGyroscope);
     }
