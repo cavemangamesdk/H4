@@ -65,7 +65,7 @@ client.on_message = on_message
 client.on_publish = on_publish
 
 #
-client.subscribe(topics["env"], qos=1) 
+client.subscribe(topics["all"], qos=1) 
 
 # For loop to subscribe to all topics
 # for topic in topics:
