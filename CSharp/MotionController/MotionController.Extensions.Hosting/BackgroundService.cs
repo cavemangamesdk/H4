@@ -36,8 +36,6 @@ public abstract class BackgroundService<TService> : IBackgroundService
         }
 
         Logger.LogInformation($"{typeof(TService).Name} ended executing.");
-
-        throw new NotImplementedException();
     }
 
     protected abstract Task ExecuteLogicAsync(CancellationToken cancellationToken);
