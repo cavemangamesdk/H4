@@ -89,13 +89,21 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
-        var messageHandler = MessageHandlerResolver.Resolve(eventArgs.ApplicationMessage.Topic);
-        if (messageHandler == default)
+        try
         {
-            Logger.LogWarning($"No message handler for the given topic {eventArgs.ApplicationMessage.Topic}");
-            return;
-        }
+            var messageHandler = MessageHandlerResolver.Resolve(eventArgs.ApplicationMessage.Topic);
+            if (messageHandler == default)
+            {
+                Logger.LogWarning($"No message handler for the given topic {eventArgs.ApplicationMessage.Topic}");
+                return;
+            }
 
-        await messageHandler.HandleAsync(utf8Message);
+            await messageHandler.HandleAsync(utf8Message);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, ex.Message);
+            throw;
+        }
     }
 }

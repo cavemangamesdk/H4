@@ -29,7 +29,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -42,30 +42,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-class Device
-{
-    public int Id { get; set; }
-    public Guid SessionId { get; set; }
-    public DateTime Timestamp { get; set; }
-}
-
-class DeviceOritentation
-{
-    public int Id { get; set; }
-    public Guid DeviceSessionId { get; set; }
-    public float X { get; set; }
-    public float Y { get; set; }
-    public float Z { get; set; }
-    public DateTime Timestamp { get; set; }
-}
-
-class DeviceEnvironment
-{
-    public int Id { get; set; }
-    public Guid DeviceSessionId { get; set; }
-    public float Temp { get; set; }
-    public float Humidity { get; set; }
-    public float Pressure { get; set; }
-    public DateTime Timestamp { get; set; }
-}
