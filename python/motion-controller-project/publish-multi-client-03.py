@@ -1,13 +1,10 @@
-from sense_hat import SenseHat
 import paho.mqtt.client as mqtt
-import threading, time, random #keyboard
+import threading, time, keyboard, random, datetime, json, uuid
+import paho.mqtt.client as paho
+import get_data as getData
+from sense_hat import SenseHat
 from typing import Callable, Any
-import get_data as getdata
-import datetime
-import json
-import uuid
 
-# Init parameters
 host = "3c6ea0ec32f6404db6fd0439b0d000ce.s2.eu.hivemq.cloud"
 port = 8883
 username = "mvp2023"
@@ -16,28 +13,13 @@ client_id = ""
 protocol = mqtt.MQTTv5
 tls = mqtt.ssl.PROTOCOL_TLS
 
-# 
-topics = {
-    "env":           "sensehat/env/#",
-    "imu":           "sensehat/imu/#",
-    "accelerometer": "sensehat/imu/accelerometer",
-    "gyroscope":     "sensehat/imu/gyroscope",
-    "magnetometer":  "sensehat/imu/magnetometer",
-    "orientation":   "sensehat/imu/orientation",
-    "humidity":      "sensehat/env/humidity",
-    "pressure":      "sensehat/env/pressure"
-}
+# Global flag variable to indicate when the threads should stop
+running = True
 
-# 
-clients = []
-threads = []
-
-sense = SenseHat()
-uuidDevice = uuid.uuid4()
-dateTime = datetime
-
-# Callback functions
 def on_connect(client, userdata, flags, rc, properties=None):
+    print("CONNACK received with code %s." % rc)
+
+def on_connect_subscribe(client, userdata, flags, rc, properties=None):
     print("CONNACK received with code %s." % rc)
 
 def on_publish(client, userdata, mid):
@@ -46,59 +28,80 @@ def on_publish(client, userdata, mid):
 def on_message(client, userdata, msg):
     print(f"Received message: {msg.topic} {str(msg.payload)}")
 
+#
+def publish(client: mqtt.Client, topic: str, interval: float, function: Callable[[Any], Any], sense, uuidDevice, dateTime):
+    while running:
+        data = json.dumps(function(sense, uuidDevice, dateTime).__dict__)
+        client.publish(topic=topic, payload=data, qos=2)
+        time.sleep(interval)
+
+def stop_program(_=None):
+    global running
+    running = False
+
 
 #
-def publish_data(client: mqtt.Client, topic: str, data: Callable[[Any], Any], interval: float):
-    client.publish(topic, data)
-    time.sleep(interval)
+sense = SenseHat()
+uuidDevice = uuid.uuid4()
+dateTime = datetime
 
-def publish_all_data(client: mqtt.Client, topic: str, interval: float):
-    data = getdata.getAccelerometerData(sense, uuidDevice, dateTime).__dict__
-    print(data)
-    client.publish(topic, str(data))
-    time.sleep(interval)
+#
+client1 = mqtt.Client(client_id="1", protocol=protocol)
+client1.username_pw_set(username=username, password=password)
+client1.tls_set(tls_version=tls)
 
-# Create new client
-def create_client(client_id: str, username: str, password: str, protocol: mqtt.MQTTv5, tls: mqtt.ssl) -> mqtt.Client:
-    client = mqtt.Client(client_id=client_id, protocol=protocol)
-    client.username_pw_set(username=username, password=password)
-    client.tls_set(tls_version=tls)
-    clients.append(client)
-    return client
+client2 = mqtt.Client(client_id="2", protocol=protocol)
+client2.username_pw_set(username=username, password=password)
+client2.tls_set(tls_version=tls)
 
-def create_thread(target, args) -> threading.Thread:
-    thread = threading.Thread(target=target, args=args)
-    threads.append(thread)
-    return thread
+client3 = mqtt.Client(client_id="3", protocol=protocol)
+client3.username_pw_set(username=username, password=password)
+client3.tls_set(tls_version=tls)
 
-# Create MQTT clients for each topic, with a unique client_id
-client1 = create_client(client_id="accelerometer", username=username, password=password, protocol=protocol, tls=tls)
 
+# Set up the on_connect and on_publish callbacks
 client1.on_connect = on_connect
 client1.on_publish = on_publish
-client1.on_message = on_message
+client2.on_connect = on_connect
+client2.on_publish = on_publish
+client3.on_connect = on_connect_subscribe
+client3.on_message = on_message  # Set up the on_message callback for the subscribing client
 
 # Connect asynchronously to the MQTT broker
 client1.connect_async(host=host, port=port)
+client2.connect_async(host=host, port=port)
+client3.connect_async(host=host, port=port)
 
-#client1.subscribe("sensehat/#")
+#client3.subscribe("sensehat/#")  # Subscribe to all topics under sensehat
 
-
-# Create threads
-temperature_thread = create_thread(target=publish_all_data, args=(client1, topics["accelerometer"], 0.1))
-
-# Start the client loop in a separate thread
+# Start the client loops in separate threads
 client1.loop_start()
+client2.loop_start()
+client3.loop_start()  # Start the loop for the subscribing client
 
-temperature_thread.start()
+# Create threads for publishing at different intervals
+gyroscope_thread = threading.Thread(target=publish, args=(client2, "sensehat/imu/gyroscope", 0.1, getData.getGyroscopeData, sense, uuidDevice, dateTime))
 
-time.sleep(60)
+# Start the publishing threads
+#temperature_thread.start()
+gyroscope_thread.start()
+
+# Register the escape key press event handler
+keyboard.on_press_key("esc", stop_program)
+
+# Wait for the threads to finish
+#temperature_thread.join()
+gyroscope_thread.join()
 
 # Stop the MQTT client loops
 client1.loop_stop()
+client2.loop_stop()
+client3.loop_stop()  # Stop the loop for the subscribing client
 
 # Disconnect from the MQTT broker
 client1.disconnect()
+client2.disconnect()
+client3.disconnect()  # Disconnect the subscribing client
 
 # Exit the program
 exit(0)
