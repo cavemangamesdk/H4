@@ -10,3 +10,9 @@ public class DeviceDataBase : ISessionIdentifier
     [JsonProperty("timestamp")]
     public DateTime Timestamp { get; set; }
 }
+
+public class DeviceDataBase<TData> : DeviceDataBase
+{
+    [JsonProperty("data")]
+    public TData? Data { get; set; }
+}
