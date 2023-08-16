@@ -1,9 +1,9 @@
 ﻿using MotionController.Data.Repositories;
 using MotionController.Data.Repositories.Database;
-using MotionController.Db.Data.Providers;
 using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Providers;
 
-namespace MotionController.Db.Data.Repositories;
+namespace MotionController.Sensor.Db.Data.Repositories;
 
 public interface IDeviceSessionHumidityRepository : IRepository<DeviceSessionHumidity, int>
 {

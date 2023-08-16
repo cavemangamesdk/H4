@@ -1,7 +1,7 @@
 ﻿using MotionController.Data.Providers.Database.SqlClient;
 using System.Data;
 
-namespace MotionController.Db.Data.Providers;
+namespace MotionController.Sensor.Db.Data.Providers;
 
 public interface IMotionProvider : ISqlClientDbProvider
 {
@@ -9,7 +9,7 @@ public interface IMotionProvider : ISqlClientDbProvider
 
 internal class MotionProvider : SqlClientDbProviderBase, IMotionProvider
 {
-    public MotionProvider(IsolationLevel isolationLevel, SqlClientProviderSettings sqlClientProviderSettings) 
+    public MotionProvider(IsolationLevel isolationLevel, SqlClientProviderSettings sqlClientProviderSettings)
         : base(isolationLevel, sqlClientProviderSettings)
     {
     }

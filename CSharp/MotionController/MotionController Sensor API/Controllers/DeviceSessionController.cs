@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MotionController.Db.Data.Models;
 using MotionController.Sensor.Db.Data.Models;
 using MotionController.Services;
 using NSwag.Annotations;
