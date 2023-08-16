@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import threading, time, keyboard, random, datetime, json, uuid
+import threading, time, keyboard, datetime, json, uuid
 import paho.mqtt.client as paho
 import get_data as getData
 from sense_hat import SenseHat
@@ -33,6 +33,9 @@ topics = {
 def on_connect(client, userdata, flags, rc, properties=None):
     print("CONNACK received with code %s." % rc)
 
+def on_disconnect(client, userdata, rc, properties=None):
+    print("DISCONNECT received with code %s." % rc)
+
 def on_publish(client, userdata, mid):
     print("Message published")
 
@@ -47,6 +50,7 @@ def init_client(client_id, protocol, host, port, username, password, tls):
     if username and password:
         client.username_pw_set(username, password)
     client.on_connect = on_connect
+    client.on_disconnect = on_disconnect
     client.on_publish = on_publish
     client.on_message = on_message
     client.connect_async(host, port)
@@ -69,7 +73,6 @@ def stop_program(_=None):
     global running
     running = False
 
-
 #
 sense = SenseHat()
 uuidDevice = uuid.uuid4()
@@ -90,11 +93,8 @@ init_thread(publish, clients[3], topics["gyroscope"], 3.0, getData.getGyroscopeD
 init_thread(publish, clients[4], topics["magnetometer"], 2.0, getData.getMagnetometerData, sense, uuidDevice, dateTime)
 init_thread(publish, clients[5], topics["orientation"], 1.0, getData.getOrientationData, sense, uuidDevice, dateTime)
 
-# Create threads for publishing at different intervals
-#gyroscope_thread = threading.Thread(target=publish, args=(clients[0], "sensehat/imu/gyroscope", 0.1, getData.getGyroscopeData, sense, uuidDevice, dateTime))
 
 # Start the publishing threads
-# gyroscope_thread.start()
 for thread in threads:
     thread.start()
 
@@ -102,17 +102,14 @@ for thread in threads:
 keyboard.on_press_key("esc", stop_program)
 
 # Wait for the threads to finish
-#gyroscope_thread.join()
 for thread in threads:
     thread.join()
 
 # Stop the MQTT client loops
-#client[0].loop_stop()
 for client in clients:
     client.loop_stop()
 
 # Disconnect from the MQTT broker
-#client[0].disconnect()
 for client in clients:
     client.disconnect()
 
