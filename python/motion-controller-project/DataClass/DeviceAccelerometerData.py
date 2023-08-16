@@ -13,5 +13,5 @@ class DeviceAccelerometerDataBase():
     z_raw: float
 
 @dataclass
-class DeviceAccelerometerData(DeviceDataBase, DeviceAccelerometerDataBase):
-    pass
+class DeviceAccelerometerData(DeviceDataBase):
+    data: DeviceAccelerometerDataBase.__dict__

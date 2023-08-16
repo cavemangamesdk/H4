@@ -1,18 +1,8 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using MotionController.Data;
-using MotionController.Db.Data.Models;
+﻿using Microsoft.Extensions.Logging;
 using MotionController.Extensions.Hosting;
-using MotionController.MQTT.Messages;
-using MotionController.Sensor.Messaging.MessageHandlers;
-using MotionController.Services;
+using MotionController.Sensor.Messaging;
 using MQTTnet;
 using MQTTnet.Client;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
 using System.Text;
 
 namespace MotionController.BackgroundServices;
@@ -21,37 +11,22 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 {
 }
 
-public interface ISessionIdentifier
-{
-    Guid SessionId { get; set; }
-}
-
-class Device : ISessionIdentifier
-{
-    public Guid SessionId { get; set; }
-}
-
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
-    private readonly ConcurrentDictionary<string, Type> s_Map = new();
-
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IServiceProvider serviceProvider)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver)
         : base(logger)
     {
-        ServiceProvider = serviceProvider;
+        MessageHandlerResolver = messageHandlerResolver;
         MqttClient = CreateAndConnectMQTTClientAsync();
     }
 
-    private IServiceProvider ServiceProvider { get; }
+    private IMessageHandlerResolver MessageHandlerResolver { get; }
     private IMqttClient MqttClient { get; set; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
         try
         {
-            s_Map.TryAdd("encyclopedia/environment", typeof(DeviceEnvironment));
-            s_Map.TryAdd("encyclopedia/magnetometer", typeof(DeviceMagnetometer));
-
             if (!MqttClient.IsConnected)
             {
                 MqttClientOptionsBuilderTlsParameters tlsOptions = new()
@@ -77,7 +52,7 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
 
                 MqttClient.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
 
-                await MqttClient.SubscribeAsync("encyclopedia/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+                await MqttClient.SubscribeAsync("sensehat/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
             }
 
             while (cancellationToken.IsCancellationRequested)
@@ -114,21 +89,21 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
     {
         var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
 
-        //Logger.LogInformation(utf8Message);
-
-        if (!s_Map.TryGetValue(eventArgs.ApplicationMessage.Topic, out var modelType))
+        try
         {
-            Logger.LogError($"Unsupported model type for given topic {eventArgs.ApplicationMessage.Topic}");
-            return;
-        }
+            var messageHandler = MessageHandlerResolver.Resolve(eventArgs.ApplicationMessage.Topic);
+            if (messageHandler == default)
+            {
+                Logger.LogWarning($"No message handler for the given topic {eventArgs.ApplicationMessage.Topic}");
+                return;
+            }
 
-        var model = (ISessionIdentifier?)JsonConvert.DeserializeObject(utf8Message, modelType);
-        if (model == default)
+            await messageHandler.HandleAsync(utf8Message);
+        }
+        catch (Exception ex)
         {
-            return;
+            Logger.LogError(ex, ex.Message);
+            throw;
         }
-
-        var messageHandler = ServiceProvider.GetAutofacRoot().ResolveKeyed<IMessageHandler>(eventArgs.ApplicationMessage.Topic);
-        await messageHandler.HandleAsync(model);
     }
 }

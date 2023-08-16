@@ -1,47 +1,51 @@
-﻿using Microsoft.Extensions.Logging;
-using MotionController.BackgroundServices;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MotionController.Data;
 using MotionController.MQTT;
 using MotionController.MQTT.Messages;
-using Newtonsoft.Json;
+using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Models;
+using MotionController.Services;
 
-namespace MotionController.Sensor.Messaging.MessageHandlers
+namespace MotionController.Sensor.Messaging.MessageHandlers;
+
+[MQTTTopic("sensehat/imu/magnetometer")]
+internal sealed class DeviceMagnetometerMessageHandler : MessageHandlerBase<DeviceMagnetometerMessageHandler, DeviceMagnetometerData>
 {
-    class DeviceMagnetometer : ISessionIdentifier
+    public DeviceMagnetometerMessageHandler(ILogger<DeviceMagnetometerMessageHandler> logger, IServiceProvider serviceProvider)
+        : base(logger, serviceProvider)
     {
-        [JsonProperty("sessionId")]
-        public Guid SessionId { get; set; }
-
-        [JsonProperty("north")]
-        public float North { get; set; }
-
-        [JsonProperty("x_raw")]
-        public float XRaw { get; set; }
-
-        [JsonProperty("y_raw")]
-        public float YRaw { get; set; }
-
-        [JsonProperty("z_raw")]
-        public float ZRaw { get; set; }
-
-        [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; set; }
     }
 
-    [MQTTTopic("encyclopedia/magnetometer")]
-    internal sealed class DeviceMagnetometerMessageHandler : MessageHandlerBase<DeviceMagnetometer>
+    protected override async Task HandleModelAsync(DeviceMagnetometerData model)
     {
-        public DeviceMagnetometerMessageHandler(ILogger<DeviceMagnetometerMessageHandler> logger, IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        var deviceSessionService = scope.ServiceProvider.GetRequiredService<IDeviceSessionService>();
+
+        var deviceSessionMagnetometerService = scope.ServiceProvider.GetRequiredService<IDeviceSessionMagnetometerService>();
+
+        var deviceSession = await deviceSessionService.GetOrAddDeviceSessionAsync(model.SessionId);
+        if (deviceSession?.Equals(default) ?? true)
         {
-            Logger = logger;
+            Logger.LogError("Bullshit");
+            throw new Exception("Bullshit");
         }
 
-        private ILogger<DeviceMagnetometerMessageHandler> Logger { get; }
-
-        protected override Task HandleModelAsync(DeviceMagnetometer model)
+        var deviceSessionMagnetometer = new DeviceSessionMagnetometer
         {
-            Logger.LogInformation("encyclopedia/magnetometer");
-            return Task.CompletedTask;
-        }
+            DeviceSessionId = deviceSession.Id,
+            North = model?.Data?.North ?? default,
+            XRaw = model?.Data?.XRaw ?? default,
+            YRaw = model?.Data?.YRaw ?? default,
+            ZRaw = model?.Data?.ZRaw ?? default,
+            Timestamp = model?.Timestamp ?? default
+        };
+
+        await deviceSessionMagnetometerService.AddDeviceSessionMagnetometerAsync(deviceSessionMagnetometer);
+
+        unitOfWork.Complete();
     }
 }

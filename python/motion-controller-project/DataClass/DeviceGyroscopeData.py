@@ -13,5 +13,5 @@ class DeviceGyroscopeDataBase():
     z_raw: float
 
 @dataclass
-class DeviceGyroscopeData(DeviceDataBase, DeviceGyroscopeDataBase):
-    pass
+class DeviceGyroscopeData(DeviceDataBase):
+    data: DeviceGyroscopeDataBase.__dict__

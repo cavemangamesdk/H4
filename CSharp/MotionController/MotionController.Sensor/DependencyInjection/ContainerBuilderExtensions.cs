@@ -5,6 +5,7 @@ using MotionController.DependencyInjection;
 using MotionController.Extensions.Autofac;
 using MotionController.MQTT;
 using MotionController.MQTT.Messages;
+using MotionController.Sensor.Messaging;
 using System.Reflection;
 
 namespace MotionController.Extensions.DependencyInjection;
@@ -20,6 +21,10 @@ public static class ContainerBuilderExtensions
 
         containerBuilder.RegisterAssemblyMessageHandlers(typeof(MotionOptions).Assembly);
 
+        containerBuilder.RegisterType<MessageHandlerResolver>()
+            .As<IMessageHandlerResolver>()
+            .InstancePerLifetimeScope();
+
         containerBuilder.RegisterSqlClientProvider<MotionProvider>(motionOptions.SqlClientProviderSettings);
 
         containerBuilder.RegisterModule<ServiceModule<MotionOptions>>();
@@ -34,16 +39,14 @@ public static class ContainerBuilderExtensions
 
     private static ContainerBuilder RegisterAssemblyMessageHandlers(this ContainerBuilder containerBuilder, Assembly assembly)
     {
-        var messageHandlers = assembly.GetTypes().Where(t => t.IsAssignableTo<IMessageHandler>() && t.GetCustomAttribute<MQTTTopicAttribute>() != default);
+        var messageHandlers = assembly.GetTypes().Where(t => t.IsAssignableTo<IMessageHandler>() && t.GetCustomAttributes<MQTTTopicAttribute>().Any());
         foreach (var messageHandler in messageHandlers)
         {
-            var attribute = messageHandler.GetCustomAttribute<MQTTTopicAttribute>();
-            if (attribute == default)
+            var attributes = messageHandler.GetCustomAttributes<MQTTTopicAttribute>();
+            foreach (var attribute in attributes)
             {
-                continue;
+                containerBuilder.RegisterType(messageHandler).Keyed<IMessageHandler>(attribute.Topic);
             }
-
-            containerBuilder.RegisterType(messageHandler).Keyed<IMessageHandler>(attribute.Topic);
         }
 
         return containerBuilder;
