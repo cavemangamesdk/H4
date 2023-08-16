@@ -9,6 +9,7 @@ using MotionController.Services;
 
 namespace MotionController.Sensor.Messaging.MessageHandlers;
 
+[MQTTTopic("sensehat/imu/accelerometer")]
 [MQTTTopic("sensehat/imu/acceleration")]
 internal sealed class DeviceAccelerometerMessageHandler : MessageHandlerBase<DeviceAccelerometerMessageHandler, DeviceAccelerometerData>
 {
