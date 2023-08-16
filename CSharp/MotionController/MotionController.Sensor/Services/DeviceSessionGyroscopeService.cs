@@ -7,6 +7,7 @@ namespace MotionController.Services;
 public interface IDeviceSessionGyroscopeService : IService
 {
     Task<bool> AddDeviceSessionGyroscopeAsync(DeviceSessionGyroscope deviceSessionGyroscope);
+    Task<IEnumerable<DeviceSessionGyroscope?>> GetDeviceSessionGyroscopeAsync(DeviceSession deviceSession);
 }
 
 internal class DeviceSessionGyroscopeService : ServiceBase<DeviceSessionGyroscopeService>, IDeviceSessionGyroscopeService
@@ -18,6 +19,11 @@ internal class DeviceSessionGyroscopeService : ServiceBase<DeviceSessionGyroscop
     }
 
     private IDeviceSessionGyroscopeRepository DeviceSessionGyroscopeRepository { get; }
+
+    public async Task<IEnumerable<DeviceSessionGyroscope?>> GetDeviceSessionGyroscopeAsync(DeviceSession deviceSession)
+    {
+        return await DeviceSessionGyroscopeRepository.GetByDeviceSessionAsync(deviceSession.Id);
+    }
 
     public async Task<bool> AddDeviceSessionGyroscopeAsync(DeviceSessionGyroscope deviceSessionGyroscope)
     {
