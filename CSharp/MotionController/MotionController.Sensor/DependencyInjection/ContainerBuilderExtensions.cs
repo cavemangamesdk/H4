@@ -39,16 +39,14 @@ public static class ContainerBuilderExtensions
 
     private static ContainerBuilder RegisterAssemblyMessageHandlers(this ContainerBuilder containerBuilder, Assembly assembly)
     {
-        var messageHandlers = assembly.GetTypes().Where(t => t.IsAssignableTo<IMessageHandler>() && t.GetCustomAttribute<MQTTTopicAttribute>() != default);
+        var messageHandlers = assembly.GetTypes().Where(t => t.IsAssignableTo<IMessageHandler>() && t.GetCustomAttributes<MQTTTopicAttribute>().Any());
         foreach (var messageHandler in messageHandlers)
         {
-            var attribute = messageHandler.GetCustomAttribute<MQTTTopicAttribute>();
-            if (attribute == default)
+            var attributes = messageHandler.GetCustomAttributes<MQTTTopicAttribute>();
+            foreach (var attribute in attributes)
             {
-                continue;
+                containerBuilder.RegisterType(messageHandler).Keyed<IMessageHandler>(attribute.Topic);
             }
-
-            containerBuilder.RegisterType(messageHandler).Keyed<IMessageHandler>(attribute.Topic);
         }
 
         return containerBuilder;
