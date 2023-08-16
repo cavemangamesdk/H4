@@ -1,10 +1,16 @@
 import asyncio
 import websockets
+import get_data as getData
+from sense_hat import SenseHat
+import json
 
-async def get_data():
+sense = SenseHat()
+
+async def get_data() -> str:
     # This is where you would put your logic to get the data
     # For now, I'll just return a string
-    return "This is the data to be sent to the client."
+    #return getData.getImuData(sense, uuidDevice, dateTime)
+    return json.dumps(getData.getPitchRollData(sense).__dict__)
 
 async def echo(websocket, path):
     while True:
