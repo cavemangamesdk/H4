@@ -10,16 +10,19 @@ namespace MotionController.API.Controllers
     [OpenApiController("DeviceSession")]
     public partial class DeviceSessionController : ControllerBase
     {
-        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService, IDeviceSessionPressureService deviceSessionPressureService)
+        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService, 
+            IDeviceSessionPressureService deviceSessionPressureService, IDeviceSessionHumidityService deviceSessionHumidityService)
         {
             Logger = logger;
             DeviceSessionService = deviceSessionService;
             DeviceSessionPressureService = deviceSessionPressureService;
+            DeviceSessionHumidityService = deviceSessionHumidityService;
         }
 
         private ILogger<DeviceSessionController> Logger { get; }
         private IDeviceSessionService DeviceSessionService { get; }
         private IDeviceSessionPressureService DeviceSessionPressureService { get; }
+        private IDeviceSessionHumidityService DeviceSessionHumidityService { get; }
 
         [HttpGet]
         [Route("", Name = nameof(GetDeviceSessionsAsync))]
