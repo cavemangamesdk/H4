@@ -12,7 +12,7 @@ namespace MotionController.API.Controllers
         public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService,
             IDeviceSessionPressureService deviceSessionPressureService, IDeviceSessionHumidityService deviceSessionHumidityService,
             IDeviceSessionAccelerometerService deviceSessionAccelerometerService, IDeviceSessionGyroscopeService deviceSessionGyroscopeService,
-            IDeviceSessionMagnetometerService deviceSessionMagnetometerService)
+            IDeviceSessionMagnetometerService deviceSessionMagnetometerService, IDeviceSessionOrientationService deviceSessionOrientationService)
         {
             Logger = logger;
             DeviceSessionService = deviceSessionService;
@@ -21,6 +21,7 @@ namespace MotionController.API.Controllers
             DeviceSessionAccelerometerService = deviceSessionAccelerometerService;
             DeviceSessionGyroscopeService = deviceSessionGyroscopeService;
             DeviceSessionMagnetometerService = deviceSessionMagnetometerService;
+            DeviceSessionOrientationService = deviceSessionOrientationService;
         }
 
         private ILogger<DeviceSessionController> Logger { get; }
@@ -30,6 +31,7 @@ namespace MotionController.API.Controllers
         private IDeviceSessionAccelerometerService DeviceSessionAccelerometerService { get; }
         private IDeviceSessionGyroscopeService DeviceSessionGyroscopeService { get; }
         private IDeviceSessionMagnetometerService DeviceSessionMagnetometerService { get; }
+        private IDeviceSessionOrientationService DeviceSessionOrientationService { get; }
 
         [HttpGet]
         [Route("", Name = nameof(GetDeviceSessionsAsync))]
