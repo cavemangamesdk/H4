@@ -228,4 +228,4 @@ def getPitchRollData(sense_hat: SenseHat) -> str:
             
     orientation = sense_hat.get_orientation_degrees()
 
-    return f"{round(orientation['roll'], 1)} , {round(orientation['pitch'], 1)}"
+    return f"{round(orientation['roll'], 1)}, {round(orientation['pitch'], 1)}"
