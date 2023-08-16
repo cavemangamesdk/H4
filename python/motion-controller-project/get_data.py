@@ -16,6 +16,9 @@ from DataClass.DeviceGyroscopeData import DeviceGyroscopeDataBase
 from DataClass.DeviceMagnetometerData import DeviceMagnetometerDataBase
 from DataClass.DeviceOrientationData import DeviceOrientationDataBase
 
+# Unity specific
+from DataClass.DeviceOrientationPitchRollData import DeviceOrientationPitchRollData
+
 # Aggregate data classes
 from DataClass.DeviceImuData import DeviceImuDataBase
 from DataClass.DeviceEnvData import DeviceEnvDataBase
@@ -206,4 +209,17 @@ def getOrientationData(sense_hat: SenseHat, uuid: uuid.UUID, datetime: datetime)
         session_id = str(uuid),
         timestamp = str(datetime.datetime.now()),
         data = getOrientationDataBase(sense_hat).__dict__
+    )
+
+#
+# Pitch Roll data for Unity
+#
+
+def getPitchRollData(sense_hat: SenseHat) -> DeviceOrientationPitchRollData:
+            
+    orientation = sense_hat.get_orientation_degrees()
+
+    return DeviceOrientationPitchRollData(
+        roll = round(orientation['roll'], 1) ,
+        pitch = round(orientation['pitch'], 1)
     )

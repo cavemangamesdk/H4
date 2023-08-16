@@ -9,7 +9,7 @@ uuidDevice = uuid.uuid4()
 dateTime = datetime
 
 async def echo(websocket, path):
-    data = getData.getImuData(sense, uuidDevice, dateTime)
+    data = getData.getPitchRollData(sense, uuidDevice, dateTime)
     # send data over websocket 
     async for message in websocket:
         await websocket.send(data)
