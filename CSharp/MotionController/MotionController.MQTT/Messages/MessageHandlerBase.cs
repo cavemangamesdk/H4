@@ -41,7 +41,7 @@ namespace MotionController.MQTT.Messages
         public Task HandleAsync(string jsonMessage)
         {
             var model = JsonConvert.DeserializeObject<TModel>(jsonMessage);
-            if(model?.Equals(default) ?? true)
+            if (model?.Equals(default) ?? true)
             {
                 Logger.LogError($"Failed to deserialize JSON string:\n{jsonMessage}");
                 return Task.CompletedTask;

@@ -1,6 +1,6 @@
 ﻿using MotionController.Data.Models;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MotionController.Sensor.Db.Data.Models;
 

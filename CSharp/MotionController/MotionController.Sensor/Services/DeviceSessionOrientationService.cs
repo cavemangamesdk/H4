@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using MotionController.Db.Data.Repositories;
 using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Repositories;
 
 namespace MotionController.Services;
 
 public interface IDeviceSessionOrientationService : IService
 {
+    Task<IEnumerable<DeviceSessionOrientation?>> GetDeviceSessionOrientationAsync(DeviceSession deviceSession);
     Task<bool> AddDeviceSessionOrientationAsync(DeviceSessionOrientation deviceSessionOrientation);
 }
 
@@ -18,6 +19,11 @@ internal class DeviceSessionOrientationService : ServiceBase<DeviceSessionOrient
     }
 
     private IDeviceSessionOrientationRepository DeviceSessionOrientationRepository { get; }
+
+    public async Task<IEnumerable<DeviceSessionOrientation?>> GetDeviceSessionOrientationAsync(DeviceSession deviceSession)
+    {
+        return await DeviceSessionOrientationRepository.GetByDeviceSessionAsync(deviceSession.Id);
+    }
 
     public async Task<bool> AddDeviceSessionOrientationAsync(DeviceSessionOrientation deviceSessionOrientation)
     {

@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using MotionController.Data.Models;
-using MotionController.Data.Providers;
 using System.Data;
 
 namespace MotionController.Data.Providers.Database;
