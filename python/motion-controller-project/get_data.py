@@ -215,11 +215,17 @@ def getOrientationData(sense_hat: SenseHat, uuid: uuid.UUID, datetime: datetime)
 # Pitch Roll data for Unity
 #
 
-def getPitchRollData(sense_hat: SenseHat) -> DeviceOrientationPitchRollData:
+# def getPitchRollData(sense_hat: SenseHat) -> DeviceOrientationPitchRollData:
+            
+#     orientation = sense_hat.get_orientation_degrees()
+
+#     return DeviceOrientationPitchRollData(
+#         roll = round(orientation['roll'], 1) ,
+#         pitch = round(orientation['pitch'], 1)
+#     )
+
+def getPitchRollData(sense_hat: SenseHat) -> str:
             
     orientation = sense_hat.get_orientation_degrees()
 
-    return DeviceOrientationPitchRollData(
-        roll = round(orientation['roll'], 1) ,
-        pitch = round(orientation['pitch'], 1)
-    )
+    return f"{round(orientation['roll'], 1)} , {round(orientation['pitch'], 1)}"
