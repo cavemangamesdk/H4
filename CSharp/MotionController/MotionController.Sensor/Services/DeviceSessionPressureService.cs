@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using MotionController.Db.Data.Repositories;
 using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Repositories;
 
 namespace MotionController.Services;
 
 public interface IDeviceSessionPressureService : IService
 {
+    Task<IEnumerable<DeviceSessionPressure?>> GetDeviceSessionPressuresAsync(DeviceSession deviceSession);
     Task<bool> AddDeviceSessionPressureAsync(DeviceSessionPressure deviceSessionPressure);
 }
 
@@ -18,6 +19,11 @@ internal class DeviceSessionPressureService : ServiceBase<DeviceSessionPressureS
     }
 
     public IDeviceSessionPressureRepository DeviceSessionPressureRepository { get; }
+
+    public Task<IEnumerable<DeviceSessionPressure?>> GetDeviceSessionPressuresAsync(DeviceSession deviceSession)
+    {
+        return DeviceSessionPressureRepository.GetAsync(deviceSession.Id);
+    }
 
     public async Task<bool> AddDeviceSessionPressureAsync(DeviceSessionPressure deviceSessionPressure)
     {

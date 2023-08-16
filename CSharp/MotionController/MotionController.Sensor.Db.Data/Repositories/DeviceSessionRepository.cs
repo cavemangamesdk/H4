@@ -1,9 +1,9 @@
 ﻿using MotionController.Data.Repositories;
 using MotionController.Data.Repositories.Database;
-using MotionController.Db.Data.Models;
-using MotionController.Db.Data.Providers;
+using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Providers;
 
-namespace MotionController.Db.Data.Repositories;
+namespace MotionController.Sensor.Db.Data.Repositories;
 
 public interface IDeviceSessionRepository : IRepository<DeviceSession, int>
 {
@@ -12,7 +12,7 @@ public interface IDeviceSessionRepository : IRepository<DeviceSession, int>
 
 internal class DeviceSessionRepository : DbRepositoryBase<DeviceSession, int>, IDeviceSessionRepository
 {
-    public DeviceSessionRepository(IMotionProvider provider) 
+    public DeviceSessionRepository(IMotionProvider provider)
         : base(provider)
     {
     }

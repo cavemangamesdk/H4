@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using MotionController.BackgroundServices;
-using MotionController.Db.Data.Providers;
 using MotionController.DependencyInjection;
 using MotionController.Extensions.Autofac;
 using MotionController.MQTT;
 using MotionController.MQTT.Messages;
+using MotionController.Sensor.Db.Data.Providers;
 using MotionController.Sensor.Messaging;
 using System.Reflection;
 

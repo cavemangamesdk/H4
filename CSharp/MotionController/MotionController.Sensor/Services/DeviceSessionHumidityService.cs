@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using MotionController.Db.Data.Repositories;
 using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Repositories;
 
 namespace MotionController.Services;
 
 public interface IDeviceSessionHumidityService : IService
 {
+    Task<IEnumerable<DeviceSessionHumidity?>> GetDeviceSessionHumidityAsync(DeviceSession deviceSession);
     Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionHumidity deviceSessionHumidity);
 }
 
@@ -18,6 +19,11 @@ internal class DeviceSessionHumidityService : ServiceBase<DeviceSessionHumidityS
     }
 
     private IDeviceSessionHumidityRepository DeviceSessionHumidityRepository { get; }
+
+    public async Task<IEnumerable<DeviceSessionHumidity?>> GetDeviceSessionHumidityAsync(DeviceSession deviceSession)
+    {
+        return await DeviceSessionHumidityRepository.GetByDeviceSessionAsync(deviceSession.Id);
+    }
 
     public async Task<bool> AddDeviceSessionHumidityAsync(DeviceSessionHumidity deviceSessionHumidity)
     {

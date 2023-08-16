@@ -1,5 +1,4 @@
-﻿using MotionController.Data.Providers;
-using System.Data;
+﻿using System.Data;
 using System.Reflection;
 
 namespace MotionController.Data.Providers.Database.SqlClient;

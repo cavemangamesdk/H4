@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using MotionController.Db.Data.Models;
-using MotionController.Db.Data.Repositories;
+using MotionController.Sensor.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Repositories;
 
 namespace MotionController.Services;
 

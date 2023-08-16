@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MotionController.Db.Data.Models;
+namespace MotionController.Sensor.Db.Data.Models;
 
 [Schema("H4")]
 [Table("DeviceSession")]

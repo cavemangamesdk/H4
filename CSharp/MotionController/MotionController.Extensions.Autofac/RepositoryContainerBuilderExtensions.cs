@@ -1,7 +1,7 @@
 ﻿using Autofac;
-using System.Reflection;
 using MotionController.Data.Providers;
 using MotionController.Data.Repositories;
+using System.Reflection;
 
 namespace VictorKrogh.Extensions.Autofac;
 
