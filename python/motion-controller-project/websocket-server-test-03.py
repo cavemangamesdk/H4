@@ -14,8 +14,9 @@ async def get_data() -> str:
 
 async def echo(websocket, path):
     while True:
-        data = await get_data()
-        await websocket.send(data)
+        # data = await get_data()
+        # await websocket.send(data)
+        await websocket.send(getData.getPitchRollData(sense))
         #await asyncio.sleep(0.1)  # sleep for 0.1 seconds
 
 start_server = websockets.serve(echo, "192.168.109.110", 8765)
