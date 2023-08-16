@@ -10,7 +10,7 @@ async def get_data() -> str:
     # This is where you would put your logic to get the data
     # For now, I'll just return a string
     #return getData.getImuData(sense, uuidDevice, dateTime)
-    return json.dumps(getData.getPitchRollData(sense).__dict__)
+    return getData.getPitchRollData(sense)
 
 async def echo(websocket, path):
     while True:
