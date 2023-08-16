@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MotionController.Db.Data.Models;
+using MotionController.Sensor.Db.Data.Models;
 using MotionController.Services;
 using NSwag.Annotations;
 
@@ -7,22 +8,23 @@ namespace MotionController.API.Controllers
 {
     [Route("api/v1/device/sessions")]
     [OpenApiController("DeviceSession")]
-    public class DeviceSessionController : ControllerBase
+    public partial class DeviceSessionController : ControllerBase
     {
-        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService)
+        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService, IDeviceSessionPressureService deviceSessionPressureService)
         {
             Logger = logger;
             DeviceSessionService = deviceSessionService;
+            DeviceSessionPressureService = deviceSessionPressureService;
         }
 
         private ILogger<DeviceSessionController> Logger { get; }
         private IDeviceSessionService DeviceSessionService { get; }
+        private IDeviceSessionPressureService DeviceSessionPressureService { get; }
 
         [HttpGet]
         [Route("", Name = nameof(GetDeviceSessionsAsync))]
         [OpenApiOperation(nameof(GetDeviceSessionsAsync), "Gets all Device Sessions", "")]
         [ProducesResponseType(typeof(IEnumerable<DeviceSession>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDeviceSessionsAsync()
         {
             try
@@ -45,7 +47,7 @@ namespace MotionController.API.Controllers
         [HttpGet]
         [Route("{sessionId:guid}", Name = nameof(GetDeviceSessionBySessionIdAsync))]
         [OpenApiOperation(nameof(GetDeviceSessionBySessionIdAsync), "Get a Device Session by Session Id", "")]
-        [ProducesResponseType(typeof(IEnumerable<DeviceSession>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DeviceSession), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDeviceSessionBySessionIdAsync([FromRoute] Guid sessionId)
         {
