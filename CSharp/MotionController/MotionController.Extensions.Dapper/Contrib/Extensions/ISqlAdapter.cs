@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dapper.Contrib.Extensions;
 

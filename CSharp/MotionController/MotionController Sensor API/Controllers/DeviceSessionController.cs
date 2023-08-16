@@ -9,7 +9,7 @@ namespace MotionController.API.Controllers
     [OpenApiController("DeviceSession")]
     public partial class DeviceSessionController : ControllerBase
     {
-        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService, 
+        public DeviceSessionController(ILogger<DeviceSessionController> logger, IDeviceSessionService deviceSessionService,
             IDeviceSessionPressureService deviceSessionPressureService, IDeviceSessionHumidityService deviceSessionHumidityService)
         {
             Logger = logger;
