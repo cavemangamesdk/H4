@@ -42,5 +42,28 @@ namespace MotionController.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{sessionId:guid}", Name = nameof(GetDeviceSessionBySessionIdAsync))]
+        [OpenApiOperation(nameof(GetDeviceSessionBySessionIdAsync), "Get a Device Session by Session Id", "")]
+        [ProducesResponseType(typeof(IEnumerable<DeviceSession>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetDeviceSessionBySessionIdAsync([FromRoute] Guid sessionId)
+        {
+            try
+            {
+                var deviceSession = await DeviceSessionService.GetDeviceSessionAsync(sessionId);
+                if (deviceSession?.Equals(default) ?? true)
+                {
+                    return NotFound();
+                }
+
+                return Ok(deviceSession);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"{nameof(GetDeviceSessionBySessionIdAsync)} operation failed.");
+                throw;
+            }
+        }
     }
 }
