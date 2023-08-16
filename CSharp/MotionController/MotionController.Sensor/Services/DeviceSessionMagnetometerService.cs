@@ -6,6 +6,7 @@ namespace MotionController.Services;
 
 public interface IDeviceSessionMagnetometerService : IService
 {
+    Task<IEnumerable<DeviceSessionMagnetometer?>> GetDeviceSessionMagnetometerAsync(DeviceSession deviceSession);
     Task<bool> AddDeviceSessionMagnetometerAsync(DeviceSessionMagnetometer deviceSessionMagnetometer);
 }
 
@@ -18,6 +19,11 @@ internal class DeviceSessionMagnetometerService : ServiceBase<DeviceSessionMagne
     }
 
     private IDeviceSessionMagnetometerRepository DeviceSessionMagnetometerRepository { get; }
+
+    public async Task<IEnumerable<DeviceSessionMagnetometer?>> GetDeviceSessionMagnetometerAsync(DeviceSession deviceSession)
+    {
+        return await DeviceSessionMagnetometerRepository.GetByDeviceSessionAsync(deviceSession.Id);
+    }
 
     public async Task<bool> AddDeviceSessionMagnetometerAsync(DeviceSessionMagnetometer deviceSessionMagnetometer)
     {
