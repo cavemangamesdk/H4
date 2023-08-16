@@ -6,6 +6,7 @@ namespace MotionController.Services;
 
 public interface IDeviceSessionService : IService
 {
+    Task<IEnumerable<DeviceSession?>> GetDeviceSessionsAsync();
     Task<DeviceSession?> GetDeviceSessionAsync(Guid sessionId);
     Task<DeviceSession?> AddDeviceSessionAsync(Guid sessionId);
     Task<DeviceSession?> GetOrAddDeviceSessionAsync(Guid sessionId);
@@ -20,6 +21,11 @@ internal class DeviceSessionService : ServiceBase<DeviceSessionService>, IDevice
     }
 
     private IDeviceSessionRepository DeviceSessionRepository { get; }
+
+    public async Task<IEnumerable<DeviceSession?>> GetDeviceSessionsAsync()
+    {
+        return await DeviceSessionRepository.GetAsync();
+    }
 
     public async Task<DeviceSession?> GetDeviceSessionAsync(Guid sessionId)
     {
