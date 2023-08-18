@@ -59,9 +59,6 @@ def broadcast_ip_address():
     # Close the socket
     socket.close()
 
-async def get_data() -> str:
-    return getData.getPitchRollData(sense)
-
 async def send_data(websocket, path):
     
     global broadcasting
