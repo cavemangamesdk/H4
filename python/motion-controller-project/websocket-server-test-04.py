@@ -12,11 +12,13 @@ sense = SenseHat()
 broadcasting = True
 
 def get_ip_address() -> str:
+
     # Get the localhost IP address
-    socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    socket.connect(("8.8.8.8", 80))
-    ip_address = socket.getsockname()[0]
-    socket.close()
+    my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    my_socket.connect(("8.8.8.8", 80))
+    ip_address = my_socket.getsockname()[0]
+    print(f"ip address: {ip_address}")
+    my_socket.close()
     
     return ip_address
 
@@ -35,10 +37,10 @@ def get_broadcast_address(ip_address) -> str:
     return broadcast_address
 
 def broadcast_ip_address():
-    
+
     # Create a UDP socket
-    socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
     # Get the localhost IP address
     ip_address = get_ip_address()
@@ -49,11 +51,11 @@ def broadcast_ip_address():
     print(broadcast_address)
     message = ip_address.encode('utf-8')
 
-    socket.sendto(message, (broadcast_address, 12345))
+    sock.sendto(message, (broadcast_address, 12345))
     print(f"broadcast message: {message}")
     
     # Close the socket
-    socket.close()
+    sock.close()
 
 async def send_data(websocket, path):
     
@@ -72,3 +74,5 @@ while broadcasting:
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+
+
