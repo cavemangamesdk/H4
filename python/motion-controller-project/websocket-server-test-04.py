@@ -36,8 +36,6 @@ def get_broadcast_address(ip_address) -> str:
 
 def broadcast_ip_address():
     
-    global broadcasting
-
     # Create a UDP socket
     socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -51,10 +49,8 @@ def broadcast_ip_address():
     print(broadcast_address)
     message = ip_address.encode('utf-8')
 
-    while broadcasting:
-        socket.sendto(message, (broadcast_address, 12345))
-        print(f"broadcast message: {message}")
-        time.sleep(1)
+    socket.sendto(message, (broadcast_address, 12345))
+    print(f"broadcast message: {message}")
     
     # Close the socket
     socket.close()
@@ -69,6 +65,10 @@ async def send_data(websocket, path):
         await websocket.send(getData.getPitchRollData(sense))
 
 start_server = websockets.serve(send_data, "localhost", 8765)
+
+while broadcasting:
+    broadcast_ip_address()
+    time.sleep(1)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
