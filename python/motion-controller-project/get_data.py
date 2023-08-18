@@ -227,5 +227,6 @@ def getOrientationData(sense_hat: SenseHat, uuid: uuid.UUID, datetime: datetime)
 def getPitchRollData(sense_hat: SenseHat) -> str:
             
     orientation = sense_hat.get_orientation_degrees()
+    gyro = sense_hat.get_gyroscope()
 
-    return f"{round(orientation['roll'], 2)}, {round(orientation['pitch'], 2)}, {round(orientation['yaw'], 2)}"
+    return f"{round(orientation['roll'], 2)}, {round(orientation['pitch'], 2)}, {round(gyro['yaw'], 2)}"
