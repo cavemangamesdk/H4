@@ -4,12 +4,8 @@ import get_data as getData
 from sense_hat import SenseHat
 import json
 import socket
-import time
-import netifaces
 
 sense = SenseHat()
-
-broadcasting = True
 
 def get_ip_address() -> str:
 
@@ -22,57 +18,20 @@ def get_ip_address() -> str:
     
     return ip_address
 
-def get_broadcast_address(ip_address) -> str:
-    
-    interfaces = netifaces.interfaces()
+async def get_data() -> str:
+    # This is where you would put your logic to get the data
+    # For now, I'll just return a string
+    #return getData.getImuData(sense, uuidDevice, dateTime)
+    return getData.getPitchRollData(sense)
 
-    # Find interface with ip_address
-    for interface in interfaces:
-        if netifaces.AF_INET in netifaces.ifaddresses(interface):
-            for link in netifaces.ifaddresses(interface)[netifaces.AF_INET]:
-                if link['addr'] == ip_address:
-                    broadcast_address = link['broadcast']
-                    break
-    
-    return broadcast_address
-
-def broadcast_ip_address():
-
-    # Create a UDP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-    # Get the localhost IP address
-    ip_address = get_ip_address()
-    print(ip_address)
-
-    # Broadcast the IP address
-    broadcast_address = get_broadcast_address(ip_address)
-    print(broadcast_address)
-    message = ip_address.encode('utf-8')
-
-    sock.sendto(message, (broadcast_address, 12345))
-    print(f"broadcast message: {message}")
-    
-    # Close the socket
-    sock.close()
-
-async def send_data(websocket, path):
-    
-    global broadcasting
-    print("Client connected")
-    broadcasting = False
-
+async def echo(websocket, path):
     while True:
+        # data = await get_data()
+        # await websocket.send(data)
         await websocket.send(getData.getPitchRollData(sense))
+        #await asyncio.sleep(0.1)  # sleep for 0.1 seconds
 
-start_server = websockets.serve(send_data, "localhost", 8765)
-
-while broadcasting:
-    broadcast_ip_address()
-    time.sleep(1)
+start_server = websockets.serve(echo, get_ip_address(), 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
-
-
