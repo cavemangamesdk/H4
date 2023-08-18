@@ -12,7 +12,6 @@ sense = SenseHat()
 def check_internet_connectivity() -> bool:
     try:
         requests.get('https://www.google.com', timeout=5)
-        print("Internet connection available.")
         return True
     except requests.ConnectionError:
         print("No internet connection available.")
