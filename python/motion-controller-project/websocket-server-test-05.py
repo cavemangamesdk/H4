@@ -66,9 +66,7 @@ async def send_data(websocket, path):
     while True:
         await websocket.send(getData.getPitchRollData(sense))
 
-
-
-start_server = websockets.serve(send_data, "localhost", 8765)
+start_server = websockets.serve(send_data, get_ip_address(), 8765)
 
 while broadcasting:
     broadcast_ip_address()

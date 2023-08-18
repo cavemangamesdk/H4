@@ -4,8 +4,18 @@ import get_data as getData
 from sense_hat import SenseHat
 import json
 import socket
+import requests
+import time
 
 sense = SenseHat()
+
+def check_internet_connectivity() -> bool:
+    try:
+        requests.get('https://www.google.com', timeout=5)
+        return True
+    except requests.ConnectionError:
+        print("No internet connection available.")
+    return False
 
 def get_ip_address() -> str:
 
@@ -30,6 +40,10 @@ async def echo(websocket, path):
         # await websocket.send(data)
         await websocket.send(getData.getPitchRollData(sense))
         #await asyncio.sleep(0.1)  # sleep for 0.1 seconds
+
+while not check_internet_connectivity():
+    print("Waiting for internet connection...")
+    time.sleep(1)
 
 start_server = websockets.serve(echo, get_ip_address(), 8765)
 
