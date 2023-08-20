@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class Quaternion():
+class Vector3():
     x: float
     y: float
     z: float
-    w: float
