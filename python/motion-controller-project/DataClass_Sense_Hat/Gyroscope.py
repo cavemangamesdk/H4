@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from DataClass.DeviceDataBase import DeviceDataBase
 
 @dataclass
-class DeviceGyroscopeDataBase():
+class Gyroscope():
     # from get_gyroscope()
     roll: float
     pitch: float
@@ -11,7 +10,3 @@ class DeviceGyroscopeDataBase():
     x_raw: float
     y_raw: float
     z_raw: float
-
-@dataclass
-class DeviceGyroscopeData(DeviceDataBase):
-    data: DeviceGyroscopeDataBase.__dict__

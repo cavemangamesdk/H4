@@ -3,7 +3,7 @@ import datetime
 import uuid
 
 @dataclass
-class DeviceDataBase:
+class Base:
     session_id: uuid
     timestamp: datetime
     data: dict

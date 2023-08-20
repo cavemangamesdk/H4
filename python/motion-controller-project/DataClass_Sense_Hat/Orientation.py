@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from DataClass.DeviceDataBase import DeviceDataBase
 
 @dataclass
-class DeviceOrientationDataBase():
+class Orientation():
     # from get_orientation_degrees()
     roll_deg: float
     pitch_deg: float
@@ -11,7 +10,3 @@ class DeviceOrientationDataBase():
     roll_rad: float
     pitch_rad: float
     yaw_rad: float
-
-@dataclass
-class DeviceOrientationData(DeviceDataBase):
-    data: DeviceOrientationDataBase.__dict__
