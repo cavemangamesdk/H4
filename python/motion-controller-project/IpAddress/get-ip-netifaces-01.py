@@ -11,8 +11,6 @@
 
 import netifaces
 
-
-
 interfaces = netifaces.interfaces()
 
 for interface in interfaces:

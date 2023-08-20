@@ -14,6 +14,15 @@ from DataClass_BNO055.Vector3 import Vector3
 i2c = board.I2C()
 sensor = adafruit_bno055.BNO055_I2C(i2c, address=0x29)
 
+# Configuration
+
+# Turn on external clock crystal
+sensor._write_register(0x3F, 0x01)
+# Read from register to check if external crystal is enabled
+external_crystal_enabled = sensor._read_register(0x3F)
+print("external crystal: ", bool(external_crystal_enabled & 0x01))
+
+
 # Acceleration
 def getAccelerometerDataBase(sensor: adafruit_bno055.BNO055_I2C) -> Vector3:
     
@@ -168,10 +177,12 @@ def getTemperatureData(sensor: adafruit_bno055.BNO055_I2C, session_id: uuid.UUID
 #
 def getPitchRollData(sensor: adafruit_bno055.BNO055_I2C) -> str:
     
-    return f"{sensor.euler[0]}, {sensor.euler[1]}, {-sensor.euler[2]+180.0}"
+    x, y, z = sensor.euler[0], -sensor.euler[1], sensor.euler[2]
+
+    return f"{x}, {y}, {z}"
 
 def getMotionControllerData(sensor: adafruit_bno055.BNO055_I2C) -> str:
     
-    x, y, z = sensor.euler[0], sensor.euler[1], -sensor.euler[2] + 180.0
+    x, y, z = sensor.euler[0], -sensor.euler[1], sensor.euler[2]
     
     return f"{x}, {y}, {z}"
