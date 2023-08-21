@@ -6,6 +6,7 @@ import adafruit_bno055 # pip3 install adafruit-circuitpython-bno055 (NOT adafrui
 import socket
 import requests
 import time
+import netifaces as ni
 
 # To-do:
 # - Replace get_ip_address() with function that gets the local IP address of the device without needing internet connection
@@ -32,6 +33,23 @@ def get_ip_address() -> str:
     print(f"ip address: {ip_address}")
     my_socket.close()
     
+    return ip_address
+
+def get_local_ip_address() -> str:
+    ip_address = 'Not found'
+    interfaces = ni.interfaces()
+    for interface in interfaces:
+        if 'wlan' in interface:
+            try:
+                ip = ni.ifaddresses(interface)[ni.AF_INET][0]['addr']
+                # Exclude localhost
+                if ip != '127.0.0.1':
+                    ip_address = ip
+                    break
+            except KeyError:
+                pass
+
+    print(f"Local IP address: {ip_address}")
     return ip_address
 
 async def echo(websocket, path):
