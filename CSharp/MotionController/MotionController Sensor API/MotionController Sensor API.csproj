@@ -13,7 +13,7 @@
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
 		<PackageReference Include="NSwag.Annotations" Version="13.20.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
 	</ItemGroup>
 
 	<ItemGroup>

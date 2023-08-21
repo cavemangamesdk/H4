@@ -14,9 +14,12 @@ var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<M
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument(c =>
+{
+    c.Version = "1.0.0";
+    c.Description = "API interface for all internal sensor operations.";
+    c.Title = "Internal MotionController Sensor API";
+});
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -29,11 +32,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseOpenApi();
+app.UseSwaggerUi3();
+app.UseReDoc();
 
 app.UseHttpsRedirection();
 
