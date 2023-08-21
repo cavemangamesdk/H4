@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController Sensor", "MotionController Sensor\MotionController Sensor.csproj", "{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Sensor.Client", "MotionController.Sensor.Client\MotionController.Sensor.Client.csproj", "{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
