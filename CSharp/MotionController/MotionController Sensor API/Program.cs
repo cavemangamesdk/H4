@@ -4,7 +4,6 @@ using MotionController.Extensions.DependencyInjection;
 using VictorKrogh.Extensions.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
@@ -12,7 +11,6 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument(c =>
 {
