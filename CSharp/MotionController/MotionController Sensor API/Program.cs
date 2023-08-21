@@ -9,7 +9,7 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
-var weatherOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
+var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
 
 // Add services to the container.
 
@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-    containerBuilder.RegisterMotionController(weatherOptions)
+    containerBuilder.RegisterMotionController(motionOptions)
         .WithMQTTClientBackgroundService();
 
     containerBuilder.RegisterUnitOfWorkFactory();
