@@ -20,4 +20,9 @@
 		<ProjectReference Include="..\MotionController.Sensor\MotionController.Sensor.csproj" />
 	</ItemGroup>
 
+	<!-- ## NSwag -->
+	<Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)'=='DEBUG'">
+		<Exec Command="$(NSwagExe_Net70) run nswag.json" />
+	</Target>
+
 </Project>
