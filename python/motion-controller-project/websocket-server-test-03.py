@@ -19,7 +19,7 @@ async def echo(websocket, path):
         await websocket.send(getData.getPitchRollData(sense))
         #await asyncio.sleep(0.1)  # sleep for 0.1 seconds
 
-start_server = websockets.serve(echo, "192.168.8.108", 8765)
+start_server = websockets.serve(echo, "192.168.109.89", 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
