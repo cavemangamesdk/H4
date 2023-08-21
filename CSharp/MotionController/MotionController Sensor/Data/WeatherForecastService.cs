@@ -1,4 +1,4 @@
-namespace MotionController_Sensor.Data
+namespace MotionController.Sensor.Data
 {
     public class WeatherForecastService
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using MotionController_Sensor.Data;
+using MotionController.Sensor.Data;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
