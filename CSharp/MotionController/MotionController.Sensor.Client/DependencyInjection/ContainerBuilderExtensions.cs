@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using MotionController.Sensor.Client;
 
 namespace MotionController.Extensions.DependencyInjection;
 
