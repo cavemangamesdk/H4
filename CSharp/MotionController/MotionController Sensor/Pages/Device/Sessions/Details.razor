@@ -1,0 +1,31 @@
+﻿@page "/device/sessions/{sessionId:guid}"
+@using MotionController.Sensor.Client;
+
+<PageTitle>Device Session - @SessionId</PageTitle>
+
+<MudGrid Spacing="2" Justify="Justify.Center">
+    <MudItem>
+        <MudIconButton Href="@HumidityUrl" Icon="@Icons.Material.Filled.Girl" Size="Size.Large">
+            Humidity
+        </MudIconButton>
+    </MudItem>
+    <MudItem>
+        <MudPaper Height="140px" Width="140px" />
+    </MudItem>
+    <MudItem>
+        <MudPaper Height="140px" Width="140px" />
+    </MudItem>
+</MudGrid>
+
+@inject IDeviceSessionClient DeviceSessionClient
+@code {
+    [Parameter]
+    public Guid SessionId { get; set; }
+
+    private string HumidityUrl => $"/device/sessions/{SessionId}/humidity";
+
+    protected override Task OnInitializedAsync()
+    {
+        return Task.CompletedTask;
+    }
+}
