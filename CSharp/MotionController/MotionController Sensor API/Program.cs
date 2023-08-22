@@ -1,27 +1,33 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MotionController.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
+using Serilog.Sinks.MSSqlServer;
 using VictorKrogh.Extensions.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
-var weatherOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
+var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument(c =>
+{
+    c.Version = "1.0.0";
+    c.Description = "API interface for all internal sensor operations.";
+    c.Title = "Internal MotionController Sensor API";
+});
 
+builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(context.Configuration));
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
-    containerBuilder.RegisterMotionController(weatherOptions)
+    containerBuilder.RegisterMotionController(motionOptions)
         .WithMQTTClientBackgroundService();
 
     containerBuilder.RegisterUnitOfWorkFactory();
@@ -29,13 +35,18 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
+app.UseOpenApi();
+app.UseSwaggerUi3();
+app.UseReDoc();
+
 app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
