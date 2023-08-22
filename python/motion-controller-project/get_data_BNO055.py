@@ -177,9 +177,10 @@ def getTemperatureData(sensor: adafruit_bno055.BNO055_I2C, session_id: uuid.UUID
 #
 def getPitchRollData(sensor: adafruit_bno055.BNO055_I2C) -> str:
     
-    x, y, z = sensor.euler[0], -sensor.euler[1], sensor.euler[2]
+    ox, oy, oz = -sensor.euler[0], sensor.euler[1], sensor.euler[2]
+    ax, ay, az = sensor.linear_acceleration[0], sensor.linear_acceleration[1], sensor.linear_acceleration[2]
 
-    return f"{x}, {y}, {z}"
+    return f"{oy}, {ox}, {oz}, {ax}, {ay}, {az}"
 
 def getMotionControllerData(sensor: adafruit_bno055.BNO055_I2C) -> str:
     
