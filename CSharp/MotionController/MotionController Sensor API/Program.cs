@@ -1,6 +1,10 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MotionController.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
+using Serilog.Sinks.MSSqlServer;
 using VictorKrogh.Extensions.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +23,7 @@ builder.Services.AddOpenApiDocument(c =>
     c.Title = "Internal MotionController Sensor API";
 });
 
+builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(context.Configuration));
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
@@ -40,6 +45,8 @@ app.UseSwaggerUi3();
 app.UseReDoc();
 
 app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
