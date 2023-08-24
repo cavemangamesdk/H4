@@ -1,11 +1,6 @@
-import asyncio
-import websockets
+import asyncio, websockets, socket, requests, time
 import get_data as getData
 from sense_hat import SenseHat
-import json
-import socket
-import requests
-import time
 
 sense = SenseHat()
 
@@ -28,16 +23,8 @@ def get_ip_address() -> str:
     
     return ip_address
 
-async def get_data() -> str:
-    # This is where you would put your logic to get the data
-    # For now, I'll just return a string
-    #return getData.getImuData(sense, uuidDevice, dateTime)
-    return getData.getPitchRollData(sense)
-
 async def echo(websocket, path):
     while True:
-        # data = await get_data()
-        # await websocket.send(data)
         await websocket.send(getData.getPitchRollData(sense))
         #await asyncio.sleep(0.1)  # sleep for 0.1 seconds
 
