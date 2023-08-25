@@ -1,0 +1,74 @@
+﻿@page "/device/sessions/{sessionId:guid}"
+@using MotionController.Sensor.Client;
+
+<PageTitle>Device Session - @SessionId</PageTitle>
+
+<MudText Typo="Typo.h3">Sensors</MudText>
+
+<MudStack Spacing="2">
+    <MudItem>
+        <MudButton Href="@HumidityUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Humidity</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Href="@PressureUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Pressure</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Href="@AccelerometerUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Accelerometer</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Href="@GyroscopeUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Gyroscope</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Href="@MagnetometerUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Magnetometer</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudButton Href="@OrientationUrl">
+            <MudPaper Width="240px" Elevation="2">
+                <MudText Typo="Typo.h5" Align="Align.Center">Orientation</MudText>
+            </MudPaper>
+        </MudButton>
+    </MudItem>
+</MudStack>
+
+@inject IDeviceSessionClient DeviceSessionClient
+@code {
+    [Parameter]
+    public Guid SessionId { get; set; }
+
+    private string BaseUrl => $"/device/sessions/{SessionId}/";
+
+    // Environment
+    private string HumidityUrl => $"{BaseUrl}/humidity";
+    private string PressureUrl => $"{BaseUrl}/pressure";
+
+    // IMU
+    private string AccelerometerUrl => $"{BaseUrl}/accelerometer";
+    private string GyroscopeUrl => $"{BaseUrl}/gyroscope";
+    private string MagnetometerUrl => $"{BaseUrl}/magnetometer";
+    private string OrientationUrl => $"{BaseUrl}/orientation";
+
+    protected override Task OnInitializedAsync()
+    {
+        return Task.CompletedTask;
+    }
+}

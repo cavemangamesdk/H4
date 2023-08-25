@@ -29,6 +29,9 @@ public static class ContainerBuilderExtensions
 
         containerBuilder.RegisterModule<ServiceModule<MotionOptions>>();
 
+        containerBuilder.RegisterMQTT()
+            .RegisterMQTTClient();
+
         return containerBuilder;
     }
 

@@ -13,11 +13,11 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver, IMqttClient mqttClient)
         : base(logger)
     {
         MessageHandlerResolver = messageHandlerResolver;
-        MqttClient = CreateAndConnectMQTTClientAsync();
+        MqttClient = mqttClient;
     }
 
     private IMessageHandlerResolver MessageHandlerResolver { get; }
@@ -74,15 +74,6 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             Logger.LogError(ex, ex.Message);
             throw;
         }
-    }
-
-    private static IMqttClient CreateAndConnectMQTTClientAsync()
-    {
-        var factory = new MqttFactory();
-
-        var client = factory.CreateMqttClient();
-
-        return client;
     }
 
     private async Task OnApplicationMessageReceivedFuncAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
