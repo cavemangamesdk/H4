@@ -1,26 +1,21 @@
 import socket
-import struct
 
-multicast_group = '224.1.1.1'
-server_address = ('', 58008)
+MCAST_GRP = '224.1.1.1'
+MCAST_PORT = 58008
 
-# Create the socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+def receive_multicast_message():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-# Bind to the server address
-sock.bind(server_address)
+    # Bind the socket to the interface
+    if hasattr(socket, 'SO_BINDTODEVICE'):
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, b'wlan0')
 
-# Tell the operating system to add the socket to the multicast group on all interfaces
-group = socket.inet_aton(multicast_group)
-mreq = struct.pack('4sL', group, socket.INADDR_ANY)
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+    sock.bind((MCAST_GRP, MCAST_PORT))
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, socket.inet_aton(MCAST_GRP) + socket.inet_aton('0.0.0.0'))
 
-# Receive/respond loop
-while True:
-    print('\nwaiting to receive message')
-    data, address = sock.recvfrom(1024)
-    
-    print('received %s bytes from %s' % (len(data), address))
-    print(data.decode())
-    print('sending acknowledgement to', address)
-    sock.sendto('ack'.encode(), address)
+    while True:
+        data, addr = sock.recvfrom(1024)
+        print("Received message:", data.decode())
+
+receive_multicast_message()

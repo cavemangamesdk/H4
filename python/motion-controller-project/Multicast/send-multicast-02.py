@@ -1,13 +1,19 @@
 import socket
 
-group = '224.1.1.1'
-port = 5004
-ttl = 2
+MCAST_GRP = '224.1.1.1'
+MCAST_PORT = 58008
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
+def send_multicast_message(message):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-# Set the outgoing interface to wlan0
-sock.setsockopt(socket.SOL_SOCKET, 25, b'wlan0\x00')
+    # Bind the socket to the interface
+    if hasattr(socket, 'SO_BINDTODEVICE'):
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, b'wlan0')
 
-sock.sendto(b"hello world", (group, port))
+    sock.sendto(message.encode(), (MCAST_GRP, MCAST_PORT))
+    sock.close()
+
+message = "Hello, multicast!"
+send_multicast_message(message)
