@@ -1,25 +1,17 @@
 import socket
-import struct
-import time
 
-message = 'very important data'
-multicast_group = ('224.1.1.1', 58008)
+MCAST_GRP = '224.1.1.1'
+MCAST_PORT = 58008
+message = "robot"
+# regarding socket.IP_MULTICAST_TTL
+# ---------------------------------
+# for all packets sent, after two hops on the network the packet will not 
+# be re-sent/broadcast (see https://www.tldp.org/HOWTO/Multicast-HOWTO-6.html)
+MULTICAST_TTL = 2
 
-# Create the datagram socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, MULTICAST_TTL)
 
-# Set a timeout to avoid blocking indefinitely
-sock.settimeout(0.2)
-
-# Set the time-to-live for messages to 1
-ttl = struct.pack('b', 1)
-sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
-
-# Send data to the multicast group
-for i in range(1, 10):
-    print(f'sending {i} "%s"' % message)
-    sent = sock.sendto(message.encode(), multicast_group)
-    time.sleep(1)
-
-# Close the socket
-sock.close()
+# For Python 3, change next line to 'sock.sendto(b"robot", ...' to avoid the
+# "bytes-like object is required" msg (https://stackoverflow.com/a/42612820)
+sock.sendto(message.encode(), (MCAST_GRP, MCAST_PORT))
