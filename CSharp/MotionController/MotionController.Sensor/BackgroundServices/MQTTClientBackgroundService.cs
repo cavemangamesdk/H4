@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MotionController.Data;
 using MotionController.Extensions.Hosting;
+using MotionController.MQTT.Client.Subscriber;
 using MotionController.Sensor.Messaging;
-using MQTTnet;
-using MQTTnet.Client;
 using System.Text;
 
 namespace MotionController.BackgroundServices;
@@ -13,61 +14,27 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver, IMqttClient mqttClient)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver, IServiceProvider serviceProvider, IMQTTSubscriberClientFactory mqttSubscriberClientFactory)
         : base(logger)
     {
         MessageHandlerResolver = messageHandlerResolver;
-        MqttClient = mqttClient;
+        ServiceProvider = serviceProvider;
+        MqttSubscriberClientFactory = mqttSubscriberClientFactory;
     }
 
     private IMessageHandlerResolver MessageHandlerResolver { get; }
-    private IMqttClient MqttClient { get; set; }
+    private IServiceProvider ServiceProvider { get; }
+    private IMQTTSubscriberClientFactory MqttSubscriberClientFactory { get; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
         try
         {
-            if (!MqttClient.IsConnected)
-            {
-                MqttClientOptionsBuilderTlsParameters tlsOptions = new()
-                {
-                    SslProtocol = System.Security.Authentication.SslProtocols.Tls12,
-                    UseTls = true,
-                    AllowUntrustedCertificates = true
-                };
+            using var subscriberClient = MqttSubscriberClientFactory.CreateSubscriberClient();
 
-                var options = new MqttClientOptionsBuilder()
-                    .WithTcpServer("3c6ea0ec32f6404db6fd0439b0d000ce.s2.eu.hivemq.cloud", 8883)
-                    .WithCredentials("mvp2023", "wzq6h2hm%WLaMh$KYXj5")
-                    .WithClientId(Guid.NewGuid().ToString())
-                    .WithTls(tlsOptions)
-                    .WithProtocolVersion(MQTTnet.Formatter.MqttProtocolVersion.V500)
-                    .Build();
+            subscriberClient.ReceivedMessageAsync += OnReceivedMessageAsync;
 
-                var response = await MqttClient.ConnectAsync(options, cancellationToken);
-                if (!response.ResultCode.Equals(MqttClientConnectResultCode.Success))
-                {
-                    throw new SystemException();
-                }
-
-                MqttClient.ApplicationMessageReceivedAsync += OnApplicationMessageReceivedFuncAsync;
-
-                await MqttClient.SubscribeAsync("sensehat/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
-            }
-
-            while (cancellationToken.IsCancellationRequested)
-            {
-            }
-
-            //var disconnectOptions = new MqttClientDisconnectOptions
-            //{
-            //    Reason = MqttClientDisconnectOptionsReason.NormalDisconnection,
-            //    ReasonString = "Disconnect"
-            //};
-
-            //await MqttClient.DisconnectAsync(disconnectOptions);
-
-            //MqttClient?.Dispose();
+            await subscriberClient.SubscribeAsync("sensehat/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -76,20 +43,26 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
         }
     }
 
-    private async Task OnApplicationMessageReceivedFuncAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+    private async Task OnReceivedMessageAsync(ArraySegment<byte> payload, string topic)
     {
-        var utf8Message = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.PayloadSegment);
-
         try
         {
-            var messageHandler = MessageHandlerResolver.Resolve(eventArgs.ApplicationMessage.Topic);
+            using var scope = ServiceProvider.CreateScope();
+
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+            var utf8Message = Encoding.UTF8.GetString(payload);
+
+            var messageHandler = MessageHandlerResolver.Resolve(topic);
             if (messageHandler == default)
             {
-                Logger.LogWarning($"No message handler for the given topic {eventArgs.ApplicationMessage.Topic}");
+                Logger.LogWarning($"No message handler for the given topic {topic}");
                 return;
             }
 
             await messageHandler.HandleAsync(utf8Message);
+
+            unitOfWork.Complete();
         }
         catch (Exception ex)
         {

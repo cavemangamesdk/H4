@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using MotionController.MQTT.Client.Subscriber;
 using MQTTnet;
 using MQTTnet.Client;
 
@@ -25,6 +26,15 @@ public static class ContainerBuilderExtensions
         })
             .As<IMqttClient>()
             .SingleInstance();
+
+        return containerBuilder;
+    }
+
+    public static ContainerBuilder RegisterSubscriberClient(this ContainerBuilder containerBuilder)
+    {
+        containerBuilder.RegisterType<MQTTSubscriberClientFactory>()
+            .As<IMQTTSubscriberClientFactory>()
+            .InstancePerLifetimeScope();
 
         return containerBuilder;
     }
