@@ -4,6 +4,7 @@ using MotionController.Data;
 using MotionController.Extensions.Hosting;
 using MotionController.MQTT.Client.Subscriber;
 using MotionController.Sensor.Messaging;
+using MotionController.Sensor.MQTT;
 using System.Text;
 
 namespace MotionController.BackgroundServices;
@@ -14,27 +15,27 @@ public interface IMQTTClientBackgroundService : IBackgroundService
 
 internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgroundService>, IMQTTClientBackgroundService
 {
-    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IMessageHandlerResolver messageHandlerResolver, IServiceProvider serviceProvider, IMQTTSubscriberClientFactory mqttSubscriberClientFactory)
+    public MQTTClientBackgroundService(ILogger<MQTTClientBackgroundService> logger, IServiceProvider serviceProvider)
         : base(logger)
     {
-        MessageHandlerResolver = messageHandlerResolver;
         ServiceProvider = serviceProvider;
-        MqttSubscriberClientFactory = mqttSubscriberClientFactory;
     }
 
-    private IMessageHandlerResolver MessageHandlerResolver { get; }
     private IServiceProvider ServiceProvider { get; }
-    private IMQTTSubscriberClientFactory MqttSubscriberClientFactory { get; }
 
     protected override async Task ExecuteLogicAsync(CancellationToken cancellationToken)
     {
         try
         {
-            using var subscriberClient = MqttSubscriberClientFactory.CreateSubscriberClient();
+            using var scope = ServiceProvider.CreateScope();
+
+            var mqttSubscriberClientFactory = scope.ServiceProvider.GetRequiredService<IMQTTSubscriberClientFactory>();
+
+            using var subscriberClient = mqttSubscriberClientFactory.CreateSubscriberClient<SensorMQTTSettings>();
 
             subscriberClient.ReceivedMessageAsync += OnReceivedMessageAsync;
 
-            await subscriberClient.SubscribeAsync("sensehat/#", MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce, cancellationToken);
+            await subscriberClient.SubscribeAsync(cancellationToken);
         }
         catch (Exception ex)
         {
@@ -50,10 +51,11 @@ internal class MQTTClientBackgroundService : BackgroundService<MQTTClientBackgro
             using var scope = ServiceProvider.CreateScope();
 
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            var messageHandlerResolver = scope.ServiceProvider.GetRequiredService<IMessageHandlerResolver>();
 
             var utf8Message = Encoding.UTF8.GetString(payload);
 
-            var messageHandler = MessageHandlerResolver.Resolve(topic);
+            var messageHandler = messageHandlerResolver.Resolve(topic);
             if (messageHandler == default)
             {
                 Logger.LogWarning($"No message handler for the given topic {topic}");

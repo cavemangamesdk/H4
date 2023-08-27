@@ -2,7 +2,7 @@
 
 namespace MotionController.Sensor.MQTT;
 
-public class SensorMQTTSettings : MQTTSettingsBase
+public class SensorMQTTSettings : MQTTSubscriberClientSettingsBase
 {
     public const string SensorMQTT = "SensorMQTT";
 }
