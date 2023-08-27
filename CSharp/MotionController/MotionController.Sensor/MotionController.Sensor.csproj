@@ -18,6 +18,7 @@
     <ProjectReference Include="..\MotionController.MQTT\MotionController.MQTT.csproj" />
     <ProjectReference Include="..\MotionController.Sensor.Db.Data\MotionController.Sensor.Db.Data.csproj" />
     <ProjectReference Include="..\MotionController.Sensor.Models.Abstractions\MotionController.Sensor.Models.Abstractions.csproj" />
+    <ProjectReference Include="..\MotionController.Sensor.MQTT.Abstractions\MotionController.Sensor.MQTT.Abstractions.csproj" />
     <ProjectReference Include="..\MotionController.Shared\MotionController.Shared.csproj" />
   </ItemGroup>
 

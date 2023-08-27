@@ -21,7 +21,8 @@ internal sealed class MQTTSubscriberClientFactory : IMQTTSubscriberClientFactory
     {
         var logger = ServiceProvider.GetRequiredService<ILogger<MQTTSubscriberClient>>();
         var mqttClient = ServiceProvider.GetRequiredService<MQTTnet.Client.IMqttClient>();
+        var mqttClientOptions = ServiceProvider.GetRequiredService<MQTTnet.Client.MqttClientOptions>();
 
-        return new MQTTSubscriberClient(logger, mqttClient);
+        return new MQTTSubscriberClient(logger, mqttClient, mqttClientOptions);
     }
 }

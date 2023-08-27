@@ -15,6 +15,8 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
 
 // Add services to the container.
+builder.Services.AddMotion(builder.Configuration); 
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument(c =>
 {

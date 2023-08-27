@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.MQTT", "Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Models.Abstractions", "MotionController.Sensor.Models.Abstractions\MotionController.Sensor.Models.Abstractions.csproj", "{1CC26644-84C1-4512-B877-771A7E405665}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController Sensor", "MotionController Sensor\MotionController Sensor.csproj", "{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController Sensor", "MotionController Sensor\MotionController Sensor.csproj", "{0BAF9E92-46E7-429B-AF3D-B1C88331BFE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Sensor.Client", "MotionController.Sensor.Client\MotionController.Sensor.Client.csproj", "{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Client", "MotionController.Sensor.Client\MotionController.Sensor.Client.csproj", "{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Sensor.MQTT.Abstractions", "MotionController.Sensor.MQTT.Abstractions\MotionController.Sensor.MQTT.Abstractions.csproj", "{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
