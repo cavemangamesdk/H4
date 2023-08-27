@@ -1,7 +1,7 @@
 import socket
 
-MCAST_GRP = '224.1.1.1'
-MCAST_PORT = 58008
+MCAST_GRP = '239.1.1.1'
+MCAST_PORT = 8266
 
 hostname = socket.gethostname()   
 IPAddr = socket.gethostbyname(hostname)  
