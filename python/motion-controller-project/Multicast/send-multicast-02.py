@@ -1,7 +1,8 @@
 import socket
+import time
 
-MCAST_GRP = '224.1.1.1'
-MCAST_PORT = 58008
+MCAST_GRP = '239.1.1.1'
+MCAST_PORT = 8266
 
 def send_multicast_message(message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -16,4 +17,7 @@ def send_multicast_message(message):
     sock.close()
 
 message = "Hello, multicast!"
-send_multicast_message(message)
+
+while True:
+    send_multicast_message(message)
+    time.sleep(1)

@@ -1,0 +1,10 @@
+[Unit]
+Description=All data script
+After=network.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/admin//H4/python/motion-controller-project/weather-station-sense-hat-01.py
+
+[Install]
+WantedBy=multi-user.target
