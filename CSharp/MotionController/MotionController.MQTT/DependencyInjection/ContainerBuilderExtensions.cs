@@ -36,7 +36,7 @@ public static class ContainerBuilderExtensions
         containerBuilder.Register((cc) =>
         {
             var mqttSettings = cc.Resolve<IOptions<TMQTTSettings>>()?.Value ?? default;
-            if(mqttSettings == default)
+            if (mqttSettings == default)
             {
                 throw new Exception();
             }

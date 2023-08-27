@@ -2,9 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MotionController.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Sinks.MSSqlServer;
 using VictorKrogh.Extensions.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +12,7 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<MotionOptions>();
 
 // Add services to the container.
-builder.Services.AddMotion(builder.Configuration); 
+builder.Services.AddMotion(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument(c =>

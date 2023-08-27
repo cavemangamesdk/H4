@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MotionController.Sensor.MQTT;
 
 namespace MotionController.Extensions.DependencyInjection;
 
