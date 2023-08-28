@@ -2,11 +2,9 @@
 using MotionController.BackgroundServices;
 using MotionController.DependencyInjection;
 using MotionController.Extensions.Autofac;
-using MotionController.MQTT;
-using MotionController.MQTT.Messages;
 using MotionController.Sensor.Db.Data.Providers;
 using MotionController.Sensor.Messaging;
-using System.Reflection;
+using MotionController.Sensor.MQTT;
 
 namespace MotionController.Extensions.DependencyInjection;
 
@@ -19,8 +17,6 @@ public static class ContainerBuilderExtensions
             throw new Exception("");
         }
 
-        containerBuilder.RegisterAssemblyMessageHandlers(typeof(MotionOptions).Assembly);
-
         containerBuilder.RegisterType<MessageHandlerResolver>()
             .As<IMessageHandlerResolver>()
             .InstancePerLifetimeScope();
@@ -30,7 +26,8 @@ public static class ContainerBuilderExtensions
         containerBuilder.RegisterModule<ServiceModule<MotionOptions>>();
 
         containerBuilder.RegisterMQTT()
-            .RegisterMQTTClient();
+            .WithConnection<SensorMQTTSettings>(Guid.NewGuid().ToString())
+            .WithMessageHandlers(typeof(MotionOptions).Assembly);
 
         return containerBuilder;
     }
@@ -38,20 +35,5 @@ public static class ContainerBuilderExtensions
     public static ContainerBuilder WithMQTTClientBackgroundService(this ContainerBuilder containerBuilder)
     {
         return containerBuilder.RegisterBackgroundService<MQTTClientBackgroundService>();
-    }
-
-    private static ContainerBuilder RegisterAssemblyMessageHandlers(this ContainerBuilder containerBuilder, Assembly assembly)
-    {
-        var messageHandlers = assembly.GetTypes().Where(t => t.IsAssignableTo<IMessageHandler>() && t.GetCustomAttributes<MQTTTopicAttribute>().Any());
-        foreach (var messageHandler in messageHandlers)
-        {
-            var attributes = messageHandler.GetCustomAttributes<MQTTTopicAttribute>();
-            foreach (var attribute in attributes)
-            {
-                containerBuilder.RegisterType(messageHandler).Keyed<IMessageHandler>(attribute.Topic);
-            }
-        }
-
-        return containerBuilder;
     }
 }
