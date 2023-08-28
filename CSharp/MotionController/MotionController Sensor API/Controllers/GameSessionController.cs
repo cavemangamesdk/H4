@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
+using System.Globalization;
 
 namespace MotionController.API.Controllers
 {
@@ -22,6 +23,12 @@ namespace MotionController.API.Controllers
         {
             try
             {
+                var timeStr = "01:28:31";
+
+                var time = TimeSpan.Parse(timeStr);
+
+                var timeExact = TimeSpan.ParseExact(timeStr, @"m\:s\:ff", CultureInfo.InvariantCulture);
+
                 return await Task.FromResult(Ok());
             }
             catch (Exception ex)

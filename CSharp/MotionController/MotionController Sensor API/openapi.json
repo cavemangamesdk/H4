@@ -300,6 +300,20 @@
           }
         }
       }
+    },
+    "/api/v1/game/sessions": {
+      "post": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Adds a Game Session",
+        "operationId": "AddGameSessionAsync",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
