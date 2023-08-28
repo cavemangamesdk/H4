@@ -23,13 +23,12 @@ const char* password3 = "DataitGF";
 // Websocket server
 //const char* ws_ip = "192.168.8.104";
 //const char* ws_ip = "192.168.5.113";
-char* ws_ip = "";
 const uint16_t ws_port = 80;
-const char* ws_path = "/MotionController";
+const String ws_path = "/MotionController";
 
 // Websocket server IP multicast
 const IPAddress multicastIP(239, 1, 1, 1);
-const int multicastPort = 5432;
+const uint16_t multicastPort = 5432;
 
 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
@@ -38,30 +37,6 @@ WebSocketsClient webSocket;
 WiFiUDP udp;
 
 // Functions
-void ConnectMulticast() {
-  if (udp.beginMulticast(WiFi.localIP(), multicastIP, multicastPort)) {
-      Serial.println("UDP multicast listener started");
-  } else {
-    Serial.println("UDP multicast listener failed to start");
-    exit(1);
-  }
-
-  while(udp.parsePacket() <= 0) {
-    int packetSize = udp.parsePacket();
-    if (packetSize) {
-      char incomingPacket[255];
-      int len = udp.read(incomingPacket, 255);
-      if (len > 0) {
-        incomingPacket[len] = 0;
-      }
-      Serial.printf("UDP packet contents: %s\n", incomingPacket);
-      ws_ip = incomingPacket;
-    }
-  }
-  udp.stop();
-  udp.flush();
-}
-
 void ConnectBMO055() {
   if (!bno.begin()) {
     Serial.print("BNO055 not detected... Check wiring and I2C address!");
@@ -128,7 +103,36 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   }
 }
 
-void ConnectWebSocket() {
+String ConnectMulticast() {
+  Serial.println("Attempting to start UDP multicast listener\n");
+  if (udp.beginMulticast(WiFi.localIP(), multicastIP, multicastPort)) {
+      Serial.println("UDP multicast listener started");
+  } else {
+    Serial.println("UDP multicast listener failed to start");
+    exit(1);
+  }
+
+  while(udp.parsePacket() <= 0) {
+    int packetSize = udp.parsePacket();
+    if (packetSize) {
+      Serial.println(packetSize);
+      char incomingPacket[255];
+      int len = udp.read(incomingPacket, 255);
+      if (len > 0) {
+        incomingPacket[len] = 0;
+      }
+      Serial.printf("UDP packet contents: %s\n", incomingPacket);
+      //ws_ip = incomingPacket;
+      udp.stop();
+      udp.flush();
+      return String(incomingPacket);
+    }
+  }
+  return String();
+}
+
+void ConnectWebSocket(String ws_ip) {
+  Serial.print("Attempting to start websocket connection to IP " + ws_ip + "\n");
   webSocket.begin(ws_ip, ws_port, ws_path);
   webSocket.onEvent(webSocketEvent);
   webSocket.setReconnectInterval(1000);
@@ -149,8 +153,8 @@ void setup() {
   Serial.begin(serial_baudrate);
   ConnectBMO055();
   ConnectWifi();
-  ConnectMulticast();
-  ConnectWebSocket();
+  String ip = ConnectMulticast();
+  ConnectWebSocket(ip);
 }
 
 void loop() {
