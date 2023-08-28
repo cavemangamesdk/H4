@@ -19,7 +19,7 @@ const char* ssid3     = "Grundforlob";
 const char* password3 = "DataitGF";
 
 // Websocket server
-const char* ws_ip = "192.168.8.104";
+const char* ws_ip = "192.168.109.1";
 //const char* ws_ip = "192.168.5.113";
 const uint16_t ws_port = 80;
 const char* ws_path = "/MotionController";
