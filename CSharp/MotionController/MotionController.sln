@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController Sensor", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Client", "MotionController.Sensor.Client\MotionController.Sensor.Client.csproj", "{2B85FC26-3A3A-40C3-8EF5-12A82FFB2479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Sensor.MQTT.Abstractions", "MotionController.Sensor.MQTT.Abstractions\MotionController.Sensor.MQTT.Abstractions.csproj", "{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.MQTT.Abstractions", "MotionController.Sensor.MQTT.Abstractions\MotionController.Sensor.MQTT.Abstractions.csproj", "{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.AspNetCore", "MotionController.Extensions.AspNetCore\MotionController.Extensions.AspNetCore.csproj", "{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
