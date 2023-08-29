@@ -17,13 +17,19 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
 {
     private const string GameTimeFormat = @"m\:s\:ff";
 
-    public GameSessionService(ILogger<GameSessionService> logger, IGameSessionRepository gameSessionRepository)
+    public GameSessionService(ILogger<GameSessionService> logger, IGameSessionRepository gameSessionRepository, IGameSessionBallPositionService gameSessionBallPositionService, IGameSessionBoardRotationService gameSessionBoardRotationService, IGameSessionInputDataService gameSessionInputDataService)
         : base(logger)
     {
         GameSessionRepository = gameSessionRepository;
+        GameSessionBallPositionService = gameSessionBallPositionService;
+        GameSessionBoardRotationService = gameSessionBoardRotationService;
+        GameSessionInputDataService = gameSessionInputDataService;
     }
 
     private IGameSessionRepository GameSessionRepository { get; }
+    private IGameSessionBallPositionService GameSessionBallPositionService { get; }
+    private IGameSessionBoardRotationService GameSessionBoardRotationService { get; }
+    private IGameSessionInputDataService GameSessionInputDataService { get; }
 
     public async Task<GameSession?> GetGameSessionAsync(Guid sessionId)
     {
@@ -50,6 +56,26 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
             GameTime = gameTimeSpan
         };
 
-        return await GameSessionRepository.AddAsync(gameSession);
+        var gameSessionCreated = await GameSessionRepository.AddAsync(gameSession);
+        if (!gameSessionCreated)
+        {
+            return false;
+        }
+
+        foreach (var gameData in unityGameSession.GameData)
+        {
+            if (gameData == default)
+            {
+                continue;
+            }
+
+            var ballPositionCreated = await GameSessionBallPositionService.AddGameSessionBallPositionAsync(gameSession, gameData.BallPosition);
+
+            var boardRotationCreated = await GameSessionBoardRotationService.AddGameSessionBoardRotationAsync(gameSession, gameData.BoardRotation);
+
+            var inputDataCreated = await GameSessionInputDataService.AddGameSessionInputDataAsync(gameSession, gameData.InputData);
+        }
+
+        return true;
     }
 }
