@@ -9,6 +9,7 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionService : IService
 {
+    Task<GameSession?> GetGameSessionAsync(Guid sessionId);
     Task<bool> AddGameSessionAsync(UnityGameSession gameSession);
 }
 
@@ -23,6 +24,11 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
     }
 
     private IGameSessionRepository GameSessionRepository { get; }
+
+    public async Task<GameSession?> GetGameSessionAsync(Guid sessionId)
+    {
+        return await GameSessionRepository.GetAsync(sessionId);
+    }
 
     public async Task<bool> AddGameSessionAsync(UnityGameSession unityGameSession)
     {

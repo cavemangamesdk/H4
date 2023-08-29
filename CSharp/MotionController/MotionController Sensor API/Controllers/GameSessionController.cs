@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MotionController.Sensor.Db.Data.Models;
 using MotionController.Sensor.Models.Game;
 using MotionController.Sensor.Services;
+using MotionController.Services;
 using NSwag.Annotations;
 
 namespace MotionController.API.Controllers
@@ -18,6 +20,30 @@ namespace MotionController.API.Controllers
         private ILogger<GameSessionController> Logger { get; }
         private IGameSessionService GameSessionService { get; }
 
+        [HttpGet]
+        [Route("{sessionId:guid}", Name = nameof(GetGameSessionBySessionIdAsync))]
+        [OpenApiOperation(nameof(GetGameSessionBySessionIdAsync), "Get a Game Session by Session Id", "")]
+        [ProducesResponseType(typeof(DeviceSession), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetGameSessionBySessionIdAsync([FromRoute] Guid sessionId)
+        {
+            try
+            {
+                var deviceSession = await GameSessionService.GetGameSessionAsync(sessionId);
+                if (deviceSession?.Equals(default) ?? true)
+                {
+                    return NotFound();
+                }
+
+                return Ok(deviceSession);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"{nameof(GetGameSessionBySessionIdAsync)} operation failed.");
+                throw;
+            }
+        }
+
         [HttpPost]
         [Route("", Name = nameof(AddGameSessionAsync))]
         [OpenApiOperation(nameof(AddGameSessionAsync), "Adds a Game Session", "")]
@@ -29,7 +55,7 @@ namespace MotionController.API.Controllers
                 var created = await GameSessionService.AddGameSessionAsync(gameSession);
                 if (created)
                 {
-                    Logger.LogInformation("Game session created successfully");
+                    return CreatedAtRoute(nameof(GetGameSessionBySessionIdAsync), new { sessionId = gameSession.Guid });
                 }
 
                 return BadRequest();

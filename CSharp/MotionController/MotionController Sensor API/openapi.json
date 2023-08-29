@@ -301,6 +301,42 @@
         }
       }
     },
+    "/api/v1/game/sessions/{sessionId}": {
+      "get": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Get a Game Session by Session Id",
+        "operationId": "GetGameSessionBySessionIdAsync",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceSession"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/v1/game/sessions": {
       "post": {
         "tags": [
@@ -313,7 +349,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GameSession"
+                "$ref": "#/components/schemas/UnityGameSession"
               }
             }
           },
@@ -666,7 +702,7 @@
           }
         ]
       },
-      "GameSession": {
+      "UnityGameSession": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
