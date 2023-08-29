@@ -55,9 +55,10 @@ namespace MotionController.API.Controllers
                 var created = await GameSessionService.AddGameSessionAsync(unityGameSession);
                 if (created)
                 {
-                    var gameSession = await GameSessionService.GetGameSessionAsync(unityGameSession.Guid);
-                    
-                    return CreatedAtRoute(nameof(GetGameSessionBySessionIdAsync), new { sessionId = unityGameSession.Guid }, gameSession);
+                    //var gameSession = await GameSessionService.GetGameSessionAsync(unityGameSession.Guid);
+                    //return CreatedAtRoute(nameof(GetGameSessionBySessionIdAsync), new { sessionId = unityGameSession.Guid }, gameSession);
+
+                    return Ok();
                 }
 
                 return BadRequest();
