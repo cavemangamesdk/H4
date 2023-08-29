@@ -6,7 +6,7 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionService : IService
 {
-    Task<bool> AddGameSessionAsync(GameSession gameSession);
+    Task<bool> AddGameSessionAsync(UnityGameSession gameSession);
 }
 
 internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessionService
@@ -17,6 +17,7 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
     }
 
     public Task<bool> AddGameSessionAsync(GameSession gameSession)
+    public Task<bool> AddGameSessionAsync(UnityGameSession gameSession)
     {
         throw new NotImplementedException();
     }

@@ -22,7 +22,7 @@ namespace MotionController.API.Controllers
         [Route("", Name = nameof(AddGameSessionAsync))]
         [OpenApiOperation(nameof(AddGameSessionAsync), "Adds a Game Session", "")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddGameSessionAsync([FromBody] GameSession gameSession)
+        public async Task<IActionResult> AddGameSessionAsync([FromBody] UnityGameSession gameSession)
         {
             try
             {

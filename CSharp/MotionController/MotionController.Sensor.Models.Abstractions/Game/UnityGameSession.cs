@@ -2,7 +2,7 @@
 
 namespace MotionController.Sensor.Models.Game;
 
-public class GameSession
+public class UnityGameSession
 {
     [JsonProperty("Guid")]
     public Guid Guid { get; set; }
