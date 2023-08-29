@@ -48,14 +48,16 @@ namespace MotionController.API.Controllers
         [Route("", Name = nameof(AddGameSessionAsync))]
         [OpenApiOperation(nameof(AddGameSessionAsync), "Adds a Game Session", "")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddGameSessionAsync([FromBody] UnityGameSession gameSession)
+        public async Task<IActionResult> AddGameSessionAsync([FromBody] UnityGameSession unityGameSession)
         {
             try
             {
-                var created = await GameSessionService.AddGameSessionAsync(gameSession);
+                var created = await GameSessionService.AddGameSessionAsync(unityGameSession);
                 if (created)
                 {
-                    return CreatedAtRoute(nameof(GetGameSessionBySessionIdAsync), new { sessionId = gameSession.Guid });
+                    var gameSession = await GameSessionService.GetGameSessionAsync(unityGameSession.Guid);
+                    
+                    return CreatedAtRoute(nameof(GetGameSessionBySessionIdAsync), new { sessionId = unityGameSession.Guid }, gameSession);
                 }
 
                 return BadRequest();

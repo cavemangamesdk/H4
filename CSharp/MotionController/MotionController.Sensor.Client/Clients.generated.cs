@@ -853,7 +853,7 @@ namespace MotionController.Sensor.Client
         /// Adds a Game Session
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AddGameSessionAsync(UnityGameSession gameSession, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task AddGameSessionAsync(UnityGameSession unityGameSession, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
 
@@ -969,10 +969,10 @@ namespace MotionController.Sensor.Client
         /// Adds a Game Session
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddGameSessionAsync(UnityGameSession gameSession, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task AddGameSessionAsync(UnityGameSession unityGameSession, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (gameSession == null)
-                throw new System.ArgumentNullException("gameSession");
+            if (unityGameSession == null)
+                throw new System.ArgumentNullException("unityGameSession");
 
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/v1/game/sessions");
@@ -983,7 +983,7 @@ namespace MotionController.Sensor.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(gameSession, typeof(UnityGameSession), _settings.Value);
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(unityGameSession, typeof(UnityGameSession), _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;

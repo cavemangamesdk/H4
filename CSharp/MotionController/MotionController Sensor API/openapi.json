@@ -345,7 +345,7 @@
         "summary": "Adds a Game Session",
         "operationId": "AddGameSessionAsync",
         "requestBody": {
-          "x-name": "gameSession",
+          "x-name": "unityGameSession",
           "content": {
             "application/json": {
               "schema": {
