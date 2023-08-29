@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using MotionController.Extensions.DependencyInjection;
 using Serilog;
 using VictorKrogh.Extensions.Autofac;
@@ -14,7 +15,10 @@ var motionOptions = builder.Configuration.GetSection(MotionOptions.Motion).Get<M
 // Add services to the container.
 builder.Services.AddMotion(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(controller =>
+{
+    controller.Filters.Add<UnitOfWorkAttribute>();
+});
 builder.Services.AddOpenApiDocument(c =>
 {
     c.Version = "1.0.0";
