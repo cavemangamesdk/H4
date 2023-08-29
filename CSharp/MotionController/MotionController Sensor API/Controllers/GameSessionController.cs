@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MotionController.Sensor.Models.Game;
+using MotionController.Sensor.Services;
 using NSwag.Annotations;
 
 namespace MotionController.API.Controllers
@@ -8,12 +9,14 @@ namespace MotionController.API.Controllers
     [OpenApiController("GameSession")]
     public class GameSessionController : ControllerBase
     {
-        public GameSessionController(ILogger<GameSessionController> logger)
+        public GameSessionController(ILogger<GameSessionController> logger, IGameSessionService gameSessionService)
         {
             Logger = logger;
+            GameSessionService = gameSessionService;
         }
 
         private ILogger<GameSessionController> Logger { get; }
+        private IGameSessionService GameSessionService { get; }
 
         [HttpPost]
         [Route("", Name = nameof(AddGameSessionAsync))]
@@ -23,9 +26,13 @@ namespace MotionController.API.Controllers
         {
             try
             {
-                Logger.LogError("sdfogfgjiog", gameSession);
+                var created = await GameSessionService.AddGameSessionAsync(gameSession);
+                if (created)
+                {
+                    Logger.LogInformation("Game session created successfully");
+                }
 
-                return await Task.FromResult(Ok());
+                return BadRequest();
             }
             catch (Exception ex)
             {
