@@ -51,7 +51,7 @@ namespace MotionController.API.Controllers
         {
             try
             {
-                var created = await GameSessionService.AddGameSessionAsync(unityGameSession);
+                var created = await GameSessionService.AddUnityGameSessionAsync(unityGameSession);
                 if (created)
                 {
                     //var gameSession = await GameSessionService.GetGameSessionAsync(unityGameSession.Guid);
