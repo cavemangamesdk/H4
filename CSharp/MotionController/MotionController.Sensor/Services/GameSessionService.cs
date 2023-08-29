@@ -17,7 +17,7 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
 {
     private const string GameTimeFormat = @"m\:s\:ff";
 
-    public GameSessionService(ILogger<GameSessionService> logger, IGameSessionRepository gameSessionRepository) 
+    public GameSessionService(ILogger<GameSessionService> logger, IGameSessionRepository gameSessionRepository)
         : base(logger)
     {
         GameSessionRepository = gameSessionRepository;
@@ -32,12 +32,12 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
 
     public async Task<bool> AddGameSessionAsync(UnityGameSession unityGameSession)
     {
-        if(!TimeSpan.TryParseExact(unityGameSession?.PlayerData?.GameTime ?? string.Empty, GameTimeFormat, CultureInfo.InvariantCulture, out var gameTimeSpan))
+        if (!TimeSpan.TryParseExact(unityGameSession?.PlayerData?.GameTime ?? string.Empty, GameTimeFormat, CultureInfo.InvariantCulture, out var gameTimeSpan))
         {
             return false;
         }
 
-        if(unityGameSession == default)
+        if (unityGameSession == default)
         {
             return false;
         }

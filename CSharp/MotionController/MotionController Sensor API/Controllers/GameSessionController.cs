@@ -2,7 +2,6 @@
 using MotionController.Sensor.Db.Data.Models;
 using MotionController.Sensor.Models.Game;
 using MotionController.Sensor.Services;
-using MotionController.Services;
 using NSwag.Annotations;
 
 namespace MotionController.API.Controllers
