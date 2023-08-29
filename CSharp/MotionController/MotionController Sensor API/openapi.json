@@ -308,6 +308,18 @@
         ],
         "summary": "Adds a Game Session",
         "operationId": "AddGameSessionAsync",
+        "requestBody": {
+          "x-name": "gameSession",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GameSession"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": ""
@@ -653,6 +665,110 @@
             }
           }
         ]
+      },
+      "GameSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "guid": {
+            "type": "string",
+            "format": "guid"
+          },
+          "playerData": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlayerData"
+              }
+            ]
+          },
+          "gameData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameData"
+            }
+          }
+        }
+      },
+      "PlayerData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lives": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gameTime": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ballPosition": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector3"
+              }
+            ]
+          },
+          "boardRotation": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector3"
+              }
+            ]
+          },
+          "inputData": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector2"
+              }
+            ]
+          }
+        }
+      },
+      "Vector3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "float"
+          },
+          "y": {
+            "type": "number",
+            "format": "float"
+          },
+          "z": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Vector2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "float"
+          },
+          "y": {
+            "type": "number",
+            "format": "float"
+          }
+        }
       }
     }
   }
