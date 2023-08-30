@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using MotionController.Sensor.Client;
 
 <PageTitle>Index</PageTitle>
 
@@ -7,27 +6,5 @@
 
 Welcome to your new app.
 
-<MudTable Items="@DeviceSessions" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
-    <HeaderContent>
-        <MudTh>Id</MudTh>
-        <MudTh>SessionId</MudTh>
-        <MudTh>Created</MudTh>
-        <MudTh>Modified</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="SessionId">@context.SessionId</MudTd>
-        <MudTd DataLabel="Created">@context.Created</MudTd>
-        <MudTd DataLabel="Modified">@context.Modified</MudTd>
-    </RowTemplate>
-</MudTable>
-
-@inject IDeviceSessionClient DeviceSessionClient
 @code {
-    private IEnumerable<Db.Data.Models.DeviceSession> DeviceSessions { get; set; } = Array.Empty<Db.Data.Models.DeviceSession>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        DeviceSessions = await DeviceSessionClient.GetDeviceSessionsAsync();
-    }
 }
