@@ -26,20 +26,17 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-//These are located in the extras folder of hte Talk2 library https://bitbucket.org/talk2/talk2-library
-// #include "WhisperNodeFactory.h"
-#include <T2WhisperNode.h>
+#include "WhisperNodeFactory.h"
 
 /* Factory Firmware */
 #define T2_WP_PROGRAM_VERSION_MAJOR 1
 #define T2_WP_PROGRAM_VERSION_MINOR 4
 
 /* You need to configure the Whisper Node Version */
-#define T2_WPN_BOARD T2_WPN_VER_RF69
-//#define T2_WPN_BOARD T2_WPN_VER_LORA
+//#define T2_WPN_BOARD T2_WPN_VER_RF69
+#define T2_WPN_BOARD T2_WPN_VER_LORA
 
-#define RADIO_FREQUENCY 433.0 // 433.0 | 868.0 | 916.0
+#define RADIO_FREQUENCY 433.0
 #define RADIO_TX_POWER 13
 #define RADIO_ENCRYPTION_KEY { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F } // Only used by RF69
 
@@ -92,11 +89,12 @@ enum T2BoardMode_enum: uint8_t
   CLIENT,
   ROUTER
 };
-T2BoardMode_enum runningMode = CLIENT;
+T2BoardMode_enum runningMode = ROUTER;
 
 // Testing
 uint8_t pressedBtn_01 = 0;
 uint8_t pressedBtn_02 = 0;
+
 
 void sendTestMsgs()
 {
@@ -337,71 +335,71 @@ void runClient()
       // Update the reply Message with the new source and destination
       myMsg.dst = routerAddr;
       myMsg.src = clientAddr;
-      // switch(myMsg.sdx)
-      //   {
-      //   case 0x01: // Node Id
-      //     T2Firmware::nodeInfo_getId();
-      //     break;
+      switch(myMsg.sdx)
+        {
+        case 0x01: // Node Id
+          T2Firmware::nodeInfo_getId();
+          break;
 
-      //   case 0x0A: // Power Control
-      //     switch(myMsg.data[0])
-      //       {
-      //       // Restart MCU
-      //       case 0x0A:
-      //         T2Firmware::powerControl_restartNode();
-      //         break;
-      //       }
-      //     break;
+        case 0x0A: // Power Control
+          switch(myMsg.data[0])
+            {
+            // Restart MCU
+            case 0x0A:
+              T2Firmware::powerControl_restartNode();
+              break;
+            }
+          break;
 
-      //   case 0x80: // Data Buffer Operations
-      //     switch(myMsg.data[0])
-      //       {
-      //       // Buffer Details
-      //       case 0x01:
-      //         T2Firmware::bufferOperations_bufferDetails();
-      //         break;
+        case 0x80: // Data Buffer Operations
+          switch(myMsg.data[0])
+            {
+            // Buffer Details
+            case 0x01:
+              T2Firmware::bufferOperations_bufferDetails();
+              break;
 
-      //       case 0x0A: // Flush To Flash
-      //         T2Firmware::bufferOperations_flushToFlash();
-      //         break;
+            case 0x0A: // Flush To Flash
+              T2Firmware::bufferOperations_flushToFlash();
+              break;
 
-      //         // Flush To Flash
-      //       case 0x0B:
-      //         T2Firmware::bufferOperations_flushToEeprom();
-      //         break;
+              // Flush To Flash
+            case 0x0B:
+              T2Firmware::bufferOperations_flushToEeprom();
+              break;
 
-      //         // Reset Buffer
-      //       case 0xA0:
-      //         T2Firmware::bufferOperations_resetBuffer();
-      //         break;
-      //       }
-      //     break;
+              // Reset Buffer
+            case 0xA0:
+              T2Firmware::bufferOperations_resetBuffer();
+              break;
+            }
+          break;
 
-      //   case 0x81: // Flash Operations
-      //     switch(myMsg.data[0])
-      //       {
-      //       // Flash Protection (Status Register)
-      //       case 0x90:
-      //         T2Firmware::flashOperations_writeProtection();
-      //         break;
+        case 0x81: // Flash Operations
+          switch(myMsg.data[0])
+            {
+            // Flash Protection (Status Register)
+            case 0x90:
+              T2Firmware::flashOperations_writeProtection();
+              break;
 
-      //       // Erase 4K
-      //       case 0xA0:
-      //         T2Firmware::flashOperations_erase4K();
-      //         break;
+            // Erase 4K
+            case 0xA0:
+              T2Firmware::flashOperations_erase4K();
+              break;
 
-      //       // Erase Chip
-      //       case 0xAF:
-      //         T2Firmware::flashOperations_eraseChip();
-      //         break;
-      //       }
-      //     break;
+            // Erase Chip
+            case 0xAF:
+              T2Firmware::flashOperations_eraseChip();
+              break;
+            }
+          break;
 
-      //   case 0x8A: // Write to Buffer
-      //     T2Firmware::bufferOperations_bufferWrite();
-      //     break;
+        case 0x8A: // Write to Buffer
+          T2Firmware::bufferOperations_bufferWrite();
+          break;
 
-      //   }
+        }
     }
 
   }
@@ -490,6 +488,7 @@ void runRouter()
   }
 }
 
+//
 void setup()
 {
   Serial.begin(115200);
@@ -544,11 +543,13 @@ void loop()
       uint8_t serialInput = Serial.read();
 
       if (serialInput == 'r')
+      {
         runningMode = ROUTER;
         welcomeMessage();
         myLedYellow.setBlink(25, 500, -1);
         myLedBlue.setBlink(0, 0, 0);
         myLedBlue.turnOff();
+      }
     }
 
     // Test Buttons and Send voltage measurement back

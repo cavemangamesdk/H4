@@ -51,7 +51,7 @@ void setup() {
   LoRa.setCodingRate4(5); // Set coding rate (5-8)
   LoRa.setPreambleLength(8); // Set preamble length (default is 8)
   LoRa.setSyncWord(0x12); // Set sync word (default is 0x12)
-  LoRa.setTxPower(2);  // Set the transmit power (2-20, default is 17 dBm)
+  LoRa.setTxPower(17);  // Set the transmit power (2-20, default is 17 dBm)
 
   Serial.println("LoRa Initializing OK!");
 }

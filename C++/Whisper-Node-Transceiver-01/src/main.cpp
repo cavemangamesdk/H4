@@ -45,7 +45,7 @@ void setup() {
 
   LoRa.setPins(RFM95_NSS, RFM95_RST, RFM95_DIO0); // Set the NSS, RESET, and DIO0 pins
 
-  if (!LoRa.begin(868E6)) {
+  if (!LoRa.begin(433E6)) {
     Serial.println("Starting LoRa failed!");
     while (1);
   }
@@ -55,7 +55,7 @@ void setup() {
   LoRa.setCodingRate4(5); // Set coding rate (5-8)
   LoRa.setPreambleLength(8); // Set preamble length (6-65535, default is 8)
   LoRa.setSyncWord(0x12); // Set sync word (default is 0x12)
-  LoRa.setTxPower(2);  // Set the transmit power (2-20, default is 17 dBm)
+  LoRa.setTxPower(17);  // Set the transmit power (2-20, default is 17 dBm)
 
   Serial.println("LoRa Initializing OK!");
 }
