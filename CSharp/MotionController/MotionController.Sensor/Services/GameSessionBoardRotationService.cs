@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MotionController.Data;
 using MotionController.Sensor.Db.Data.Models;
 using MotionController.Sensor.Db.Data.Repositories;
 using MotionController.Sensor.Models.Game;
@@ -8,25 +10,31 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionBoardRotationService : IService
 {
-    Task<bool> AddGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation);
+    Task<bool> CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation);
 }
 
 internal class GameSessionBoardRotationService : ServiceBase<GameSessionBoardRotationService>, IGameSessionBoardRotationService
 {
-    public GameSessionBoardRotationService(ILogger<GameSessionBoardRotationService> logger, IGameSessionBoardRotationRepository gameSessionBoardRotationRepository) 
+    public GameSessionBoardRotationService(ILogger<GameSessionBoardRotationService> logger, IServiceProvider serviceProvider) 
         : base(logger)
     {
-        GameSessionBoardRotationRepository = gameSessionBoardRotationRepository;
+        ServiceProvider = serviceProvider;
     }
 
-    private IGameSessionBoardRotationRepository GameSessionBoardRotationRepository { get; }
+    private IServiceProvider ServiceProvider { get; }
 
-    public async Task<bool> AddGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation)
+    public async Task<bool> CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation)
     {
         if (boardRotation == default)
         {
             return false;
         }
+
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        var gameSessionBoardRotationRepository = scope.ServiceProvider.GetRequiredService<IGameSessionBoardRotationRepository>();
 
         var gameSessionBoardRotation = new GameSessionBoardRotation
         {
@@ -36,6 +44,10 @@ internal class GameSessionBoardRotationService : ServiceBase<GameSessionBoardRot
             Z = boardRotation.Z
         };
 
-        return await GameSessionBoardRotationRepository.AddAsync(gameSessionBoardRotation);
+        var created = await gameSessionBoardRotationRepository.AddAsync(gameSessionBoardRotation);
+
+        unitOfWork.Complete();
+
+        return created;
     }
 }

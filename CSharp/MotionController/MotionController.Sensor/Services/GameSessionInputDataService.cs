@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using MotionController.Data;
 using MotionController.Sensor.Db.Data.Models;
 using MotionController.Sensor.Db.Data.Repositories;
 using MotionController.Sensor.Models.Game;
@@ -8,25 +10,31 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionInputDataService : IService
 {
-    Task<bool> AddGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData);
+    Task<bool> CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData);
 }
 
 internal class GameSessionInputDataService : ServiceBase<GameSessionInputDataService>, IGameSessionInputDataService
 {
-    public GameSessionInputDataService(ILogger<GameSessionInputDataService> logger, IGameSessionInputDataRepository gameSessionInputDataRepository) 
+    public GameSessionInputDataService(ILogger<GameSessionInputDataService> logger, IServiceProvider serviceProvider)
         : base(logger)
     {
-        GameSessionInputDataRepository = gameSessionInputDataRepository;
+        ServiceProvider = serviceProvider;
     }
 
-    private IGameSessionInputDataRepository GameSessionInputDataRepository { get; }
+    private IServiceProvider ServiceProvider { get; }
 
-    public async Task<bool> AddGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData)
+    public async Task<bool> CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData)
     {
         if (inputData == default)
         {
             return false;
         }
+
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        var gameSessionInputDataRepository = scope.ServiceProvider.GetRequiredService<IGameSessionInputDataRepository>();
 
         var gameSessionInputData = new GameSessionInputData
         {
@@ -35,6 +43,10 @@ internal class GameSessionInputDataService : ServiceBase<GameSessionInputDataSer
             Y = inputData.Y,
         };
 
-        return await GameSessionInputDataRepository.AddAsync(gameSessionInputData);
+        var created = await gameSessionInputDataRepository.AddAsync(gameSessionInputData);
+
+        unitOfWork.Complete();
+
+        return created;
     }
 }
