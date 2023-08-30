@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\MotionController.Extensions.AspNetCore\MotionController.Extensions.AspNetCore.csproj" />
 		<ProjectReference Include="..\MotionController.Sensor\MotionController.Sensor.csproj" />
 	</ItemGroup>
 

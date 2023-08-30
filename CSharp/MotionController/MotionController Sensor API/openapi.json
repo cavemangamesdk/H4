@@ -300,6 +300,68 @@
           }
         }
       }
+    },
+    "/api/v1/game/sessions/{sessionId}": {
+      "get": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Get a Game Session by Session Id",
+        "operationId": "GetGameSessionBySessionIdAsync",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceSession"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/game/sessions": {
+      "post": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Adds a Game Session",
+        "operationId": "AddGameSessionAsync",
+        "requestBody": {
+          "x-name": "unityGameSession",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnityGameSession"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -639,6 +701,110 @@
             }
           }
         ]
+      },
+      "UnityGameSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "guid": {
+            "type": "string",
+            "format": "guid"
+          },
+          "playerData": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlayerData"
+              }
+            ]
+          },
+          "gameData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameData"
+            }
+          }
+        }
+      },
+      "PlayerData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lives": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gameTime": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameData": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ballPosition": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector3"
+              }
+            ]
+          },
+          "boardRotation": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector3"
+              }
+            ]
+          },
+          "inputData": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Vector2"
+              }
+            ]
+          }
+        }
+      },
+      "Vector3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "float"
+          },
+          "y": {
+            "type": "number",
+            "format": "float"
+          },
+          "z": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Vector2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "float"
+          },
+          "y": {
+            "type": "number",
+            "format": "float"
+          }
+        }
       }
     }
   }
