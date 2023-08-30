@@ -1,4 +1,4 @@
-﻿@page "/sessions/device"
+﻿@page "/sessions/game"
 @using MotionController.Sensor.Client;
 
 <PageTitle>Device Sessions</PageTitle>
@@ -7,7 +7,7 @@
 
 Welcome to your new app.
 
-<MudTable T="Db.Data.Models.DeviceSession" Items="@DeviceSessions" Hover="true" OnRowClick="OnRowClickFunc" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="Db.Data.Models.GameSession" Items="@GameSessions" Hover="true" OnRowClick="OnRowClickFunc" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh>Id</MudTh>
         <MudTh>SessionId</MudTh>
@@ -23,17 +23,17 @@ Welcome to your new app.
 </MudTable>
 
 @inject NavigationManager NavigationManager
-@inject IDeviceSessionClient DeviceSessionClient
+@inject IGameSessionClient GameSessionClient
 @code {
-    private IEnumerable<Db.Data.Models.DeviceSession> DeviceSessions { get; set; } = Array.Empty<Db.Data.Models.DeviceSession>();
+    private IEnumerable<Db.Data.Models.GameSession> GameSessions { get; set; } = Array.Empty<Db.Data.Models.GameSession>();
 
     protected override async Task OnInitializedAsync()
     {
-        DeviceSessions = await DeviceSessionClient.GetDeviceSessionsAsync();
+        GameSessions = await GameSessionClient.GetGameSessionsAsync();
     }
 
-    public void OnRowClickFunc(TableRowClickEventArgs<Db.Data.Models.DeviceSession> args)
+    public void OnRowClickFunc(TableRowClickEventArgs<Db.Data.Models.GameSession> args)
     {
-        NavigationManager.NavigateTo($"/sessions/device/{args.Item.SessionId}");
+        NavigationManager.NavigateTo($"/sessions/game/{args.Item.SessionId}");
     }
 }

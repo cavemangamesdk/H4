@@ -15,10 +15,17 @@
     <MudDrawer Open="true" ClipMode="DrawerClipMode.Docked" Elevation="1" Variant="@DrawerVariant.Mini">
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" Href="/" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-            <MudNavLink Href="/device/sessions" Icon="@Icons.Material.Filled.Devices">Sessions</MudNavLink>
+            <MudNavGroup Title="Sessions" @bind-Expanded="IsExpanded" Icon="@Icons.Material.Filled.Assessment">
+                <MudNavLink Href="/sessions/game" Icon="@Icons.Material.Filled.VideogameAsset">Game</MudNavLink>
+                <MudNavLink Href="/sessions/device" Icon="@Icons.Material.Filled.Devices">Device</MudNavLink>
+            </MudNavGroup>
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent Class="pt-16 px-16">
         @Body
     </MudMainContent>
 </MudLayout>
+
+@code {
+    private bool IsExpanded { get; set; } = true;
+}

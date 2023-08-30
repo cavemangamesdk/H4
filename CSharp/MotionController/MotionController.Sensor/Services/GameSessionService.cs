@@ -9,6 +9,7 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionService : IService
 {
+    Task<IEnumerable<GameSession?>> GetGameSessionsAsync();
     Task<GameSession?> GetGameSessionAsync(Guid sessionId);
     Task<bool> AddUnityGameSessionAsync(UnityGameSession gameSession);
 }
@@ -30,6 +31,11 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
     private IGameSessionBallPositionService GameSessionBallPositionService { get; }
     private IGameSessionBoardRotationService GameSessionBoardRotationService { get; }
     private IGameSessionInputDataService GameSessionInputDataService { get; }
+
+    public async Task<IEnumerable<GameSession?>> GetGameSessionsAsync()
+    {
+        return await GameSessionRepository.GetAsync();
+    }
 
     public async Task<GameSession?> GetGameSessionAsync(Guid sessionId)
     {

@@ -20,21 +20,45 @@ namespace MotionController.API.Controllers
         private IGameSessionService GameSessionService { get; }
 
         [HttpGet]
+        [Route("", Name = nameof(GetGameSessionsAsync))]
+        [OpenApiOperation(nameof(GetGameSessionsAsync), "Gets all Game Sessions", "")]
+        [ProducesResponseType(typeof(IEnumerable<GameSession?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetGameSessionsAsync()
+        {
+            try
+            {
+                var gameSessions = await GameSessionService.GetGameSessionsAsync();
+                if (!gameSessions.Any())
+                {
+                    return NotFound();
+                }
+
+                return Ok(gameSessions);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"{nameof(GetGameSessionsAsync)} operation failed.");
+                throw;
+            }
+        }
+
+        [HttpGet]
         [Route("{sessionId:guid}", Name = nameof(GetGameSessionBySessionIdAsync))]
         [OpenApiOperation(nameof(GetGameSessionBySessionIdAsync), "Get a Game Session by Session Id", "")]
-        [ProducesResponseType(typeof(DeviceSession), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GameSession), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetGameSessionBySessionIdAsync([FromRoute] Guid sessionId)
         {
             try
             {
-                var deviceSession = await GameSessionService.GetGameSessionAsync(sessionId);
-                if (deviceSession?.Equals(default) ?? true)
+                var gameSession = await GameSessionService.GetGameSessionAsync(sessionId);
+                if (gameSession?.Equals(default) ?? true)
                 {
                     return NotFound();
                 }
 
-                return Ok(deviceSession);
+                return Ok(gameSession);
             }
             catch (Exception ex)
             {
