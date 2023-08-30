@@ -11,12 +11,18 @@ Welcome to your new app.
     <HeaderContent>
         <MudTh>Id</MudTh>
         <MudTh>SessionId</MudTh>
+        <MudTh>PlayerName</MudTh>
+        <MudTh>Lives</MudTh>
+        <MudTh>GameTime</MudTh>
         <MudTh>Created</MudTh>
         <MudTh>Modified</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="SessionId">@context.SessionId</MudTd>
+        <MudTd DataLabel="PlayerName">@context.PlayerName</MudTd>
+        <MudTd DataLabel="Lives">@context.Lives</MudTd>
+        <MudTd DataLabel="GameTime">@context.GameTime</MudTd>
         <MudTd DataLabel="Created">@context.Created</MudTd>
         <MudTd DataLabel="Modified">@context.Modified</MudTd>
     </RowTemplate>
