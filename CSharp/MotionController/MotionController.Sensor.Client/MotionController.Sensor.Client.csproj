@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MotionController.Sensor.Db.Data\MotionController.Sensor.Db.Data.csproj" />
+    <ProjectReference Include="..\MotionController.Sensor.Models.Abstractions\MotionController.Sensor.Models.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
