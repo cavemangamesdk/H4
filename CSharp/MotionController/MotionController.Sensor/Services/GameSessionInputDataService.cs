@@ -10,7 +10,8 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionInputDataService : IService
 {
-    Task<bool> CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData);
+    Task CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData);
+    Task CreateGameSessionInputDataAsync(GameSession gameSession, IEnumerable<Vector2?> inputData);
 }
 
 internal class GameSessionInputDataService : ServiceBase<GameSessionInputDataService>, IGameSessionInputDataService
@@ -23,11 +24,11 @@ internal class GameSessionInputDataService : ServiceBase<GameSessionInputDataSer
 
     private IServiceProvider ServiceProvider { get; }
 
-    public async Task<bool> CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData)
+    public async Task CreateGameSessionInputDataAsync(GameSession gameSession, Vector2 inputData)
     {
         if (inputData == default)
         {
-            return false;
+            return;
         }
 
         using var scope = ServiceProvider.CreateScope();
@@ -43,10 +44,27 @@ internal class GameSessionInputDataService : ServiceBase<GameSessionInputDataSer
             Y = inputData.Y,
         };
 
-        var created = await gameSessionInputDataRepository.AddAsync(gameSessionInputData);
+        await gameSessionInputDataRepository.AddAsync(gameSessionInputData);
 
         unitOfWork.Complete();
+    }
 
-        return created;
+    public async Task CreateGameSessionInputDataAsync(GameSession gameSession, IEnumerable<Vector2?> inputData)
+    {
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        foreach (var input in inputData)
+        {
+            if (input == default)
+            {
+                continue;
+            }
+
+            await CreateGameSessionInputDataAsync(gameSession, input);
+        }
+
+        unitOfWork.Complete();
     }
 }

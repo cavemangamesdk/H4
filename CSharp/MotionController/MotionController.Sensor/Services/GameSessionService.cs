@@ -60,22 +60,16 @@ internal class GameSessionService : ServiceBase<GameSessionService>, IGameSessio
         }
 
         var ballPositions = unityGameSession.GameData.Select(x => x.BallPosition);
+
+        await GameSessionBallPositionService.CreateGameSessionBallPositionsAsync(gameSession, ballPositions);
+
         var boardRotations = unityGameSession.GameData.Select(x => x.BoardRotation);
+
+        await GameSessionBoardRotationService.CreateGameSessionBoardRotationsAsync(gameSession, boardRotations);
+
         var inputData = unityGameSession.GameData.Select(x => x.InputData);
 
-        foreach (var gameData in unityGameSession.GameData)
-        {
-            if (gameData == default)
-            {
-                continue;
-            }
-
-            await GameSessionBallPositionService.CreateGameSessionBallPositionAsync(gameSession, gameData.BallPosition);
-
-            await GameSessionBoardRotationService.CreateGameSessionBoardRotationAsync(gameSession, gameData.BoardRotation);
-
-            await GameSessionInputDataService.CreateGameSessionInputDataAsync(gameSession, gameData.InputData);
-        }
+        await GameSessionInputDataService.CreateGameSessionInputDataAsync(gameSession, inputData);
 
         return true;
     }
