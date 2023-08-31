@@ -9,13 +9,8 @@
     <MudItem>
         <MudGrid>
             <MudItem>
-                <MudText Typo="Typo.h5">Humidity / Temperature °C</MudText>
-                <MudChart ChartType="ChartType.Line" ChartSeries="@HumiditySeries" XAxisLabels="@HumidityXAxisLabels" Width="100%" Height="350px" />
-            </MudItem>
-
-            <MudItem>
-                <MudText Typo="Typo.h5">Pressure / Temperature °C</MudText>
-                <MudChart ChartType="ChartType.Line" ChartSeries="@PressureSeries" XAxisLabels="@PressureXAxisLabels" Width="100%" Height="350px" />
+                <MudText Typo="Typo.h5">Temperature °C</MudText>
+                <MudChart ChartType="ChartType.Line" ChartSeries="@TemperatureSeries" ChartOptions="temperatureChartOptions" Width="100%" Height="350px" />
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -81,72 +76,29 @@
     private string MagnetometerUrl => $"{BaseUrl}magnetometer";
     private string OrientationUrl => $"{BaseUrl}orientation";
 
-    private List<ChartSeries> HumiditySeries = new List<ChartSeries>();
-    private string[] HumidityXAxisLabels = Array.Empty<string>();
-
-    private List<ChartSeries> PressureSeries = new List<ChartSeries>();
-    private string[] PressureXAxisLabels = Array.Empty<string>();
+    private ChartOptions temperatureChartOptions = new ChartOptions();
+    private List<ChartSeries> TemperatureSeries = new List<ChartSeries>();
 
     protected override async Task OnInitializedAsync()
     {
         var humidities = await DeviceSessionClient.GetDeviceSessionHumidityAsync(SessionId);
+        var pressures = await DeviceSessionClient.GetDeviceSessionPressureAsync(SessionId);
 
-        HumiditySeries.Add(new ChartSeries
+        temperatureChartOptions = new ChartOptions
             {
-                Name = "Humidity Percentage",
-                Data = humidities.Select(h => (double)h.HumidityPercentage).ToArray()
-            });
+                YAxisTicks = 1
+            };
 
-        HumiditySeries.Add(new ChartSeries
+        TemperatureSeries.Add(new ChartSeries
             {
-                Name = "Temperature °C",
+                Name = "Humidity Temperature °C",
                 Data = humidities.Select(h => (double)h.TemperatureCelsius).ToArray()
             });
 
-        HumidityXAxisLabels = humidities.Select(h => h.Timestamp.ToShortDateString()).ToArray();
-
-        var pressures = await DeviceSessionClient.GetDeviceSessionPressureAsync(SessionId);
-
-        PressureSeries.Add(new ChartSeries
+        TemperatureSeries.Add(new ChartSeries
             {
-                Name = "Pressure Millibars",
-                Data = pressures.Select(h => (double)h.PressureMillibars).ToArray()
+                Name = "Pressure Temperature °C",
+                Data = pressures.Select(p => (double)p.TemperatureCelsius).ToArray()
             });
-
-        PressureSeries.Add(new ChartSeries
-            {
-                Name = "Temperature °C",
-                Data = pressures.Select(h => (double)h.TemperatureCelsius).ToArray()
-            });
-
-        PressureXAxisLabels = pressures.Select(h => h.Timestamp.ToShortDateString()).ToArray();
     }
-
-    #region Chart testing
-    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
-
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
-
-    Random random = new Random();
-    public void RandomizeData()
-    {
-        var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "Series 1", Data = new double[9] },
-            new ChartSeries() { Name = "Series 2", Data = new double[9] },
-        };
-        for (int i = 0; i < 9; i++)
-        {
-            new_series[0].Data[i] = random.NextDouble() * 100;
-            new_series[1].Data[i] = random.NextDouble() * 100;
-        }
-        Series = new_series;
-        StateHasChanged();
-    }
-    #endregion
 }
