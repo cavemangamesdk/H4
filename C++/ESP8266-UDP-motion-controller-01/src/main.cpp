@@ -3,7 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-uint16_t UDP_PORT = 4210;
+uint16_t UDP_PORT = 5100;
 
 // Constants
 const unsigned long serial_baudrate = 115200;
@@ -13,19 +13,21 @@ const IPAddress multicastIP(239, 1, 1, 1);
 const uint16_t multicastPort = 5432;
 
 // SSID & password of the Wi-Fi network you want to connect to (will connect to strongest)
-const char* ssid1     = "network 42";   
-const char* password1 = "12345678"; 
-const char* ssid2     = "4G Wi-Fi 3Danmark-1CBA";
-const char* password2 = "aircraft";
-const char* ssid3     = "Grundforlob";
-const char* password3 = "DataitGF";
+const char* ssid0     = "dlink-C134";   
+const char* password0 = "_BossPanda25"; 
+// const char* ssid1     = "network 42";   
+// const char* password1 = "12345678"; 
+// const char* ssid2     = "4G Wi-Fi 3Danmark-1CBA";
+// const char* password2 = "aircraft";
+// const char* ssid3     = "Grundforlob";
+// const char* password3 = "DataitGF";
 
 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
 ESP8266WiFiMulti wifiMulti;
 WiFiUDP udp;
 
-char* target_ip = "192.168.109.175";
+char* target_ip = "192.168.0.100";
 
 // Functions
 void ConnectBMO055() {
@@ -39,9 +41,10 @@ void ConnectBMO055() {
 
 void ConnectWifi() {
 
-  wifiMulti.addAP(ssid1, password1);
-  wifiMulti.addAP(ssid2, password2);
-  wifiMulti.addAP(ssid3, password3);
+  wifiMulti.addAP(ssid0, password0);
+  // wifiMulti.addAP(ssid1, password1);
+  // wifiMulti.addAP(ssid2, password2);
+  // wifiMulti.addAP(ssid3, password3);
 
   Serial.println("Connecting Wifi");
   
