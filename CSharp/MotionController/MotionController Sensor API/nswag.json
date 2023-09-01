@@ -84,7 +84,7 @@
       "queryNullValue": "",
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
-      "additionalNamespaceUsages": [ "System", "MotionController.Sensor.Db.Data.Models" ],
+      "additionalNamespaceUsages": [ "System", "MotionController.Sensor.Db.Data.Models", "MotionController.Sensor.Models.Game" ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": true,
       "generateJsonMethods": true,

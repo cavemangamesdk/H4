@@ -1,4 +1,4 @@
-﻿@page "/device/sessions"
+﻿@page "/sessions/device"
 @using MotionController.Sensor.Client;
 
 <PageTitle>Device Sessions</PageTitle>
@@ -34,6 +34,6 @@ Welcome to your new app.
 
     public void OnRowClickFunc(TableRowClickEventArgs<Db.Data.Models.DeviceSession> args)
     {
-        NavigationManager.NavigateTo($"/device/sessions/{args.Item.SessionId}");
+        NavigationManager.NavigateTo($"/sessions/device/{args.Item.SessionId}");
     }
 }

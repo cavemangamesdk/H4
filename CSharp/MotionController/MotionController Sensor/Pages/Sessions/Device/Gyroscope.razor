@@ -1,9 +1,9 @@
-﻿@page "/device/sessions/{sessionId:guid}/accelerometer"
+﻿@page "/sessions/device/{sessionId:guid}/gyroscope"
 @using MotionController.Sensor.Client;
 
-<PageTitle>Device Session - Accelerometer - @SessionId</PageTitle>
+<PageTitle>Device Session - Gyroscope - @SessionId</PageTitle>
 
-<MudTable T="Db.Data.Models.DeviceSessionAccelerometer" Items="@DeviceSessionAccelerometers" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="Db.Data.Models.DeviceSessionGyroscope" Items="@DeviceSessionGyroscopes" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh>Id</MudTh>
         <MudTh>DeviceSessionId</MudTh>
@@ -37,10 +37,10 @@
     [Parameter]
     public Guid SessionId { get; set; }
 
-    private IEnumerable<Db.Data.Models.DeviceSessionAccelerometer> DeviceSessionAccelerometers { get; set; } = Array.Empty<Db.Data.Models.DeviceSessionAccelerometer>();
+    private IEnumerable<Db.Data.Models.DeviceSessionGyroscope> DeviceSessionGyroscopes { get; set; } = Array.Empty<Db.Data.Models.DeviceSessionGyroscope>();
 
     protected override async Task OnInitializedAsync()
     {
-        DeviceSessionAccelerometers = await DeviceSessionClient.GetDeviceSessionAccelerometerAsync(SessionId, CancellationToken.None);
+        DeviceSessionGyroscopes = await DeviceSessionClient.GetDeviceSessionGyroscopeAsync(SessionId, CancellationToken.None);
     }
 }

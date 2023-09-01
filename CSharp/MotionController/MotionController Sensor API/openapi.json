@@ -301,6 +301,57 @@
         }
       }
     },
+    "/api/v1/game/sessions": {
+      "get": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Gets all Game Sessions",
+        "operationId": "GetGameSessionsAsync",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameSession"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "GameSession"
+        ],
+        "summary": "Adds a Game Session",
+        "operationId": "AddGameSessionAsync",
+        "requestBody": {
+          "x-name": "unityGameSession",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnityGameSession"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/v1/game/sessions/{sessionId}": {
       "get": {
         "tags": [
@@ -326,38 +377,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceSession"
+                  "$ref": "#/components/schemas/GameSession"
                 }
               }
             }
           },
           "404": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/v1/game/sessions": {
-      "post": {
-        "tags": [
-          "GameSession"
-        ],
-        "summary": "Adds a Game Session",
-        "operationId": "AddGameSessionAsync",
-        "requestBody": {
-          "x-name": "unityGameSession",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UnityGameSession"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
             "description": ""
           }
         }
@@ -689,6 +714,47 @@
               "timestamp": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "modified": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "GameSession": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DatabaseModel"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "sessionId": {
+                "type": "string",
+                "format": "guid"
+              },
+              "playerName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lives": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "gameTime": {
+                "type": "string",
+                "format": "duration"
               },
               "created": {
                 "type": "string",

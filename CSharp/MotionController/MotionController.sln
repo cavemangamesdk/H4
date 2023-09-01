@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Sensor.MQTT.Abstractions", "MotionController.Sensor.MQTT.Abstractions\MotionController.Sensor.MQTT.Abstractions.csproj", "{33F5CBB7-31E0-4615-AB29-B3BBF18405FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionController.Extensions.AspNetCore", "MotionController.Extensions.AspNetCore\MotionController.Extensions.AspNetCore.csproj", "{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotionController.Extensions.AspNetCore", "MotionController.Extensions.AspNetCore\MotionController.Extensions.AspNetCore.csproj", "{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{03B74921-B48E-4E0E-B2AD-49B073215224}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +98,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD84E59D-F930-4BE8-A137-A7EA2057673D} = {03B74921-B48E-4E0E-B2AD-49B073215224}
+		{3548E603-5D4F-4CEC-89EB-F1981BE33F92} = {03B74921-B48E-4E0E-B2AD-49B073215224}
+		{11D8D756-111E-4A3F-9DC3-D9F5B9A3787D} = {03B74921-B48E-4E0E-B2AD-49B073215224}
+		{1627305F-651B-457C-BA75-43B677A50AD6} = {03B74921-B48E-4E0E-B2AD-49B073215224}
+		{C50FEE2C-E310-47BE-B5E5-BE8E5F6BB6CF} = {03B74921-B48E-4E0E-B2AD-49B073215224}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FCBEF87A-70A9-4800-9484-482CBA88BD59}

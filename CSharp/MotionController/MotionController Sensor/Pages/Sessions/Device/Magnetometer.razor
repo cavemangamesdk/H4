@@ -1,15 +1,13 @@
-﻿@page "/device/sessions/{sessionId:guid}/gyroscope"
+﻿@page "/sessions/device/{sessionId:guid}/magnetometer"
 @using MotionController.Sensor.Client;
 
-<PageTitle>Device Session - Gyroscope - @SessionId</PageTitle>
+<PageTitle>Device Session - Magnetometer - @SessionId</PageTitle>
 
-<MudTable T="Db.Data.Models.DeviceSessionGyroscope" Items="@DeviceSessionGyroscopes" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="Db.Data.Models.DeviceSessionMagnetometer" Items="@DeviceSessionMagnetometers" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh>Id</MudTh>
         <MudTh>DeviceSessionId</MudTh>
-        <MudTh>Roll</MudTh>
-        <MudTh>Pitch</MudTh>
-        <MudTh>Yaw</MudTh>
+        <MudTh>North</MudTh>
         <MudTh>XRaw</MudTh>
         <MudTh>YRaw</MudTh>
         <MudTh>ZRaw</MudTh>
@@ -20,9 +18,7 @@
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="DeviceSessionId">@context.DeviceSessionId</MudTd>
-        <MudTd DataLabel="Roll">@context.Roll</MudTd>
-        <MudTd DataLabel="Pitch">@context.Pitch</MudTd>
-        <MudTd DataLabel="Yaw">@context.Yaw</MudTd>
+        <MudTd DataLabel="North">@context.North</MudTd>
         <MudTd DataLabel="XRaw">@context.XRaw</MudTd>
         <MudTd DataLabel="YRaw">@context.YRaw</MudTd>
         <MudTd DataLabel="ZRaw">@context.ZRaw</MudTd>
@@ -37,10 +33,10 @@
     [Parameter]
     public Guid SessionId { get; set; }
 
-    private IEnumerable<Db.Data.Models.DeviceSessionGyroscope> DeviceSessionGyroscopes { get; set; } = Array.Empty<Db.Data.Models.DeviceSessionGyroscope>();
+    private IEnumerable<Db.Data.Models.DeviceSessionMagnetometer> DeviceSessionMagnetometers { get; set; } = Array.Empty<Db.Data.Models.DeviceSessionMagnetometer>();
 
     protected override async Task OnInitializedAsync()
     {
-        DeviceSessionGyroscopes = await DeviceSessionClient.GetDeviceSessionGyroscopeAsync(SessionId, CancellationToken.None);
+        DeviceSessionMagnetometers = await DeviceSessionClient.GetDeviceSessionMagnetometerAsync(SessionId, CancellationToken.None);
     }
 }
