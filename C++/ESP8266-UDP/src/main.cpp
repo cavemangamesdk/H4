@@ -1,16 +1,16 @@
-/*
-    Motion controller based on the ESP8266 and the BNO055 sensor
-    Version 4, with automatic game websocket server detection
-*/
-
-// Includes
 #include <ESP8266WiFiMulti.h>
 #include <Adafruit_BNO055.h>
-#include <WebSocketsClient.h>
+#include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+
+uint16_t UDP_PORT = 4210;
 
 // Constants
 const unsigned long serial_baudrate = 115200;
+
+// Websocket server IP multicast
+const IPAddress multicastIP(239, 1, 1, 1);
+const uint16_t multicastPort = 5432;
 
 // SSID & password of the Wi-Fi network you want to connect to (will connect to strongest)
 const char* ssid1     = "network 42";   
@@ -20,21 +20,12 @@ const char* password2 = "aircraft";
 const char* ssid3     = "Grundforlob";
 const char* password3 = "DataitGF";
 
-// Websocket server
-//const char* ws_ip = "192.168.8.104";
-//const char* ws_ip = "192.168.5.113";
-const uint16_t ws_port = 80;
-const String ws_path = "/MotionController";
-
-// Websocket server IP multicast
-const IPAddress multicastIP(239, 1, 1, 1);
-const uint16_t multicastPort = 5432;
-
 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
 ESP8266WiFiMulti wifiMulti;
-WebSocketsClient webSocket;
 WiFiUDP udp;
+
+char* target_ip = "192.168.109.175";
 
 // Functions
 void ConnectBMO055() {
@@ -65,45 +56,6 @@ void ConnectWifi() {
   Serial.println(WiFi.localIP());
 }
 
-void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
-  // Boilerplate websocket event handler
-  switch(type) {
-    case WStype_DISCONNECTED:
-      Serial.printf("[WSc] Disconnected!\n");
-      break;
-    case WStype_CONNECTED:
-      Serial.printf("[WSc] Connected to url: %s\n", payload);
-      break;
-    case WStype_TEXT:
-      Serial.printf("[WSc] get text: %s\n", payload);
-      break;
-    case WStype_BIN:
-      Serial.printf("[WSc] get binary length: %u\n", length);
-      break;
-    case WStype_PING:
-      Serial.printf("[WSc] get ping\n");
-      break;
-    case WStype_PONG:
-      Serial.printf("[WSc] get pong\n");
-      break;
-    case WStype_ERROR:
-      Serial.printf("[WSc] get error\n");
-      break;
-    case WStype_FRAGMENT_TEXT_START:
-      Serial.printf("[WSc] get fragment text start\n");
-      break;
-    case WStype_FRAGMENT_BIN_START:
-      Serial.printf("[WSc] get fragment bin start\n");
-      break;
-    case WStype_FRAGMENT:
-      Serial.printf("[WSc] get fragment\n");
-      break;
-    case WStype_FRAGMENT_FIN:
-      Serial.printf("[WSc] get fragment fin\n");
-      break;
-  }
-}
-
 String ConnectMulticast() {
   Serial.println("Attempting to start UDP multicast listener...");
   if (udp.beginMulticast(WiFi.localIP(), multicastIP, multicastPort)) {
@@ -116,6 +68,8 @@ String ConnectMulticast() {
   while(udp.parsePacket() <= 0) {
     int packetSize = udp.parsePacket();
     if (packetSize) {
+      char* sender_ip = (char*)udp.remoteIP().toString().c_str();
+      Serial.println(sender_ip);
       Serial.println(packetSize);
       char incomingPacket[255];
       int len = udp.read(incomingPacket, 255);
@@ -124,30 +78,30 @@ String ConnectMulticast() {
       }
       Serial.printf("UDP packet contents: %s\n", incomingPacket);
       //ws_ip = incomingPacket;
-      udp.stop();
-      udp.flush();
+      //udp.stop();
+      //udp.flush();+
       return String(incomingPacket);
     }
   }
   return String();
 }
 
-void ConnectWebSocket(String ws_ip) {
-  Serial.print("Attempting to start websocket connection to IP " + ws_ip + "\n");
-  webSocket.begin(ws_ip, ws_port, ws_path);
-  webSocket.onEvent(webSocketEvent);
-  webSocket.setReconnectInterval(1000);
-  webSocket.enableHeartbeat(15000, 3000, 2);
-}
-
 void GetOrientationData() {
   sensors_event_t orientationData;
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
-  String oy = String( orientationData.orientation.y);
+  String oy = String(orientationData.orientation.y);
   String oz = String(-orientationData.orientation.z);
   String payload = oy + "," + oz;
-  webSocket.sendTXT(payload);
-  //Serial.println(message);
+  udp.beginPacket(target_ip, UDP_PORT);
+  udp.write(payload.c_str());
+  udp.endPacket();
+}
+
+void ConnectUdp(int port) {
+  Serial.println("Seting up UDP client...");
+  udp.begin(port);
+  Serial.print("UDP server started on port ");
+  Serial.println(port);
 }
 
 void setup() {
@@ -155,11 +109,11 @@ void setup() {
   Serial.println("Setting up motion controller...");
   ConnectBMO055();
   ConnectWifi();
-  String ip = ConnectMulticast();
-  ConnectWebSocket(ip);
+  //target_ip = (char*)ConnectMulticast().c_str();
+  //Serial.println((char*)ConnectMulticast().c_str());
+  ConnectUdp(UDP_PORT);
 }
 
 void loop() {
-  webSocket.loop();
   GetOrientationData();
 }

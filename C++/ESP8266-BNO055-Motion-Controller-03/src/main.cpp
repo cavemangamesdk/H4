@@ -19,7 +19,7 @@ const char* ssid3     = "Grundforlob";
 const char* password3 = "DataitGF";
 
 // Websocket server
-const char* ws_ip = "192.168.109.1";
+const char* ws_ip = "192.168.109.175";
 //const char* ws_ip = "192.168.5.113";
 const uint16_t ws_port = 80;
 const char* ws_path = "/MotionController";
@@ -31,11 +31,12 @@ WebSocketsClient webSocket;
 
 // Functions
 void ConnectBMO055() {
+  Serial.println("Setting up orientation sensor...");
   if (!bno.begin()) {
-    Serial.print("BNO055 not detected... Check wiring and I2C address!");
+    Serial.println("BNO055 not detected. Check wiring and I2C address!");
     while (1);
   }
-  Serial.print("BNO055 detected!");
+  Serial.println("BNO055 detected!");
 }
 
 void ConnectWifi() {
@@ -44,16 +45,16 @@ void ConnectWifi() {
   wifiMulti.addAP(ssid2, password2);
   wifiMulti.addAP(ssid3, password3);
 
-  Serial.println("Connecting Wifi");
+  Serial.println("Connecting to Wifi");
   
   while (wifiMulti.run() != WL_CONNECTED) {
     delay(100);
     Serial.print('.');
   }
   Serial.println('\n');
-  Serial.print("Connected to ");
+  Serial.print("Connected to: ");
   Serial.println(WiFi.SSID());
-  Serial.print("IP address:\t");
+  Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 }
 
@@ -97,10 +98,11 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 }
 
 void ConnectWebSocket() {
+  Serial.println("Connecting to WebSocket server...");
   webSocket.begin(ws_ip, ws_port, ws_path);
   webSocket.onEvent(webSocketEvent);
-  webSocket.setReconnectInterval(1000);
-  webSocket.enableHeartbeat(15000, 3000, 2);
+  // webSocket.setReconnectInterval(1000);
+  // webSocket.enableHeartbeat(15000, 3000, 2);
 }
 
 void GetOrientationData() {
@@ -115,6 +117,8 @@ void GetOrientationData() {
 
 void setup() {
   Serial.begin(serial_baudrate);
+  Serial.println();
+  Serial.println("Setting up motion controller...");
   ConnectBMO055();
   ConnectWifi();
   ConnectWebSocket();
