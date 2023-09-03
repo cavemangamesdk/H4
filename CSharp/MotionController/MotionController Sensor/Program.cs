@@ -13,7 +13,6 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
-builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddSensorClient(builder.Configuration);
 
