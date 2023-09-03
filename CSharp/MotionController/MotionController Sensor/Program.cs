@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MotionController.Extensions.DependencyInjection;
-using MotionController.Sensor.Data;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
