@@ -10,7 +10,8 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionBoardRotationService : IService
 {
-    Task<bool> CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation);
+    Task CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation);
+    Task CreateGameSessionBoardRotationsAsync(GameSession gameSession, IEnumerable<Vector3?> boardRotations);
 }
 
 internal class GameSessionBoardRotationService : ServiceBase<GameSessionBoardRotationService>, IGameSessionBoardRotationService
@@ -23,13 +24,8 @@ internal class GameSessionBoardRotationService : ServiceBase<GameSessionBoardRot
 
     private IServiceProvider ServiceProvider { get; }
 
-    public async Task<bool> CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation)
+    public async Task CreateGameSessionBoardRotationAsync(GameSession gameSession, Vector3 boardRotation)
     {
-        if (boardRotation == default)
-        {
-            return false;
-        }
-
         using var scope = ServiceProvider.CreateScope();
 
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
@@ -44,10 +40,27 @@ internal class GameSessionBoardRotationService : ServiceBase<GameSessionBoardRot
             Z = boardRotation.Z
         };
 
-        var created = await gameSessionBoardRotationRepository.AddAsync(gameSessionBoardRotation);
+        await gameSessionBoardRotationRepository.AddAsync(gameSessionBoardRotation);
 
         unitOfWork.Complete();
+    }
 
-        return created;
+    public async Task CreateGameSessionBoardRotationsAsync(GameSession gameSession, IEnumerable<Vector3?> boardRotations)
+    {
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        foreach (var boardRotation in boardRotations)
+        {
+            if (boardRotation == default)
+            {
+                continue;
+            }
+
+            await CreateGameSessionBoardRotationAsync(gameSession, boardRotation);
+        }
+
+        unitOfWork.Complete();
     }
 }

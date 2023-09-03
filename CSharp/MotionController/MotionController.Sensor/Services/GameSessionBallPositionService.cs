@@ -10,12 +10,13 @@ namespace MotionController.Sensor.Services;
 
 public interface IGameSessionBallPositionService : IService
 {
-    Task<bool> CreateGameSessionBallPositionAsync(GameSession gameSession, Vector3 ballPosition);
+    Task CreateGameSessionBallPositionAsync(GameSession gameSession, Vector3 ballPosition);
+    Task CreateGameSessionBallPositionsAsync(GameSession gameSession, IEnumerable<Vector3?> ballPositions);
 }
 
 internal class GameSessionBallPositionService : ServiceBase<GameSessionBallPositionService>, IGameSessionBallPositionService
 {
-    public GameSessionBallPositionService(ILogger<GameSessionBallPositionService> logger, IServiceProvider serviceProvider) 
+    public GameSessionBallPositionService(ILogger<GameSessionBallPositionService> logger, IServiceProvider serviceProvider)
         : base(logger)
     {
         ServiceProvider = serviceProvider;
@@ -23,13 +24,8 @@ internal class GameSessionBallPositionService : ServiceBase<GameSessionBallPosit
 
     private IServiceProvider ServiceProvider { get; }
 
-    public async Task<bool> CreateGameSessionBallPositionAsync(GameSession gameSession, Vector3 ballPosition)
+    public async Task CreateGameSessionBallPositionAsync(GameSession gameSession, Vector3 ballPosition)
     {
-        if (ballPosition == default)
-        {
-            return false;
-        }
-
         using var scope = ServiceProvider.CreateScope();
 
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
@@ -44,10 +40,27 @@ internal class GameSessionBallPositionService : ServiceBase<GameSessionBallPosit
             Z = ballPosition.Z
         };
 
-        var created = await gameSessionBallPositionRepository.AddAsync(gameSessionBallPosition);
+        await gameSessionBallPositionRepository.AddAsync(gameSessionBallPosition);
 
         unitOfWork.Complete();
+    }
 
-        return created;
+    public async Task CreateGameSessionBallPositionsAsync(GameSession gameSession, IEnumerable<Vector3?> ballPositions)
+    {
+        using var scope = ServiceProvider.CreateScope();
+
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+        foreach (var ballPosition in ballPositions)
+        {
+            if (ballPosition == default)
+            {
+                continue;
+            }
+
+            await CreateGameSessionBallPositionAsync(gameSession, ballPosition);
+        }
+
+        unitOfWork.Complete();
     }
 }

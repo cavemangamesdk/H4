@@ -1,9 +1,10 @@
 [Unit]
 Description=Controller script
-Wants=network-online.target
+StartLimitIntervalSec=5
 
 [Service]
-ExecStart=/usr/bin/python3 /controller/websocket-server-bno055-01.py
+ExecStart=/usr/bin/python3 /controller/motion-controller-SenseHat-udp-01.py
+StartLimitBurst=12
 
 [Install]
 WantedBy=multi-user.target

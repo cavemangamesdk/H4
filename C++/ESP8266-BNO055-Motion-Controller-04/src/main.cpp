@@ -38,11 +38,12 @@ WiFiUDP udp;
 
 // Functions
 void ConnectBMO055() {
+  Serial.println("Setting up orientation sensor...");
   if (!bno.begin()) {
-    Serial.print("BNO055 not detected... Check wiring and I2C address!");
+    Serial.println("BNO055 not detected... Check wiring and I2C address!");
     while (1);
   }
-  Serial.print("BNO055 detected!");
+  Serial.println("BNO055 detected!");
 }
 
 void ConnectWifi() {
@@ -104,7 +105,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 }
 
 String ConnectMulticast() {
-  Serial.println("Attempting to start UDP multicast listener\n");
+  Serial.println("Attempting to start UDP multicast listener...");
   if (udp.beginMulticast(WiFi.localIP(), multicastIP, multicastPort)) {
       Serial.println("UDP multicast listener started");
   } else {
@@ -151,6 +152,7 @@ void GetOrientationData() {
 
 void setup() {
   Serial.begin(serial_baudrate);
+  Serial.println("Setting up motion controller...");
   ConnectBMO055();
   ConnectWifi();
   String ip = ConnectMulticast();
