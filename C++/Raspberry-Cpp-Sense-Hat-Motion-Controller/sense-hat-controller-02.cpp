@@ -40,19 +40,19 @@ joystickState GetJoystickInput() {
     if (clicked) {
 
         switch (joystick.action) {
-            case KEY_ENTER:	joystickState.action = "push  "; break;
-            case KEY_UP:	joystickState.action = "up    "; break;
-            case KEY_LEFT:	joystickState.action = "left  "; break;
-            case KEY_RIGHT:	joystickState.action = "right "; break;
-            case KEY_DOWN:	joystickState.action = "down  "; break;
-            default:		joystickState.action = "none  "; break;
+            case KEY_ENTER:	joystickState.action = "push";  break;
+            case KEY_UP:	joystickState.action = "up";    break;
+            case KEY_LEFT:	joystickState.action = "left";  break;
+            case KEY_RIGHT:	joystickState.action = "right"; break;
+            case KEY_DOWN:	joystickState.action = "down";  break;
+            default:		joystickState.action = "none";  break;
         }
 
         switch(joystick.state) {
-            case KEY_RELEASED:	joystickState.state = "released"; break;
-            case KEY_PRESSED:	joystickState.state = "pressed"; break;
-            case KEY_HELD:		joystickState.state = "held"; break;
-            default:			joystickState.state = "none"; break;
+            case KEY_RELEASED: joystickState.state = "released"; break;
+            case KEY_PRESSED:  joystickState.state = "pressed";  break;
+            case KEY_HELD:     joystickState.state = "held";     break;
+            default:           joystickState.state = "none";     break;
         }
 
         return joystickState;
