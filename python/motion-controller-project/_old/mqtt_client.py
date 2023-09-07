@@ -69,7 +69,7 @@ testDictJson = json.dumps(testDict)
 # a single publish, this can also be done in loops, etc.
 while True:
     client.loop_start()
-    client.publish("encyclopedia/temperature", payload=testJson, qos=1)
+    client.publish("sensehat", payload=testJson, qos=1)
     client.loop_stop()
      
     time.sleep(1)
