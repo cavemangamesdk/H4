@@ -1,20 +1,5 @@
-/* File: 05_getTempHumid_HTS221.cpp
- * Author: Philippe Latu
+/* 
  * Source: https://github.com/platu/libsensehat-cpp
- *
- * This example program collects measures from the HTS221 Humidity sensor.
- * This sensor provides temperature measurement in degrees Celsius and relative
- * humidity measurement.
- *
- * Function prototypes:
- * 
- * double senseGetTemperatureFromHumidity();
- *   ^- temperature
- *
- * double senseGetHumidity();
- *   ^- humidity
- *
- * The program simply calls the two functions
  */
 
 #include <iostream>
