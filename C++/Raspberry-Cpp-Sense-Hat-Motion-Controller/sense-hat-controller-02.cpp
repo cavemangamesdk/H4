@@ -1,9 +1,15 @@
-// sensehat library: https://github.com/platu/libsensehat-cpp
-// boost library: https://www.boost.org/
+/*
+    This program is intended to run on a Raspberry Pi with WiFi access and a Sense Hat module installed.  
+    It sends orientation data and joystick events to a Unity game on the same wlan via UDP.
+
+    Links:
+    sensehat library: https://github.com/platu/libsensehat-cpp
+    boost library: https://www.boost.org/
+*/
 
 #include <boost/asio.hpp>
 #include <sensehat.h>
-#include <thread>
+#include <thread> 
 #include <iostream>
 #include <string>
 #include <chrono>
