@@ -18,37 +18,47 @@
  */
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include <iomanip>
 #include <sensehat.h>
 
 using namespace std;
 
-int main() {
+void GetData() {
 
 	double HumidTemp, PressureTemp, Humid, Pressure;
-
-	if(senseInit()) {
+	
+	while (true)
+	{
 		cout << "-------------------------------" << endl
-			 << "Sense Hat initialization Ok." << endl;
+			<< "Sense Hat initialization Ok." << endl;
 		senseClear();
- 
+
 		HumidTemp = senseGetTemperatureFromHumidity();
 		cout << fixed << setprecision(2) << "Temp (from humidity) = " << HumidTemp << "°C" << endl;
 
 		Humid = senseGetHumidity();
 		cout << fixed << setprecision(0) << "Humidity = " << Humid << "% rH" << endl;
- 
+
 		PressureTemp = senseGetTemperatureFromPressure();
 		cout << fixed << setprecision(2) << "Temp (from pressure) = " << PressureTemp << "°C" << endl;
 
 		Pressure = senseGetPressure();
 		cout << fixed << setprecision(0) << "Pressure = " << Pressure << "hPa" << endl;
 
-		cout << endl << "Waiting for keypress." << endl;
-		senseShutdown();
-		cout << "-------------------------------" << endl
-			 << "Sense Hat shut down." << endl;
+		std::this_thread::sleep_for(10s);
 	}
+}
+
+int main() {
+
+	if(senseInit()) {
+		std::thread first(GetData);
+		first.join();
+	}
+
+	senseShutdown();
 
 	return EXIT_SUCCESS;
 }
