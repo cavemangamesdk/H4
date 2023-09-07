@@ -39,8 +39,9 @@ void GetData() {
 int main() {
 
 	if(senseInit()) {
-		std::thread first(GetData);
-		first.join();
+		// std::thread first(GetData);
+		// first.join();
+		GetData();
 	}
 
 	senseShutdown();
