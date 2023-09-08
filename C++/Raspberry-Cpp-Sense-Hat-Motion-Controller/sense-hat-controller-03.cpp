@@ -40,12 +40,12 @@ joystickState GetJoystickInput() {
     stick_t joystick;
     joystickState joystickState;
 
-    senseSetJoystickWaitTime(0, 20);
+    //senseSetJoystickWaitTime(0, 20);
 	bool clicked = senseGetJoystickEvent(joystick);
     
     if (clicked) {
 
-        // Action is inverted because the joystick is mounted upside down
+        // Action is inverted because the Sense Hat is mounted upside down
         switch (joystick.action) {
             case KEY_ENTER:	joystickState.action = "push";  break;
             case KEY_UP:	joystickState.action = "down";  break;
@@ -116,7 +116,6 @@ int main(int argc, char* argv[]) {
 
             socket.send_to(buffer(orientationMessage, orientationMessage.size()), orientation_endpoint);
             socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + joystickEvent.state.size() + 1), joystick_endpoint);
-            //socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + 1 + joystickEvent.state.size() + 1), joystick_endpoint);
 
             this_thread::sleep_for(std::chrono::milliseconds(10));
         }
