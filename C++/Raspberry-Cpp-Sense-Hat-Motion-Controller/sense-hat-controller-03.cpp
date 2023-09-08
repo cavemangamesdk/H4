@@ -73,9 +73,22 @@ joystickState GetJoystickInput() {
     }
 }
 
-int main() {
+// main takes the UDP IPv4 address as an argument
+int main(int argc, char* argv[]) {
+
+    std::string ip = "";
     
-    std::string ip = "192.168.109.1";
+    // Set ip to argument value if provided
+    if (argc == 2) {
+        std::string arg = argv[1];
+
+        cout << "IP: " << arg << endl;
+
+        ip = arg;
+    } else {
+        return EXIT_FAILURE;
+    }
+    
     std::string orientation_port = "5100";
     std::string joystick_port = "5101";
 
@@ -102,8 +115,9 @@ int main() {
             joystickState joystickEvent = GetJoystickInput();
 
             socket.send_to(buffer(orientationMessage, orientationMessage.size()), orientation_endpoint);
-            socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + joystickEvent.state.size()), joystick_endpoint);
-  
+            socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + joystickEvent.state.size() + 1), joystick_endpoint);
+            //socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + 1 + joystickEvent.state.size() + 1), joystick_endpoint);
+
             this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
