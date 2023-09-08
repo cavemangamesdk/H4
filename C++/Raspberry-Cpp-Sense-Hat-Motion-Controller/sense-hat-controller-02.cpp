@@ -45,12 +45,13 @@ joystickState GetJoystickInput() {
     
     if (clicked) {
 
+        // Action is inverted because the joystick is mounted upside down
         switch (joystick.action) {
             case KEY_ENTER:	joystickState.action = "push";  break;
-            case KEY_UP:	joystickState.action = "up";    break;
-            case KEY_LEFT:	joystickState.action = "left";  break;
-            case KEY_RIGHT:	joystickState.action = "right"; break;
-            case KEY_DOWN:	joystickState.action = "down";  break;
+            case KEY_UP:	joystickState.action = "down";  break;
+            case KEY_LEFT:	joystickState.action = "right"; break;
+            case KEY_RIGHT:	joystickState.action = "left";  break;
+            case KEY_DOWN:	joystickState.action = "up";    break;
             default:		joystickState.action = "none";  break;
         }
 
@@ -74,7 +75,7 @@ joystickState GetJoystickInput() {
 
 int main() {
     
-    std::string ip = "192.168.109.1";
+    std::string ip = "192.168.109.175";
     std::string orientation_port = "5100";
     std::string joystick_port = "5101";
 
