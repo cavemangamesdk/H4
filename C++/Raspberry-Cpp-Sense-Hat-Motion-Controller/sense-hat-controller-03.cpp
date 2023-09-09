@@ -68,7 +68,7 @@ string GetJoystickInput() {
         joystickEvent.state = "none";
     }
 
-    return to_string(joystickEvent.action) + "," + to_string(joystickEvent.state);
+    return joystickEvent.action + "," + joystickEvent.state;
 }
 
 // main takes the UDP IPv4 address as an argument
