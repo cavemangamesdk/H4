@@ -17,7 +17,7 @@
 using namespace std;
 using namespace boost::asio;
 
-struct joystickState {
+struct JoystickEvent {
     std::string action;
     std::string state;
 };
@@ -35,10 +35,10 @@ string GetOrientationData() {
     return to_string(-x) + "," + to_string(y);
 }
 
-joystickState GetJoystickInput() {
+string GetJoystickInput() {
     
     stick_t joystick;
-    joystickState joystickState;
+    JoystickEvent joystickEvent;
 
     //senseSetJoystickWaitTime(0, 20);
 	bool clicked = senseGetJoystickEvent(joystick);
@@ -47,30 +47,28 @@ joystickState GetJoystickInput() {
 
         // Action is inverted because the Sense Hat is mounted upside down
         switch (joystick.action) {
-            case KEY_ENTER:	joystickState.action = "push";  break;
-            case KEY_UP:	joystickState.action = "down";  break;
-            case KEY_LEFT:	joystickState.action = "right"; break;
-            case KEY_RIGHT:	joystickState.action = "left";  break;
-            case KEY_DOWN:	joystickState.action = "up";    break;
-            default:		joystickState.action = "none";  break;
+            case KEY_ENTER:	joystickEvent.action = "enter";  break;
+            case KEY_UP:	joystickEvent.action = "down";  break;
+            case KEY_LEFT:	joystickEvent.action = "right"; break;
+            case KEY_RIGHT:	joystickEvent.action = "left";  break;
+            case KEY_DOWN:	joystickEvent.action = "up";    break;
+            default:		joystickEvent.action = "none";  break;
         }
 
         switch(joystick.state) {
-            case KEY_RELEASED: joystickState.state = "released"; break;
-            case KEY_PRESSED:  joystickState.state = "pressed";  break;
-            case KEY_HELD:     joystickState.state = "held";     break;
-            default:           joystickState.state = "none";     break;
+            case KEY_RELEASED: joystickEvent.state = "released"; break;
+            case KEY_PRESSED:  joystickEvent.state = "pressed";  break;
+            case KEY_HELD:     joystickEvent.state = "held";     break;
+            default:           joystickEvent.state = "none";     break;
         }
-
-        return joystickState;
 
     } else {
 
-        joystickState.action = "none";
-        joystickState.state = "none";
-
-        return joystickState;
+        joystickEvent.action = "none";
+        joystickEvent.state = "none";
     }
+
+    return to_string(joystickEvent.action) + "," + to_string(joystickEvent.state);
 }
 
 // main takes the UDP IPv4 address as an argument
@@ -81,9 +79,7 @@ int main(int argc, char* argv[]) {
     // Set ip to argument value if provided
     if (argc == 2) {
         std::string arg = argv[1];
-
         cout << "IP: " << arg << endl;
-
         ip = arg;
     } else {
         return EXIT_FAILURE;
@@ -112,12 +108,12 @@ int main(int argc, char* argv[]) {
         while(true) {
             
             string orientationMessage = GetOrientationData();
-            joystickState joystickEvent = GetJoystickInput();
+            string joystickEvent = GetJoystickInput();
 
             socket.send_to(buffer(orientationMessage, orientationMessage.size()), orientation_endpoint);
-            socket.send_to(buffer(joystickEvent.action + "," + joystickEvent.state, joystickEvent.action.size() + joystickEvent.state.size() + 1), joystick_endpoint);
+            socket.send_to(buffer(joystickEvent, joystickEvent.size()), joystick_endpoint);
 
-            this_thread::sleep_for(std::chrono::milliseconds(10));
+            this_thread::sleep_for(std::chrono::milliseconds(8));
         }
     }
 

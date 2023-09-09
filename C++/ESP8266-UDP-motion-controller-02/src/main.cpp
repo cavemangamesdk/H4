@@ -3,25 +3,21 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-uint16_t UDP_PORT = 5100;
-
 // Constants
 const unsigned long serial_baudrate = 115200;
 
-// Websocket server IP multicast
-const IPAddress multicastIP(239, 1, 1, 1);
-const uint16_t multicastPort = 5432;
-
 // SSID & password of the Wi-Fi network you want to connect to (will connect to strongest)
-const char* ssid0     = "dlink-C134";   
-const char* password0 = "_BossPanda25"; 
+const char* ssid0     = "network 42";   
+const char* password0 = "12345678"; 
+
+// Target IPv4 address and port the UDP client will connect to
+char* target_ip = "192.168.109.175";
+uint16_t udp_port = 5100;
 
 //
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
 ESP8266WiFiMulti wifiMulti;
 WiFiUDP udp;
-
-char* target_ip = "192.168.0.100";
 
 // Functions
 void ConnectBMO055() {
@@ -55,7 +51,7 @@ void GetOrientationData() {
   String oy = String(orientationData.orientation.y);
   String oz = String(-orientationData.orientation.z);
   String payload = oy + "," + oz;
-  udp.beginPacket(target_ip, UDP_PORT);
+  udp.beginPacket(target_ip, udp_port);
   udp.write(payload.c_str());
   udp.endPacket();
 }
@@ -72,7 +68,7 @@ void setup() {
   Serial.println("Setting up motion controller...");
   ConnectBMO055();
   ConnectWifi();
-  ConnectUdp(UDP_PORT);
+  ConnectUdp(udp_port);
 }
 
 void loop() {
