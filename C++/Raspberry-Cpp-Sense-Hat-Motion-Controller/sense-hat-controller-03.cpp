@@ -13,6 +13,8 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <sstream> // for formatNumber
+#include <iomanip> // for formatNumber
 
 using namespace std;
 using namespace boost::asio;
@@ -21,6 +23,21 @@ struct JoystickEvent {
     std::string action;
     std::string state;
 };
+
+std::string SetPrecision(double value, int precision) {
+    std::string str = std::to_string(value);
+    size_t pos = str.find('.');
+    if (pos != std::string::npos && str.size() > pos + precision) {
+        str = str.substr(0, pos + precision + 1);
+    }
+    return str;
+}
+
+std::string formatNumber(double number, int decimalPlaces) {
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(decimalPlaces) << number;
+    return stream.str();
+}
 
 bool ConnectSenseHat() {
     bool status = senseInit();
@@ -32,7 +49,9 @@ bool ConnectSenseHat() {
 string GetOrientationData() {
     double x, y ,z;
     senseGetOrientationDegrees(x, y, z);
-    return to_string(-x) + "," + to_string(y);
+    //return SetPrecision(-x, 2) + "," + SetPrecision(y, 2);
+    return formatNumber(-x, 2) + "," + formatNumber(y, 2);
+    //return to_string(-x) + "," + to_string(y);
 }
 
 string GetJoystickInput() {
