@@ -85,8 +85,8 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
     
-    std::string orientation_port = "5100";
-    std::string joystick_port = "5101";
+    const std::string orientation_port = "5100";
+    const std::string joystick_port = "5101";
 
     io_service io_service;
 
