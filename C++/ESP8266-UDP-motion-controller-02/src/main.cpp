@@ -11,7 +11,7 @@ const char* ssid0     = "network 42";
 const char* password0 = "12345678"; 
 
 // Target IPv4 address and port the UDP client will connect to
-char* target_ip = "192.168.109.175";
+char* target_ip = "192.168.109.1";
 uint16_t udp_port = 5100;
 
 //
