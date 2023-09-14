@@ -59,6 +59,7 @@ int main(void)
 
     std::ofstream outputFile;
     outputFile.open("received_data.csv");
+    outputFile << "timestamp, orientation_x, orientation_y, joystick_action, joystick_state" << std::endl;
 
 
     // Initialization
@@ -79,6 +80,9 @@ int main(void)
     Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
     Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
+
+    //Mesh cubeMesh = GenMeshCube(10.0f, 1.0f, 10.0f);
+    //Model cubeModel = LoadModelFromMesh(cubeMesh);
 
     float pitch = 0.0f;
     float roll = 0.0f;
@@ -107,11 +111,14 @@ int main(void)
         std::string orientation_data(buffer.data(), length);
 
         // Split string
-        std::vector<std::string> v = split(orientation_data, delimiter);
+        std::vector<std::string> orientation = split(orientation_data, delimiter);
+        std::string orientation_x = orientation[0];
+        std::string orientation_y = orientation[1];
 
         // Print to console
         std::cout << orientation_data << std::endl;
-        std::cout << v[0] << ", " << v[1] << std::endl;
+        std::cout << orientation_x << ", " << orientation_y << std::endl;
+
 
         // Log to csv file
         //outputFile << "timestamp, " << date_time << "orientation, " << orientation_data << std::endl;
@@ -122,16 +129,21 @@ int main(void)
         std::string joystick_data = std::string(buffer.data(), length);
 
         // Split string
-        std::vector<std::string> j = split(joystick_data, delimiter);
+        std::vector<std::string> joystick = split(joystick_data, delimiter);
+        std::string joystick_action = joystick[0];
+        std::string joystick_state = joystick[1];
 
         // Print to console
         std::cout << joystick_data << std::endl;
-        std::cout << j[0] << ", " << j[1] << std::endl;
+        std::cout << joystick_action << ", " << joystick_state << std::endl;
 
         // Log to csv file
         //outputFile << "timestamp, " << date_time << "joystick, " << joystick_data << std::endl;
 
-        outputFile << "timestamp, " << date_time << "orientation, " << orientation_data << "joystick, " << joystick_data << std::endl;
+        //outputFile << "timestamp, " << date_time << "orientation, " << orientation_data << "joystick, " << joystick_data << std::endl;
+        //outputFile << date_time << ", " << orientation_x << ", " << orientation_y << ", " << joystick_action << ", " << joystick_state << std::endl;
+        outputFile << "\"" << date_time << "\", " << orientation_x << ", " << orientation_y << ", " << joystick_action << ", " << joystick_state << std::endl;
+
 
         
         
@@ -146,8 +158,8 @@ int main(void)
         //     pitch += 0.6f;
         // }
 
-        pitch = -std::stof(v[0]);
-        roll = std::stof(v[1]);
+        pitch = -std::stof(orientation_x);
+        roll = std::stof(orientation_y);
 
         // // Plane pitch (x-axis) controls
         // if (IsKeyDown(KEY_DOWN)) pitch += 0.6f;
