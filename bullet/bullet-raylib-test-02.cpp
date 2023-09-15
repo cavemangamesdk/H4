@@ -186,6 +186,7 @@ int main(int argc, char** argv) {
     }
 
     UnloadModel(cubeModel);     // Unload model data
+    UnloadModel(sphereModel);     // Unload model data
 
 
     // Cleanup
@@ -207,4 +208,5 @@ int main(int argc, char** argv) {
 
     CloseWindow();
 
+    return 0;
 }
