@@ -94,14 +94,20 @@ int main(int argc, char** argv) {
     camera.fovy = 45.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;                   // Camera mode type
 
-    Mesh cubeMesh = GenMeshCube(20.0f, 1.0f, 20.0f);
+    Mesh cubeMesh = GenMeshCube(20.0f, 2.0f, 20.0f);
     Model cubeModel = LoadModelFromMesh(cubeMesh);
+
+    Mesh sphereMesh = GenMeshSphere(0.1f, 16, 16);
+    Model sphereModel = LoadModelFromMesh(sphereMesh);
+
+    cubeModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/board.png");  // Load model texture
+
+    Texture2D bearingTexture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");  // Load model texture
+    sphereModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = bearingTexture;            // Set map diffuse texture
 
     //SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-
-
 
     // Game loop
     while (!WindowShouldClose())
@@ -151,7 +157,7 @@ int main(int argc, char** argv) {
         btVector3 sphereOrigin = sphereTransform.getOrigin();
         sphereOrigin = sphereTransform.getOrigin();
         camera.target = (Vector3){sphereOrigin.getX(), sphereOrigin.getY(), sphereOrigin.getZ()};
-        camera.position = (Vector3){sphereOrigin.getX() + 5.0f, sphereOrigin.getY() + 20.0f, sphereOrigin.getZ() + 20.0f};;  // Camera position
+        camera.position = (Vector3){sphereOrigin.getX() + 0.5f, sphereOrigin.getY() + 2.0f, sphereOrigin.getZ() + 2.0f};;  // Camera position
 
         // Tranformation matrix for rotations
         cubeModel.transform = MatrixRotateXYZ((Vector3){ rotationAngleX, 0.0f, rotationAngleZ });
@@ -164,13 +170,15 @@ int main(int argc, char** argv) {
 
         // Render cube
         //DrawCube((Vector3){tileOrigin.getX(), tileOrigin.getY(), tileOrigin.getZ()}, 20.0f, 2.0f, 20.0f, RED); // Adjust 
-        DrawModel(cubeModel, (Vector3){tileOrigin.getX(), tileOrigin.getY(), tileOrigin.getZ()}, 1.0f, RED);   // Draw 3d model with texture
+        DrawModel(cubeModel, (Vector3){tileOrigin.getX(), tileOrigin.getY(), tileOrigin.getZ()}, 1.0f, WHITE);   // Draw 3d model with texture
+        DrawGrid(10, 10.0f);
 
         // Draw sphere
         //btTransform sphereTransform;
         sphereRigidBody->getMotionState()->getWorldTransform(sphereTransform);
         //btVector3 sphereOrigin = sphereTransform.getOrigin();
-        DrawSphere((Vector3){sphereOrigin.getX(), sphereOrigin.getY(), sphereOrigin.getZ()}, 1.0f, BLUE);
+        //DrawSphere((Vector3){sphereOrigin.getX(), sphereOrigin.getY(), sphereOrigin.getZ()}, 1.0f, BLUE);
+        DrawModel(sphereModel, (Vector3){sphereOrigin.getX(), sphereOrigin.getY(), sphereOrigin.getZ()}, 1.0f, WHITE);   // Draw 3d model with texture
 
         EndMode3D();
 
