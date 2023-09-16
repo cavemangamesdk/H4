@@ -80,8 +80,10 @@ int main(void)
     //Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
     //Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
     //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
-    Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
+    //Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
     //Model model = LoadModel("resources/models/obj/BallMazeGeo.obj");
+    Model model = LoadModel("resources/models/gltf/Innerboard.gltf");
+    //Model model = LoadModel("resources/models/obj/InnerBoard.obj");
     // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");   
     // model.materials[1].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_Metallic.png");  
     //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/board.png");  
