@@ -144,34 +144,39 @@ int main(int argc, char** argv) {
 
     //SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
-    // Handler to be called when data is received
-    auto handler1 = [&buffer, &length, &delimiter, &orientation, &orientation_x, &orientation_y](const boost::system::error_code& error, std::size_t bytes_transferred)
-    {
-        if (!error)
-        {
-            std::string orientation_data(buffer.data(), length);
-            orientation = split(orientation_data, delimiter);
-            orientation_x = orientation[0];
-            orientation_y = orientation[1];
-        }
-        else
-        {
-            // Handle error
-        }
-    };
+    // // Handler to be called when data is received
+    // auto handler1 = [&buffer, &length, &delimiter, &orientation, &orientation_x, &orientation_y](const boost::system::error_code& error, std::size_t bytes_transferred)
+    // {
+    //     // print to console
+    //     std::cout << "Received: " << std::string(buffer.data(), length) << std::endl;
 
-    auto handler2 = [&buffer](const boost::system::error_code& error, std::size_t bytes_transferred)
-    {
-        if (!error)
-        {
-            // Process received data stored in buffer
-            // Note: remember to handle the case where bytes_transferred is 0
-        }
-        else
-        {
-            // Handle error
-        }
-    };
+    //     if (!error)
+    //     {
+    //         std::string orientation_data(buffer.data(), length);
+    //         orientation = split(orientation_data, delimiter);
+    //         orientation_x = orientation[0];
+    //         orientation_y = orientation[1];
+    //     }
+    //     else
+    //     {
+    //         // Handle error
+    //     }
+    // };
+
+    // auto handler2 = [&buffer](const boost::system::error_code& error, std::size_t bytes_transferred)
+    // {
+    //     if (!error)
+    //     {
+    //         // Process received data stored in buffer
+    //         // Note: remember to handle the case where bytes_transferred is 0
+    //     }
+    //     else
+    //     {
+    //         // Handle error
+    //     }
+    // };
+
+    //io_context.run();
 
     SetTargetFPS(60);
 
@@ -179,28 +184,34 @@ int main(int argc, char** argv) {
     while (!WindowShouldClose())
     {
         // UDP
+        //socket1.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler1);
+        //socket2.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler2);
 
         // Receive from socket1
-        //length = socket1.receive_from(boost::asio::buffer(buffer), sender_endpoint);
-        socket1.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler1);
+        if(socket1.is_open())
+        {
+            length = socket1.receive_from(boost::asio::buffer(buffer), sender_endpoint);
 
-        // if(length > 0 ) {
-        //     std::string orientation_data(buffer.data(), length);
-        //     orientation = split(orientation_data, delimiter);
-        //     orientation_x = orientation[0];
-        //     orientation_y = orientation[1];
-        // }
+            if(length > 0 ) {
+                std::string orientation_data(buffer.data(), length);
+                orientation = split(orientation_data, delimiter);
+                orientation_x = orientation[0];
+                orientation_y = orientation[1];
+            }
+        }
         
         // Receive from socket2
-        //length = socket2.receive_from(boost::asio::buffer(buffer), sender_endpoint);
-        // socket2.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler2);
-
-        // if(length > 0 ) {
-        //     std::string joystick_data = std::string(buffer.data(), length);
-        //     joystick = split(joystick_data, delimiter);
-        //     joystick_action = joystick[0];
-        //     joystick_state = joystick[1];
-        // }
+        if(socket2.is_open())
+        {
+            length = socket2.receive_from(boost::asio::buffer(buffer), sender_endpoint);
+            
+            if(length > 0 ) {
+                std::string joystick_data = std::string(buffer.data(), length);
+                joystick = split(joystick_data, delimiter);
+                joystick_action = joystick[0];
+                joystick_state = joystick[1];
+            }
+        }
 
         // Use received orientation data to tilt board
         btScalar rotationAngleX = std::stof(orientation_x)*DEG2RAD;
@@ -262,6 +273,8 @@ int main(int argc, char** argv) {
 
         EndDrawing();
     }
+
+    //io_context.stop();
 
     // Bullet cleanup
     dynamicsWorld->removeRigidBody(tileRigidBody);
