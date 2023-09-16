@@ -80,11 +80,11 @@ int main(void)
     //Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
     //Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
     //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
-    //Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
-    Model model = LoadModel("resources/models/obj/BallMazeGeo.obj");
+    Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
+    //Model model = LoadModel("resources/models/obj/BallMazeGeo.obj");
     // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");   
     // model.materials[1].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_Metallic.png");  
-    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/board.png");  
+    //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/board.png");  
     // model.materials[3].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/box.png");  
     // model.materials[4].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/roughness.png");  
 
@@ -208,7 +208,7 @@ int main(void)
             // Draw 3D model (recomended to draw 3D always before 2D)
             BeginMode3D(camera);
 
-                DrawModel(model, (Vector3){ 0.0f, 0.0f, 0.0f }, 10.0f, WHITE);   // Draw 3d model with texture
+                DrawModel(model, (Vector3){ 0.0f, 0.0f, 0.0f }, 1.0f, WHITE);   // Draw 3d model with texture
                 DrawGrid(100, 100.0f);
 
             EndMode3D();
