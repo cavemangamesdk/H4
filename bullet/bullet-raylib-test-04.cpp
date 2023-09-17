@@ -2,7 +2,8 @@
 #include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
-#include <raygui.h>
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 
 // bullet physics
 #include <btBulletDynamicsCommon.h>
