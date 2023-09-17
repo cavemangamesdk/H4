@@ -1,5 +1,6 @@
 /*
-
+    Raylib and UDP motion controller signal over wlan test
+    Call this program with the IP address of the computer running the UDP server as argument
 */
 
 #include <iostream>
@@ -30,9 +31,6 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
     return res;
 }
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     // UDP  
@@ -76,9 +74,6 @@ int main(int argc, char** argv)
     outputFile.open("received_data.csv");
     outputFile << "timestamp, orientation_x, orientation_y, joystick_action, joystick_state" << std::endl;
 
-
-    // Initialization
-    //--------------------------------------------------------------------------------------
     const int screenWidth = 900; //800;
     const int screenHeight = 600; //450;
 
@@ -95,25 +90,12 @@ int main(int argc, char** argv)
     Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
     Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
-    //Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
-    //Model model = LoadModel("resources/models/obj/BallMazeGeo.obj");
-    //Model model = LoadModel("resources/models/gltf/Innerboard.gltf"); // Works!
-    //Model model = LoadModel("resources/models/obj/InnerBoard.obj");
-    // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");   
-    // model.materials[1].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_Metallic.png");  
-    //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/board.png");  
-    // model.materials[3].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/box.png");  
-    // model.materials[4].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/roughness.png");  
-
-    //Mesh cubeMesh = GenMeshCube(10.0f, 1.0f, 10.0f);
-    //Model cubeModel = LoadModelFromMesh(cubeMesh);
 
     float pitch = 0.0f;
     float roll = 0.0f;
     float yaw = 0.0f;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -143,11 +125,6 @@ int main(int argc, char** argv)
         std::cout << orientation_data << std::endl;
         std::cout << orientation_x << ", " << orientation_y << std::endl;
 
-
-        // Log to csv file
-        //outputFile << "timestamp, " << date_time << "orientation, " << orientation_data << std::endl;
-
-
         // Receive from socket2
         length = socket2.receive_from(boost::asio::buffer(buffer), sender_endpoint);
         std::string joystick_data = std::string(buffer.data(), length);
@@ -162,67 +139,19 @@ int main(int argc, char** argv)
         std::cout << joystick_action << ", " << joystick_state << std::endl;
 
         // Log to csv file
-        //outputFile << "timestamp, " << date_time << "joystick, " << joystick_data << std::endl;
-
-        //outputFile << "timestamp, " << date_time << "orientation, " << orientation_data << "joystick, " << joystick_data << std::endl;
-        //outputFile << date_time << ", " << orientation_x << ", " << orientation_y << ", " << joystick_action << ", " << joystick_state << std::endl;
         outputFile << "\"" << date_time << "\", " << orientation_x << ", " << orientation_y << ", " << joystick_action << ", " << joystick_state << std::endl;
 
-
-        
-        
-        // Update
-        //----------------------------------------------------------------------------------
-        
-        // if(action == "up") {
-        //     pitch -= 0.6f;
-        // }
-
-        // if(action == "down") {
-        //     pitch += 0.6f;
-        // }
-
+        //
         pitch = -std::stof(orientation_x);
         roll = std::stof(orientation_y);
 
-        // // Plane pitch (x-axis) controls
-        // if (IsKeyDown(KEY_DOWN)) pitch += 0.6f;
-        // else if (IsKeyDown(KEY_UP)) pitch -= 0.6f;
-        // else
-        // {
-        //     if (pitch > 0.3f) pitch -= 0.3f;
-        //     else if (pitch < -0.3f) pitch += 0.3f;
-        // }
-
-        // // Plane yaw (y-axis) controls
-        // if (IsKeyDown(KEY_S)) yaw -= 1.0f;
-        // else if (IsKeyDown(KEY_A)) yaw += 1.0f;
-        // else
-        // {
-        //     if (yaw > 0.0f) yaw -= 0.5f;
-        //     else if (yaw < 0.0f) yaw += 0.5f;
-        // }
-
-        // // Plane roll (z-axis) controls
-        // if (IsKeyDown(KEY_LEFT)) roll -= 1.0f;
-        // else if (IsKeyDown(KEY_RIGHT)) roll += 1.0f;
-        // else
-        // {
-        //     if (roll > 0.0f) roll -= 0.5f;
-        //     else if (roll < 0.0f) roll += 0.5f;
-        // }
-
         // Tranformation matrix for rotations
         model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD*pitch, DEG2RAD*yaw, DEG2RAD*roll });
-        //----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
 
             ClearBackground(BLACK);
 
-            // Draw 3D model (recomended to draw 3D always before 2D)
             BeginMode3D(camera);
 
                 DrawModel(model, (Vector3){ 0.0f, 0.0f, 0.0f }, 1.0f, WHITE);   // Draw 3d model with texture
@@ -236,17 +165,14 @@ int main(int argc, char** argv)
             DrawText("(c) WWI Plane Model created by GiaHanLam", screenWidth - 240, screenHeight - 20, 10, DARKGRAY);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
+    // Cleanup
     outputFile.close();
     
     UnloadModel(model);     // Unload model data
 
     CloseWindow();          // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
     return 0;
 }
