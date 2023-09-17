@@ -3,6 +3,7 @@
 #include <rlgl.h>
 #include <raymath.h>
 #define RAYGUI_IMPLEMENTATION
+#define RAYGUI_STANDALONE
 #include "raygui.h"
 
 // bullet physics
