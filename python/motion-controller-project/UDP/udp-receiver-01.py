@@ -1,8 +1,8 @@
 import socket
 
 # Set up server
-server_ip = '192.168.109.175'  # Change to your PC's IP address
-server_port = 4210  # Match this with the UDP port in your ESP8266 code
+server_ip = '192.168.109.243'  # Change to your PC's IP address
+server_port = 5100 # Match this with the UDP port in your ESP8266 code
 server_address = (server_ip, server_port)
 
 # Create a UDP socket
