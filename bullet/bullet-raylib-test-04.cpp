@@ -38,6 +38,12 @@ constexpr float buttonWidth = 90.0f;
 
 bool showAboutPanel = false;
 
+enum class GameState{
+    StartMenu,
+    Gameplay
+}
+
+GameState state = GameState::StartMenu;
 
 struct TopPanelButton {
     std::string Label;
@@ -63,6 +69,7 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
 void DrawTopPanel(float windowWidth, float height, const std::vector<TopPanelButton>& buttons);
 void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize);
 void DrawAboutPanel(Vector2 windowSize, Vector2 panelSize, bool* showAboutPanel);
+void ChangeState(GameState newState);
 
 int main(int argc, char** argv) {
 
@@ -82,6 +89,7 @@ int main(int argc, char** argv) {
         default:
             break;
     }
+
 
     // CSV file logging
     std::ofstream outputFile;
@@ -252,7 +260,7 @@ int main(int argc, char** argv) {
                 orientation_y = orientation[1];
             }
         }
-        
+
         // Receive from socket2
         if(socket2.is_open())
         {
@@ -380,6 +388,8 @@ void DrawTopPanel(float windowWidth, float height, const std::vector<TopPanelBut
 
 void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize)
 {
+    if (state == GameState::Gameplay) return;
+    
     int result = GuiTextInputBox((Rectangle){ (float)GetScreenWidth()/2 - 120, (float)GetScreenHeight()/2 - 60, 240, 140 }, GuiIconText(ICON_FILE_SAVE, "Enter player name:"), "Enter player name:", "Start;Quit", buffer, 255, NULL);
 
     if (result == 1)
@@ -393,6 +403,7 @@ void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize)
         printf("%s\n", buffer);
 
         // TODO: Change game state
+        ChangeState(GameState::Gameplay);
     }
 
     if ((result == 0) || (result == 1) || (result == 2))
@@ -423,4 +434,19 @@ void DrawAboutPanel(Vector2 windowSize, Vector2 panelSize, bool* showAboutPanel)
     x = (windowSize.x / 2.0f) - (textSize.x / 2.0f);
     y = (windowSize.y / 2.0f) - (textSize.y / 2.0f);
     DrawText(madeByText, x, y, (int32_t)fontSize, BLACK);
+}
+
+void ChangeState(GameState newState)
+{
+    if (newState == GameState::StartMenu)
+    {
+        /* code */
+        //Show GUI.
+    }
+    else if (newState == GameState::Gameplay)
+    {
+        /* code */
+        //Hide GUI.
+    }
+    state = newState;
 }
