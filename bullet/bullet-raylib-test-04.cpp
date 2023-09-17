@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
-#include <raygui.h>
+#include "raygui.h"
 
 // bullet physics
 #include <btBulletDynamicsCommon.h>
@@ -205,50 +205,12 @@ int main(int argc, char** argv) {
     Texture2D bearingTexture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");
     sphereModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = bearingTexture;
 
-    //SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
-
-    // // Handler to be called when data is received
-    // auto handler1 = [&buffer, &length, &delimiter, &orientation, &orientation_x, &orientation_y](const boost::system::error_code& error, std::size_t bytes_transferred)
-    // {
-    //     // print to console
-    //     std::cout << "Received: " << std::string(buffer.data(), length) << std::endl;
-
-    //     if (!error)
-    //     {
-    //         std::string orientation_data(buffer.data(), length);
-    //         orientation = split(orientation_data, delimiter);
-    //         orientation_x = orientation[0];
-    //         orientation_y = orientation[1];
-    //     }
-    //     else
-    //     {
-    //         // Handle error
-    //     }
-    // };
-
-    // auto handler2 = [&buffer](const boost::system::error_code& error, std::size_t bytes_transferred)
-    // {
-    //     if (!error)
-    //     {
-    //         // Process received data stored in buffer
-    //         // Note: remember to handle the case where bytes_transferred is 0
-    //     }
-    //     else
-    //     {
-    //         // Handle error
-    //     }
-    // };
-
-    //io_context.run();
-
     SetTargetFPS(60);
 
     // Game loop
     while (!WindowShouldClose())
     {
         // UDP
-        //socket1.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler1);
-        //socket2.async_receive_from(boost::asio::buffer(buffer), sender_endpoint, handler2);
 
         // Receive from socket1
         if(socket1.is_open())
@@ -338,8 +300,6 @@ int main(int argc, char** argv) {
 
         EndDrawing();
     }
-
-    //io_context.stop();
 
     // Bullet cleanup
     dynamicsWorld->removeRigidBody(tileRigidBody);
