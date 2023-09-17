@@ -33,10 +33,25 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main(void)
+int main(int argc, char** argv)
 {
     // UDP  
-    const std::string IP_ADDR = "192.168.109.243";
+    std::string IP_ADDR = "192.168.109.243";
+
+    switch (argc)
+    {
+        case 1:
+            std::cout << "Using default IP address: " << IP_ADDR << std::endl;
+            break;
+
+        case 2:
+            IP_ADDR = argv[1];
+            std::cout << "Using IP address: " << IP_ADDR << std::endl;
+            break;
+        
+        default:
+            break;
+    }
 
     // String delimiter
     std::string delimiter = ",";
@@ -77,12 +92,12 @@ int main(void)
     camera.fovy = 30.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;             // Camera type
 
-    //Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
-    //Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
-    //model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
+    Model model = LoadModel("resources/models/obj/plane.obj");                  // Load model
+    Texture2D texture = LoadTexture("resources/models/obj/plane_diffuse.png");  // Load model texture
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;            // Set map diffuse texture
     //Model model = LoadModel("resources/models/gltf/BallMazeGeo.gltf");
     //Model model = LoadModel("resources/models/obj/BallMazeGeo.obj");
-    Model model = LoadModel("resources/models/gltf/Innerboard.gltf");
+    //Model model = LoadModel("resources/models/gltf/Innerboard.gltf"); // Works!
     //Model model = LoadModel("resources/models/obj/InnerBoard.obj");
     // model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_BaseColor.png");   
     // model.materials[1].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("resources/models/obj/bearing_bearing_Metallic.png");  
