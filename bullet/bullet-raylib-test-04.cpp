@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
-#include "raygui.h"
+#include <raygui.h>
 
 // bullet physics
 #include <btBulletDynamicsCommon.h>
@@ -38,10 +38,12 @@ constexpr float buttonWidth = 90.0f;
 
 bool showAboutPanel = false;
 
+static char rayguiBuffer[256] = { 0 };
+
 enum class GameState{
     StartMenu,
     Gameplay
-}
+};
 
 GameState state = GameState::StartMenu;
 
@@ -390,17 +392,17 @@ void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize)
 {
     if (state == GameState::Gameplay) return;
     
-    int result = GuiTextInputBox((Rectangle){ (float)GetScreenWidth()/2 - 120, (float)GetScreenHeight()/2 - 60, 240, 140 }, GuiIconText(ICON_FILE_SAVE, "Enter player name:"), "Enter player name:", "Start;Quit", buffer, 255, NULL);
+    int result = GuiTextInputBox((Rectangle){ (float)GetScreenWidth()/2 - 120, (float)GetScreenHeight()/2 - 60, 240, 140 }, GuiIconText(ICON_FILE_SAVE, "Enter player name:"), "Enter player name:", "Start;Quit", rayguiBuffer, 255, NULL);
 
     if (result == 1)
     {
         // TODO: Validate textInput value and save
-        if ((buffer != NULL) && (buffer[0] == '\0')) {
+        if ((rayguiBuffer != NULL) && (rayguiBuffer[0] == '\0')) {
             printf("Player name is empty\n");
             return;
         }
 
-        printf("%s\n", buffer);
+        printf("%s\n", rayguiBuffer);
 
         // TODO: Change game state
         ChangeState(GameState::Gameplay);
@@ -408,7 +410,7 @@ void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize)
 
     if ((result == 0) || (result == 1) || (result == 2))
     {
-        TextCopy(buffer, "\0");
+        TextCopy(rayguiBuffer, "\0");
         if((result == 0) || (result == 2))
         {
             exit(0);
