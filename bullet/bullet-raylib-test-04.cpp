@@ -13,6 +13,11 @@
 #include <fstream>
 #include <boost/asio.hpp>  // required for UDP
 #include <ctime>
+#include <cstdint>
+#include <cstdio>
+#include <functional>
+#include <vector>
+
 
 #define RAYGUI_IMPLEMENTATION
 #define WINDOW_WIDTH 1366
