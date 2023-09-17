@@ -2,16 +2,27 @@
 #include <raylib.h>
 #include <rlgl.h>
 #include <raymath.h>
+#include <raygui.h>
 
 // bullet physics
 #include <btBulletDynamicsCommon.h>
 
-
+//
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <boost/asio.hpp>  // required for UDP
 #include <ctime>
+
+#define RAYGUI_IMPLEMENTATION
+#define WINDOW_WIDTH 1366
+#define WINDOW_HEIGHT 768
+
+
+struct TopPanelButton {
+    std::string Label;
+    std::function<void()> Callback;
+};
 
 // for string splitting by delimiter
 std::vector<std::string> split(std::string s, std::string delimiter) {
@@ -28,6 +39,10 @@ std::vector<std::string> split(std::string s, std::string delimiter) {
     res.push_back (s.substr (pos_start));
     return res;
 }
+
+void DrawTopPanel(float windowWidth, float height, const std::vector<TopPanelButton>& buttons);
+void DrawStartGamePanel(Vector2 windowSize, Vector2 panelSize);
+void DrawAboutPanel(Vector2 windowSize, Vector2 panelSize, bool* showAboutPanel);
 
 int main(int argc, char** argv) {
 
@@ -47,6 +62,18 @@ int main(int argc, char** argv) {
         default:
             break;
     }
+
+    // Raygui setup
+    constexpr int32_t textPadding = 8;
+
+    constexpr float padding = 4.0f;
+    constexpr float topbarHeight = 38.0f;
+    constexpr float buttonHeight = topbarHeight - (padding * 2.0f);
+
+    constexpr float startGamePanelWidth = 1024.0f;
+    constexpr float startGamePanelHeight = 512.0f;
+
+    bool showAboutPanel = false;
 
     // CSV file logging
     std::ofstream outputFile;
@@ -116,9 +143,27 @@ int main(int argc, char** argv) {
     btRigidBody* sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
     dynamicsWorld->addRigidBody(sphereRigidBody);
 
+
+
+    std::vector<TopPanelButton> topPanelButtons = {
+        (TopPanelButton){
+            GuiIconText(ICON_FILE_SAVE, "Save CSV"),
+            [&]() {}
+        },
+        (TopPanelButton){
+           GuiIconText(ICON_FILE_OPEN, "Open CSV"),
+            [&]() {}
+        }, 
+        (TopPanelButton){
+            "About",
+            [&]() { showAboutPanel = !showAboutPanel; }
+        }
+    };
+
     // raylib setup
     // Initialize raylib window
-    InitWindow(1200, 800, "Ball-in-a-Maze demo made with raylib and Bullet physics");
+    InitWindow(1200, 800, "Ball-in-a-Maze demo made with raylib, raygui and Bullet physics");
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
@@ -258,6 +303,8 @@ int main(int argc, char** argv) {
         // Draw
         BeginDrawing();
         ClearBackground(RAYWHITE);
+
+        DrawTopPanel((float)WINDOW_WIDTH, topbarHeight, topPanelButtons);
 
         BeginMode3D(camera);
 
